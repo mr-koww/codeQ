@@ -1,6 +1,6 @@
 == It's my first app on Rails
 
-My first app called codeQ
+App called codeQ
 
 A little later there will be a detailed description of the project
 
