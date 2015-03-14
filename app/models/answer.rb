@@ -1,4 +1,6 @@
 class Answer < ActiveRecord::Base
-  validates :body, presence: true
   belongs_to :question
+
+  validates :body, presence: true
+
 end
