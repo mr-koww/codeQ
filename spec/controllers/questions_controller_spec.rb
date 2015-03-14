@@ -98,6 +98,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it '3. Redirect to the updates question' do
+        patch :update, id: question, question: attributes_for(:question)
         expect(response).to redirect_to question
       end
 
