@@ -18,7 +18,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to question_answers_path(@question)
     else
-      #render :new
+      render :new
     end
   end
 
@@ -27,7 +27,7 @@ class AnswersController < ApplicationController
     if @answer.update(answer_params)
       redirect_to @question
     else
-      #render :edit
+      render :edit
     end
   end
 
