@@ -14,7 +14,7 @@ class AnswersController < ApplicationController
 
 
   def create
-    @answer = @question.answer.new(answer_params)
+    @answer = @question.answers.new(answer_params)
     if @answer.save
       redirect_to @question
     else
@@ -38,7 +38,7 @@ class AnswersController < ApplicationController
   end
 
   def load_answer
-    @answer = @question.answer.find(params[:id])
+    @answer = @question.answers.find(params[:id])
   end
 
   def answer_params
