@@ -3,7 +3,7 @@ class AnswersController < ApplicationController
   before_action :load_answer, only: [:edit, :update]
 
   def new
-    @answer = @question.answer.new
+    @answer = Answer.new
   end
 
 
@@ -16,7 +16,7 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answer.new(answer_params)
     if @answer.save
-      redirect_to question_answers_path(@question)
+      redirect_to @question
     else
       render :new
     end

@@ -19,7 +19,7 @@ let(:answer)   { create :answer, question: question }
 		context "with valid attributes" do
 
 			it "saves answer to db" do
-		  	expect { post :create, answer: attributes_for(:answer), question_id: question }.to change(Answer, :count).by(1)
+		  	expect { post :create, answer: attributes_for(:answer), question_id: question }.to change(question.answer, :count).by(1)
       end
 
 			#it "redirect to index template" do
@@ -30,7 +30,7 @@ let(:answer)   { create :answer, question: question }
 
 		context "with invalid attributes" do
 			it "doesn`t save the answer" do
-				expect { post :create, answer: { body: nil }, question_id: question}.to_not change(Answer, :count)
+				expect { post :create, answer: { body: nil }, question_id: question}.to_not change(question.answer, :count)
 			end
 
 			#it "redirect to index template" do
