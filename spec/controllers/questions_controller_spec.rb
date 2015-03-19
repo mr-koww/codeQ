@@ -91,10 +91,10 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it '2. Changes question attributes' do
-        patch :update, id: question, question: { title: "new title", body: "new body" }
+        patch :update, id: question, question: { title: "new default title", body: "new default big body" }
         question.reload
-        expect(question.title).to eq "new title"
-        expect(question.body).to eq "new body"
+        expect(question.title).to eq "new default title"
+        expect(question.body).to eq "new default big body"
       end
 
       it '3. Redirect to the updates question' do
@@ -108,8 +108,8 @@ RSpec.describe QuestionsController, type: :controller do
       before { patch :update, id: question, question: { title: "new title", body: nil } }
       it '1. Does not change question attributes' do
         question.reload
-        expect(question.title).to eq "MyString"
-        expect(question.body).to eq "MyText"
+        expect(question.title).to eq "Default Title"
+        expect(question.body).to eq "Default big length Body"
       end
 
       it '2. Re-render edit template' do
