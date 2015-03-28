@@ -27,6 +27,7 @@ class QuestionsController < ApplicationController
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
     else
+      flash[:notice] = 'Please, check input data'
       render :new
     end
   end
@@ -42,7 +43,7 @@ class QuestionsController < ApplicationController
 
 
   def destroy
-    if current_user == @question.user
+    if current_user.id == @question.user_id
       if @question.destroy
         redirect_to questions_path, notice: 'Your question was successfully destroyed.'
       end

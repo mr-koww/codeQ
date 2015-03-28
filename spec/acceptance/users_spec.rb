@@ -27,10 +27,10 @@ feature 'Users', type: :feature do
     expect(current_path).to eq root_path
   end
 
-  scenario 'registered user try to sign in' do
+  scenario 'registered user try to sign out' do
     sign_in user
     click_on 'Sign out'
-
+    #visit путь
     expect(page).to have_content 'Signed out successfully.'
   end
 

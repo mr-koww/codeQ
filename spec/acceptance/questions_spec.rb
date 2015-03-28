@@ -5,7 +5,7 @@ feature "Questions", type: :feature do
 given(:user1) { create(:user) }
 given(:user2) { create(:user) }
 given(:question) { create(:question, user: user1) }
-given(:questions) { create_list(:question, 5) }
+given!(:questions) { create_list(:question, 5) }
 
 describe 'Auth user' do
   scenario 'can creates question' do
@@ -48,8 +48,8 @@ describe 'Not-auth user' do
   end
 
   scenario 'can show all questions' do
-    questions
     visit questions_path
+
     questions.each { |question| expect(page).to have_content question.title }
   end
 end

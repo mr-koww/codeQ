@@ -3,14 +3,8 @@ class AnswersController < ApplicationController
   before_action :set_question
   before_action :load_answer, only: [ :edit, :update, :destroy ]
 
-
   def new
     @answer = Answer.new
-  end
-
-
-  def show
-    @answer = @question.answers.find(params[:id])
   end
 
 
@@ -35,7 +29,7 @@ class AnswersController < ApplicationController
 
 
   def destroy
-    if current_user == @answer.user
+    if current_user.id == @answer.user_id
       if @answer.destroy
         redirect_to question_path(@question), notice: 'Your answer was successfully destroyed.'
       end

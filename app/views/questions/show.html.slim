@@ -4,4 +4,4 @@ p= @question.body
 = render @question.answers
 = render 'answers/new', question: @question, answer: @answer if user_signed_in?
 
-p = link_to 'Delete question', question_path, method: :delete unless current_user.nil? or current_user.id != @question.user_id
+p = link_to 'Delete question', question_path, method: :delete if current_user && current_user.id == @question.user_id

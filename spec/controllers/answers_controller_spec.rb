@@ -27,6 +27,8 @@ let(:answer)   { create :answer, question: question }
 			#	get :index, question_id: question
 			#	expect(response).to render_template :index
   		#end
+
+      #проверить автора вопроса
 		end
 
 		context 'with invalid attributes' do

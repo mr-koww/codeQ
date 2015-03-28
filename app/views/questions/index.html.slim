@@ -1,7 +1,4 @@
 h1 Question page
-p= link_to 'Sign up', new_user_registration_path if current_user.nil?
-p= link_to 'Sign in', new_user_session_path if current_user.nil?
-p= link_to 'Sign out', destroy_user_session_path, method: :delete unless current_user.nil?
-= @questions.each do |question|
+- @questions.each do |question|
   = render question
 p= link_to 'Ask question', new_question_path
