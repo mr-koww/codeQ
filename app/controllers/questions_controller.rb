@@ -27,7 +27,7 @@ class QuestionsController < ApplicationController
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
     else
-      flash[:notice] = 'Please, check input data'
+      flash[:notice] = 'Please, check question data'
       render :new
     end
   end

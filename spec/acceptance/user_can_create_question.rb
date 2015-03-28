@@ -23,8 +23,8 @@ feature "User can create question", type: :feature do
 
     click_on 'Create'
 
-    expect(page).to have_content 'Please, check input data'
-    #когда метод render пишет что путь /questions
+    expect(page).to have_content 'Please, check question data'
+    #когда метод render, то пишет что путь /questions
     #expect(current_path).to eq new_question_path
   end
 end

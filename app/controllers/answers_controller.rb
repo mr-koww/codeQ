@@ -14,6 +14,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question
     else
+      flash[:notice] = 'Please, check answer data'
       render :new
     end
   end
