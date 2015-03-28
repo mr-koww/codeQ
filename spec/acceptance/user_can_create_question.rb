@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "User can create question", type: :feature do
+feature 'User can create question', type: :feature do
   given(:user) { create(:user) }
   before { sign_in(user) }
 

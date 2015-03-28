@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "User can create answer", type: :feature do
+feature 'User can create answer', type: :feature do
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
