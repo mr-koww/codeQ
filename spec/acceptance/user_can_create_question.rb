@@ -2,9 +2,9 @@ require 'rails_helper'
 
 feature 'User can create question', type: :feature do
   given(:user) { create(:user) }
-  before { sign_in(user) }
 
-  scenario 'with valid data' do
+  scenario 'Auth user create question with valid data' do
+    sign_in(user)
     visit new_question_path
 
     fill_in 'Title', with: 'Question title with valid data'
@@ -18,7 +18,8 @@ feature 'User can create question', type: :feature do
     expect(current_path).to eq question_path(user.questions.last)
   end
 
-  scenario 'with invalid data' do
+  scenario 'Auth user try create question with invalid data' do
+    sign_in(user)
     visit new_question_path
 
     click_on 'Create'
@@ -27,4 +28,15 @@ feature 'User can create question', type: :feature do
     #когда метод render, то пишет что путь /questions
     #expect(current_path).to eq new_question_path
   end
+
+  scenario 'Not auth user cannot create question' do
+    visit questions_path
+
+    click_on 'Ask question'
+
+    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to have_content 'Email'
+    expect(page).to have_content 'Password'
+  end
+
 end

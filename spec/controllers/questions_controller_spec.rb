@@ -115,8 +115,8 @@ RSpec.describe QuestionsController, type: :controller do
 
       it '1. Does not change question attributes' do
         question.reload
-        expect(question.title).to eq 'Default Title'
-        expect(question.body).to eq 'Default Body'
+        expect(question.title).to eq question.title
+        expect(question.body).to eq question.body
       end
       it '2. Re-render edit template' do
         expect(response).to render_template :edit

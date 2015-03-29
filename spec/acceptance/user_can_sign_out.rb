@@ -7,7 +7,10 @@ feature 'User can sign out', type: :feature do
     sign_in user
 
     click_on 'Sign out'
+    visit new_user_session_path
 
-    expect(page).to have_content 'Signed out successfully.'
+    expect(page).to have_content 'Email'
+    expect(page).to have_content 'Password'
+    expect(page).to have_content 'Log in'
   end
 end
