@@ -74,6 +74,10 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to redirect_to question_path(assigns(:question))
       end
 
+      it '3. should have a user' do
+        expect(subject.current_user).to_not be_nil
+      end
+
     end
 
     context 'with invalid attributes' do

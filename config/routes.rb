@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+  #не успел отключить лишние роуты по девайсу, нашел как переопределять пути. Сделаю позже
   devise_for :users
 
   resources :questions do

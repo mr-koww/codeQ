@@ -12,6 +12,8 @@ feature 'User can delete question', type: :feature do
     click_on 'Delete question'
 
     expect(page).to have_content 'Your question was successfully destroyed.'
+    expect(page).to_not have_content question.title
+    expect(page).to_not have_content question.body
     expect(current_path).to eq questions_path
   end
 

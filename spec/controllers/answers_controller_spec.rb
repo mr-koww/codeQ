@@ -7,6 +7,7 @@ let(:answer)   { create :answer, question: question }
 
   describe 'GET #new' do
     sign_in_user
+
     before { get :new, question_id: question}
 
     it { expect(assigns(:answer)).to be_a_new(Answer) }
@@ -21,6 +22,10 @@ let(:answer)   { create :answer, question: question }
 
 			it 'saves answer to db' do
 		  	expect { post :create, answer: attributes_for(:answer), question_id: question }.to change(question.answers, :count).by(1)
+      end
+
+      it 'should have a user' do
+        expect(subject.current_user).to_not be_nil
       end
 
 			#it "redirect to index template" do
