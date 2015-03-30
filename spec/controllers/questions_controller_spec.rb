@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-
   let(:question) { create(:question) }
 
   describe 'GET #index' do
@@ -75,7 +74,8 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it '3. should have a user' do
-        expect(subject.current_user).to_not be_nil
+        post :create, question: attributes_for(:question)
+        expect(assigns(:question).user).to eq subject.current_user
       end
 
     end

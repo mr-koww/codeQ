@@ -25,7 +25,8 @@ let(:answer)   { create :answer, question: question }
       end
 
       it 'should have a user' do
-        expect(subject.current_user).to_not be_nil
+        post :create, answer: attributes_for(:answer), question_id: question
+        expect(assigns(:answer).user).to eq subject.current_user
       end
 
 			#it "redirect to index template" do
