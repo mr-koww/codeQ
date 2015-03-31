@@ -1,0 +1,4 @@
+h1 Question page
+- @questions.each do |question|
+  = render question
+p= link_to 'Ask question', new_question_path
