@@ -23,7 +23,8 @@ class QuestionsController < ApplicationController
 
 
   def create
-    @question = current_user.questions.new(question_params)
+    @question = Question.new(question_params)
+    @question.user = current_user
     if @question.save
       redirect_to @question, notice: 'Your question successfully created.'
     else
