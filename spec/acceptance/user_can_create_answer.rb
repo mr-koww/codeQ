@@ -10,11 +10,13 @@ feature 'User can create answer', type: :feature do
   scenario 'with valid data' do
     visit question_path(question)
 
-    fill_in 'Answer', with: answer.body
+    fill_in 'Your Answer', with: answer.body
     click_on 'Add answer'
 
     expect(page).to have_content answer.body
-    expect(current_path).to eq question_path(question)
+    within '.answers' do
+      expect(current_path).to eq question_path(question)
+    end
   end
 
   scenario 'with invalid data' do
