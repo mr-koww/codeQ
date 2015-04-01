@@ -9,11 +9,11 @@ let(:question) { create :question, user: user }
     let(:questions) { create_list(:question, 2, user: user) }
     before { get :index }
 
-    it '1. Population an array of all Question' do
+    it 'Population an array of all Question' do
       expect(assigns(:questions)).to match_array(questions)
     end
 
-    it '2. Renders index view' do
+    it 'Renders index view' do
       expect(response).to render_template :index
     end
   end
@@ -22,12 +22,16 @@ let(:question) { create :question, user: user }
   describe 'GET #show' do
     before { get :show, id: question }
 
-    it '1. Assigns requested question to @question' do
+    it 'Assigns requested question to @question' do
       expect(assigns(:question)).to eq question
     end
 
-    it '2. Renders show view' do
+    it 'Renders show view' do
       expect(response).to render_template :show
+    end
+
+    it 'Assigns new answer for question' do
+      expect(assigns(:answer)).to be_a_new(Answer)
     end
   end
 
@@ -37,11 +41,11 @@ let(:question) { create :question, user: user }
 
     before { get :new }
 
-    it '1. Assigns a new Question to @question' do
+    it 'Assigns a new Question to @question' do
       expect(assigns(:question)).to be_a_new(Question)
     end
 
-    it '2. Renders new view' do
+    it 'Renders new view' do
       expect(response).to render_template :new
     end
   end
@@ -52,11 +56,11 @@ let(:question) { create :question, user: user }
 
     before { get :edit, id: question }
 
-    it '1. Assigns requested question to @questions' do
+    it 'Assigns requested question to @questions' do
       expect(assigns(:question)).to eq question
     end
 
-    it '2. Renders edit view' do
+    it 'Renders edit view' do
       expect(response).to render_template :edit
     end
   end
@@ -66,16 +70,16 @@ let(:question) { create :question, user: user }
     sign_in_user
 
     context 'with valid attributes' do
-      it '1. Saves the new question in the database' do
+      it 'Saves the new question in the database' do
         expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
       end
 
-      it '2. Redirects to show view' do
+      it 'Redirects to show view' do
         post :create, question: attributes_for(:question)
         expect(response).to redirect_to question_path(assigns(:question))
       end
 
-      it '3. should have a user' do
+      it 'should have a user' do
         post :create, question: attributes_for(:question)
         expect(assigns(:question).user).to eq subject.current_user
       end
@@ -83,11 +87,11 @@ let(:question) { create :question, user: user }
     end
 
     context 'with invalid attributes' do
-      it '1. Does not save question' do
+      it 'Does not save question' do
         expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
       end
 
-      it '2. Re-render new view' do
+      it 'Re-render new view' do
         post :create, question: attributes_for(:invalid_question)
         expect(response).to render_template :new
       end
@@ -99,17 +103,17 @@ let(:question) { create :question, user: user }
     sign_in_user
 
     context 'with valid attributes' do
-      it '1. Assigns requested question to @question' do
+      it 'Assigns requested question to @question' do
         patch :update, id: question, question: attributes_for(:question)
         expect(assigns(:question)).to eq question
       end
-      it '2. Changes question attributes' do
+      it 'Changes question attributes' do
         patch :update, id: question, question: { title: 'new default title', body: 'new default body' }
         question.reload
         expect(question.title).to eq 'new default title'
         expect(question.body).to eq 'new default body'
       end
-      it '3. Redirect to the updates question' do
+      it 'Redirect to the updates question' do
         patch :update, id: question, question: attributes_for(:question)
         expect(response).to redirect_to question
       end
@@ -119,12 +123,12 @@ let(:question) { create :question, user: user }
     context 'with invalid attributes' do
       before { patch :update, id: question, question: { title: 'new title', body: nil } }
 
-      it '1. Does not change question attributes' do
+      it 'Does not change question attributes' do
         question.reload
         expect(question.title).to eq question.title
         expect(question.body).to eq question.body
       end
-      it '2. Re-render edit template' do
+      it 'Re-render edit template' do
         expect(response).to render_template :edit
       end
     end
