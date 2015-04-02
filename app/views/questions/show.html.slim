@@ -1,8 +1,8 @@
-h1=  @question.title
+h1= @question.title
 p= @question.body
 
 .answers
-  =render 'questions/answers'
+  = render 'questions/answers'
 
 = render 'answers/new', question: @question, answer: @answer if user_signed_in?
 

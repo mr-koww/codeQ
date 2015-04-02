@@ -1,2 +1,2 @@
-p = answer.body
-p = link_to 'Delete answer', question_answer_path(answer.question, answer), method: :delete if current_user && current_user.id == @question.user_id
+p= answer.body
+p= link_to 'Delete answer', question_answer_path(question, answer), method: :delete if current_user && current_user.id == answer.user_id

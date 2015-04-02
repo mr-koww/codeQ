@@ -1,2 +1,2 @@
 - @question.answers.each do |answer|
-  p= answer.body
+  = render 'answers/answer', question: @question, answer: answer
