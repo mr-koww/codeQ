@@ -8,7 +8,7 @@ let(:answer)   { create :answer, question: question }
   describe 'GET #new' do
     sign_in_user
 
-    before { get :new, question_id: question}
+    before { get :new, question_id: question }
 
     it { expect(assigns(:answer)).to be_a_new(Answer) }
     it { expect(response).to render_template :new }
