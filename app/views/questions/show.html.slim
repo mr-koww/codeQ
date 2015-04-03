@@ -1,7 +1,9 @@
-h1=  @question.title
+h1= @question.title
 p= @question.body
 
-= render @question.answers
+.answers
+  = render 'questions/answers'
+
 = render 'answers/new', question: @question, answer: @answer if user_signed_in?
 
 p = link_to 'Delete question', question_path, method: :delete if current_user && current_user.id == @question.user_id

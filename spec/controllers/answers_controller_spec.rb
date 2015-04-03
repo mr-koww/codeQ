@@ -19,28 +19,32 @@ let(:answer)   { create :answer, question: question }
     sign_in_user
 
 		context 'with valid attributes' do
-
 			it 'saves answer to db' do
-		  	expect { post :create, answer: attributes_for(:answer), question_id: question }.to change(question.answers, :count).by(1)
+		  	expect { post :create, answer: attributes_for(:answer), question_id: question, format: :js }.
+            to change(question.answers, :count).by(1)
       end
 
       it 'should have a user' do
-        post :create, answer: attributes_for(:answer), question_id: question
+        post :create, answer: attributes_for(:answer), question_id: question, format: :js
         expect(assigns(:answer).user).to eq subject.current_user
       end
 
-			#it "redirect to index template" do
-			#	get :index, question_id: question
-			#	expect(response).to render_template :index
-  		#end
-
-      #проверить автора вопроса
+			it 'render create template' do
+        post :create, answer: attributes_for(:answer), question_id: question, format: :js
+				expect(response).to render_template :create
+  		end
 		end
 
 		context 'with invalid attributes' do
 			it 'doesn`t save the answer' do
-				expect { post :create, answer: { body: nil }, question_id: question}.to_not change(Answer, :count)
-			end
+				expect { post :create, answer: { body: nil }, question_id: question, format: :js}.
+            to_not change(Answer, :count)
+      end
+
+      it 'redirect to show view' do
+        post :create, answer: { body: nil }, question_id: question, format: :js
+        expect(response).to render_template :create
+      end
     end
 
 	end
