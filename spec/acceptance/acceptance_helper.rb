@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.configure do |config|
+  # Comment for switch to selenium-driver (run firefox)
   Capybara.javascript_driver = :webkit
 
   config.include AcceptanceHelper, type: :feature
