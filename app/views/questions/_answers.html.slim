@@ -1,2 +1,3 @@
 - @question.answers.each do |answer|
-  = render 'answers/answer', question: @question, answer: answer
+  - if answer.persisted?
+    = render 'answers/answer', question: @question, answer: answer

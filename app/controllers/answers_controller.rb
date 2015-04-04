@@ -16,11 +16,8 @@ class AnswersController < ApplicationController
 
 
   def update
-    if @answer.update(answer_params)
-      redirect_to @question
-    else
-      render :edit
-    end
+    @answer = Answer.find(params[:id])
+    @answer.update(answer_params)
   end
 
 

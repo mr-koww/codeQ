@@ -41,6 +41,9 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
+
+  # requires qt5-default libqt5webkit5-dev
+  # requires JavaScript runtime (nodejs, therubyracer)
   gem 'capybara-webkit'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

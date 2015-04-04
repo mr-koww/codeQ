@@ -46,7 +46,6 @@ let(:answer)   { create :answer, question: question }
         expect(response).to render_template :create
       end
     end
-
 	end
 
 
@@ -56,22 +55,30 @@ let(:answer)   { create :answer, question: question }
     context 'with valid params' do
 
       it 'assigns the requested answer to @answer' do
-        patch :update, id: answer, answer: attributes_for(:answer), question_id: question
+        patch :update, id: answer, answer: attributes_for(:answer), question_id: question, format: :js
         expect(assigns(:answer)).to eq answer
       end
 
       it 'change answer attributes' do
-        patch :update, id: answer, answer: { body: 'New Answer Body' }, question_id: question
+        patch :update, id: answer, answer: { body: 'New Answer Body' }, question_id: question, format: :js
         answer.reload
         expect(answer.body).to eq 'New Answer Body'
       end
 
+      it 'assigns the question' do
+        patch :update, id: answer, answer: attributes_for(:answer), question_id: question, format: :js
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'render update template' do
+        patch :update, id: answer, answer: attributes_for(:answer), question_id: question, format: :js
+        expect(response).to render_template :update
+      end
     end
 
     context 'with invalid params' do
-      before { patch :update, id: answer, answer: { body: nil }, question_id: question }
-
       it 'not change answer attributes' do
+        patch :update, id: answer, answer: { body: nil }, question_id: question, format: :js
         answer.reload
         expect(answer.body).to eq answer.body
       end

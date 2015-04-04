@@ -1,2 +1,13 @@
-p= answer.body
-p= link_to 'Delete answer', question_answer_path(question, answer), method: :delete if current_user && current_user.id == answer.user_id
+div.answers1 id = answer.id
+  p= answer.body
+
+  - if user_signed_in?
+    p= link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+    p
+      = form_for [@question, answer], remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
+       = f.label :body, 'Answer'
+       = f.text_area :body
+       = f.submit 'Save'
+
+  - if current_user && current_user.id == answer.user_id
+    p= link_to 'Delete answer', question_answer_path(question, answer), method: :delete
