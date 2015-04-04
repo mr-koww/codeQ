@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature 'Guest can see question and answers', type: :feature do
   given!(:user) { create(:user) }

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature 'User can create answer', type: :feature do
   given(:user) { create(:user) }
@@ -25,6 +25,7 @@ feature 'User can create answer', type: :feature do
     click_on 'Add answer'
 
     expect(current_path).to eq question_path(question)
+    expect(page).to have_content "Body can't be blank"
   end
 
 end

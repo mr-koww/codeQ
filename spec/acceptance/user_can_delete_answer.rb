@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature 'User can create delete', type: :feature do
   given(:user1) { create(:user) }
