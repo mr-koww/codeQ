@@ -3,7 +3,7 @@
 
   - if user_signed_in? && (current_user.id == answer.user_id)
     p= link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
-    p= form_for [question, answer], remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
+    p= form_for [question, answer], remote: true, html: { id: "edit-answer-form", data: { answer_id: answer.id } } do |f|
        = f.label :body, 'Answer'
        = f.text_area :body
        = f.submit 'Save'
