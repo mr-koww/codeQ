@@ -4,5 +4,4 @@
     <% end %>
 <% else %>
     $('.answers').append('<%= j render 'answers/answer', question: @question, answer: @answer %>')
-    $('#answer_body').val('')
 <% end %>

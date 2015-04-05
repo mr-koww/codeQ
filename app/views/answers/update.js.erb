@@ -4,9 +4,4 @@
     <% end %>
 <% else %>
     $('.answer[data="' + <%= @answer.id %>+'"]').replaceWith('<%= j render 'answers/answer', answer: @answer, question: @question %>');
-    $('.edit-answer-link').click(function(e) {
-        e.preventDefault();
-        answer_id = $(this).data('answerId');
-        $('form#edit-answer-' + answer_id).show();
-    });
 <% end %>
