@@ -1,4 +1,9 @@
 // Place all the styles related to the Answers controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.answer {
+  border: 1px solid black;
+  background: #CCCCCC;
+}
+
 .edit_answer { display: none; }
