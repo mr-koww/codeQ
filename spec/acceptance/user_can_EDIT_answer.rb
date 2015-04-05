@@ -5,21 +5,21 @@ feature 'User can edit answer', %q{
   As an author of answer
   I'd like to be able edit my answer
 } do
+  #User who asked Question
   given(:user) { create(:user) }
+
+  #User who wrote first Answer
+  given(:user1) { create(:user) }
+
+  #User who nothing wrote
+  given(:user2) { create(:user) }
+
   given!(:question) { create(:question, user: user) }
-  given!(:answer) { create(:answer, question: question, user: user) }
+  given!(:answer1) { create(:answer, question: question, user: user1) }
 
-
-  scenario 'Not-auth user try to edit answer' do
-    visit question_path(question)
-
-    expect(page).to_not have_link 'Edit'
-  end
-
-
-  describe 'Auth user' do
+  describe 'Auth user try edit his answer' do
     before do
-      sign_in user
+      sign_in user1
       visit question_path(question)
     end
 
@@ -40,9 +40,21 @@ feature 'User can edit answer', %q{
         expect(page).to_not have_selector 'textarea'
       end
     end
+  end
 
-    scenario 'try to edit not his answer' do
 
+  scenario "Auth user doesn't see edit link for not his answer" do
+    sign_in user2
+    visit question_path(question)
+    within '.answers' do
+      expect(page).to_not have_link 'Edit'
     end
+  end
+
+
+  scenario "Not-auth user doesn't see edit link for all answers" do
+    visit question_path(question)
+
+    expect(page).to_not have_link 'Edit'
   end
 end
