@@ -45,7 +45,7 @@ let(:question) { create :question, user: user }
       expect(assigns(:question)).to be_a_new(Question)
     end
 
-    it 'Renders new view' do
+    it 'Renders new template' do
       expect(response).to render_template :new
     end
   end
@@ -60,7 +60,7 @@ let(:question) { create :question, user: user }
       expect(assigns(:question)).to eq question
     end
 
-    it 'Renders edit view' do
+    it 'Renders edit template' do
       expect(response).to render_template :edit
     end
   end
@@ -104,32 +104,32 @@ let(:question) { create :question, user: user }
 
     context 'with valid attributes' do
       it 'Assigns requested question to @question' do
-        patch :update, id: question, question: attributes_for(:question)
+        patch :update, id: question, question: attributes_for(:question), format: :js
         expect(assigns(:question)).to eq question
       end
       it 'Changes question attributes' do
-        patch :update, id: question, question: { title: 'new default title', body: 'new default body' }
+        patch :update, id: question, question: { title: 'new default title', body: 'new default body' }, format: :js
         question.reload
         expect(question.title).to eq 'new default title'
         expect(question.body).to eq 'new default body'
       end
-      it 'Redirect to the updates question' do
-        patch :update, id: question, question: attributes_for(:question)
-        expect(response).to redirect_to question
+      it 'render update template' do
+        patch :update, id: question, question: attributes_for(:question), format: :js
+        expect(response).to render_template :update
       end
-
     end
 
     context 'with invalid attributes' do
-      before { patch :update, id: question, question: { title: 'new title', body: nil } }
+      before { patch :update, id: question, question: { title: 'new title', body: nil }, format: :js }
 
       it 'Does not change question attributes' do
         question.reload
         expect(question.title).to eq question.title
         expect(question.body).to eq question.body
       end
-      it 'Re-render edit template' do
-        expect(response).to render_template :edit
+
+      it 'render update template' do
+        expect(response).to render_template :update
       end
     end
   end
