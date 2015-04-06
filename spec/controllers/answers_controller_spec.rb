@@ -130,8 +130,7 @@ let!(:answer)   { create :answer, question: question, user: user2 }
       end
     end
   end
-  #дописать
-  describe 'GET #show' #проверить вывод нескольких ответов по конкретному вопросу
-  describe 'GET #edit' #проверить форму редактирования
 
+  #дописать
+  describe 'GET #edit' #проверить форму редактирования
 end
