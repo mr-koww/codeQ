@@ -41,15 +41,15 @@ class QuestionsController < ApplicationController
 
   def destroy
     if current_user.id == @question.user_id
-      if @question.destroy
-        redirect_to questions_path, notice: 'Your question was successfully destroyed.'
-      end
+      @question.destroy
+      redirect_to questions_path, notice: 'Your question was successfully destroyed.'
+    else
+      redirect_to @question
     end
   end
 
 
   private
-
   def load_question
     @question = Question.find(params[:id])
   end
