@@ -1,14 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
-let(:user) { create :user }
-let(:question) { create :question, user: user }
-let(:answer)   { create :answer, question: question }
+
+# User who wrote Question (but not wrote Answer)
+let(:user1) { create :user }
+
+# User who wrote Answer
+let(:user2) { create :user }
+
+let!(:question) { create :question, user: user1 }
+let!(:answer)   { create :answer, question: question, user: user2 }
 
   describe 'GET #new' do
-    sign_in_user
-
-    before { get :new, question_id: question }
+    before do
+      sign_in_user(user2)
+      get :new, question_id: question
+    end
 
     it { expect(assigns(:answer)).to be_a_new(Answer) }
     it { expect(response).to render_template :new }
@@ -16,7 +23,9 @@ let(:answer)   { create :answer, question: question }
 
 
 	describe 'POST #create' do
-    sign_in_user
+    before do
+      sign_in_user(user2)
+    end
 
 		context 'with valid attributes' do
 			it 'saves answer to db' do
@@ -50,10 +59,11 @@ let(:answer)   { create :answer, question: question }
 
 
   describe 'PATCH #update' do
-    sign_in_user
+    before do
+      sign_in_user(user2)
+    end
 
     context 'with valid params' do
-
       it 'assigns the requested answer to @answer' do
         patch :update, id: answer, answer: attributes_for(:answer), question_id: question, format: :js
         expect(assigns(:answer)).to eq answer
@@ -85,8 +95,42 @@ let(:answer)   { create :answer, question: question }
    end
   end
 
+
+  describe 'DELETE #destroy' do
+    context 'user try delete his answer' do
+      before do
+        sign_in_user(user2)
+        answer
+      end
+
+      it 'delete the answer from the database' do
+        expect { delete :destroy, id: answer.id, question_id: question, format: :js }.to change(Answer, :count).by(-1)
+      end
+
+      it 'render destroy template' do
+        delete :destroy, id: answer.id, question_id: question, format: :js
+        expect(response).to render_template :destroy
+      end
+    end
+
+    context 'user try delete not his question' do
+      before do
+        sign_in_user(user1)
+        question
+        answer
+      end
+
+      it 'delete the question from the database' do
+        expect { delete :destroy, id: answer.id, question_id: question, format: :js }.to_not change(Answer, :count)
+      end
+
+      it 'redirect to questions' do
+        delete :destroy, id: answer.id, question_id: question, format: :js
+        expect(response).to redirect_to question_path(question)
+      end
+    end
+  end
   #дописать
-  describe 'DELETE #destroy' #проверить удаление ответа
   describe 'GET #show' #проверить вывод нескольких ответов по конкретному вопросу
   describe 'GET #edit' #проверить форму редактирования
 
