@@ -1,3 +1,14 @@
-= link_to question do
-  h4= question.title
+.question
+  p= link_to question do
+  p= question.title
   p= question.body
+
+  - if current_user && ( current_user.id == question.user_id )
+
+    p= link_to 'Delete question', question_path(question), method: :delete
+    p= link_to 'Edit', '', class: 'edit-question-link', data: { question_id: question.id }
+
+    p= form_for question, remote: true, html: { id: "edit-question-form", data: { question_id: question.id } } do |f|
+      p= f.label :body, 'Question'
+      p= f.text_area :body
+      p= f.submit 'Save'

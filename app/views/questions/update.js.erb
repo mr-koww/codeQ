@@ -1,0 +1,7 @@
+<% if @question.errors.present? %>
+    <% @question.errors.full_messages.each do |message| %>
+    $('.question_error').prepend('<%= j message %>');
+    <% end %>
+<% else %>
+    $('.question').replaceWith('<%= j render 'question', question: @question %>');
+<% end %>
