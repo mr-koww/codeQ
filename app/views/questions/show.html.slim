@@ -3,7 +3,7 @@ h3 Вопрос:
 p= @question.body
 
 .answers
-  = render 'questions/answers'
+  = render 'answers/answers'
 
 = render 'answers/new', question: @question, answer: @answer if user_signed_in?
 
