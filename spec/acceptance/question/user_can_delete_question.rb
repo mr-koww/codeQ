@@ -18,7 +18,7 @@ feature 'User can delete question', %q{
       expect(page).to have_link 'Delete question'
     end
 
-    scenario 'try to delete his question' do
+    scenario 'delete his question' do
       click_on 'Delete question'
 
       expect(current_path).to eq questions_path

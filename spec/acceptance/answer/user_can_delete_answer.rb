@@ -9,7 +9,7 @@ feature 'User can delete answer', %q{
   given(:question1) { create(:question, user: user1) }
   given!(:answer) { create(:answer, question: question1, user: user1) }
   given(:question2) { create(:question, user: user1) }
-  given!(:answers) { create_list(:answer, 5, question: question2) }
+  given!(:answers) { create_list(:answer, 5, question: question2, user: user2) }
 
   describe 'Auth user try delete his answer' do
     before do
