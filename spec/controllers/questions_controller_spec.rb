@@ -174,8 +174,6 @@ let(:question) { create :question, user: user1 }
         expect(response).to redirect_to question_path(question)
       end
     end
-
-
   end
 
 end
