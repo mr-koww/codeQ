@@ -9,7 +9,7 @@ let(:user1) { create :user }
 let(:user2) { create :user }
 
 let!(:question) { create :question, user: user1 }
-let!(:answer)   { create :answer, question: question, user: user2 }
+let!(:answer)   { create :answer, question: question, user: user2, best: false }
 
   describe 'GET #new' do
     before do
@@ -127,6 +127,34 @@ let!(:answer)   { create :answer, question: question, user: user2 }
       it 'redirect to questions' do
         delete :destroy, id: answer.id, question_id: question, format: :js
         expect(response).to redirect_to question_path(question)
+      end
+    end
+  end
+
+
+  describe 'PATCH #best' do
+    context 'user, owner question, try mark to the best answer' do
+      before do
+        sign_in_user(user1)
+        patch :best, id: answer, question_id: question, format: :js
+      end
+
+      it 'mark answer to the best' do
+        answer.reload
+        expect(answer.best).to eq true
+      end
+
+      it 'renders best template' do
+        expect(response).to render_template :best
+      end
+    end
+
+    context 'user, not owner question, try to mark the best answer' do
+      it 'not mark answer to the best' do
+        sign_in_user(user2)
+        patch :best, id: answer, question_id: question, format: :js
+        answer.reload
+        expect(answer.best).to eq false
       end
     end
   end

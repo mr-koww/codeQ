@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :set_question
-  before_action :load_answer, only: [ :edit, :update, :destroy ]
+  before_action :load_answer, only: [ :edit, :update, :destroy, :best ]
 
   def new
     @answer = Answer.new
@@ -26,6 +26,12 @@ class AnswersController < ApplicationController
       @answer.destroy
     else
       redirect_to question_path(@question)
+    end
+  end
+
+  def best
+    if current_user.id == @question.user_id
+      @answer.best!
     end
   end
 
