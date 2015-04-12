@@ -4,5 +4,5 @@
         $('.answer[data="' + <%= @answer.id %>+'"]').prepend('<%= j message %>');
     <% end %>
 <% else %>
-    $('.answer[data="' + <%= @answer.id %> + '"]').replaceWith('<%= j render 'answers/answer', answer: @answer, question: @question %>');
+    $('.answer[data="' + <%= @answer.id %> + '"]').replaceWith('<%= j render @answer %>');
 <% end %>
