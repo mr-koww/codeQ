@@ -22,7 +22,6 @@ feature 'User can mark best answer', %q{
 
   describe 'Author question can mark best only for one answer' do
     before do
-      answers << answer
       sign_in user1
       visit question_path(question)
     end
