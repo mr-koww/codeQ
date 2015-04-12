@@ -1,0 +1,5 @@
+- if ( @question.answers.count > 0 )
+  - @question.answers.each do |answer|
+    = render 'answers/answer', question: @question, answer: answer, reload: true
+- else
+  = 'No answers'

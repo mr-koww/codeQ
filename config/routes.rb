@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :questions do
-    resources :answers, except: [ :show ]
+    resources :answers, except: [ :show ] do
+      put :best, on: :member
+    end
   end
 
   root to: "questions#index"

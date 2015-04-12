@@ -2,18 +2,23 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
 
-let(:user) { create :user }
-let(:question) { create :question, user: user }
+# User who asked Question
+let(:user1) { create :user }
+
+# User who doesn't asked Question
+let(:user2) { create :user }
+
+let(:question) { create :question, user: user1 }
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 2, user: user) }
+    let(:questions) { create_list(:question, 2, user: user1) }
     before { get :index }
 
-    it 'Population an array of all Question' do
+    it 'population an array of all Question' do
       expect(assigns(:questions)).to match_array(questions)
     end
 
-    it 'Renders index view' do
+    it 'renders index view' do
       expect(response).to render_template :index
     end
   end
@@ -22,59 +27,61 @@ let(:question) { create :question, user: user }
   describe 'GET #show' do
     before { get :show, id: question }
 
-    it 'Assigns requested question to @question' do
+    it 'assigns requested question to @question' do
       expect(assigns(:question)).to eq question
     end
 
-    it 'Renders show view' do
+    it 'renders show view' do
       expect(response).to render_template :show
     end
 
-    it 'Assigns new answer for question' do
+    it 'assigns new answer for question' do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
   end
 
 
   describe 'GET #new' do
-    sign_in_user
+    before do
+      sign_in_user(user1)
+      get :new
+    end
 
-    before { get :new }
-
-    it 'Assigns a new Question to @question' do
+    it 'assigns a new Question to @question' do
       expect(assigns(:question)).to be_a_new(Question)
     end
 
-    it 'Renders new view' do
+    it 'renders new template' do
       expect(response).to render_template :new
     end
   end
 
 
   describe 'GET #edit' do
-    sign_in_user
+    before do
+      sign_in_user(user1)
+      get :edit, id: question
+    end
 
-    before { get :edit, id: question }
-
-    it 'Assigns requested question to @questions' do
+    it 'assigns requested question to @questions' do
       expect(assigns(:question)).to eq question
     end
 
-    it 'Renders edit view' do
+    it 'renders edit template' do
       expect(response).to render_template :edit
     end
   end
 
 
   describe 'POST #create' do
-    sign_in_user
+    before { sign_in_user(user1) }
 
     context 'with valid attributes' do
-      it 'Saves the new question in the database' do
+      it 'aaves the new question in the database' do
         expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
       end
 
-      it 'Redirects to show view' do
+      it 'redirects to show view' do
         post :create, question: attributes_for(:question)
         expect(response).to redirect_to question_path(assigns(:question))
       end
@@ -87,11 +94,11 @@ let(:question) { create :question, user: user }
     end
 
     context 'with invalid attributes' do
-      it 'Does not save question' do
+      it 'does not save question' do
         expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
       end
 
-      it 'Re-render new view' do
+      it 'render new view' do
         post :create, question: attributes_for(:invalid_question)
         expect(response).to render_template :new
       end
@@ -100,42 +107,73 @@ let(:question) { create :question, user: user }
 
 
   describe 'PATCH #update' do
-    sign_in_user
+    before { sign_in_user(user1) }
 
     context 'with valid attributes' do
       it 'Assigns requested question to @question' do
-        patch :update, id: question, question: attributes_for(:question)
+        patch :update, id: question, question: attributes_for(:question), format: :js
         expect(assigns(:question)).to eq question
       end
       it 'Changes question attributes' do
-        patch :update, id: question, question: { title: 'new default title', body: 'new default body' }
+        patch :update, id: question, question: { title: 'new default title', body: 'new default body' }, format: :js
         question.reload
         expect(question.title).to eq 'new default title'
         expect(question.body).to eq 'new default body'
       end
-      it 'Redirect to the updates question' do
-        patch :update, id: question, question: attributes_for(:question)
-        expect(response).to redirect_to question
+      it 'render update template' do
+        patch :update, id: question, question: attributes_for(:question), format: :js
+        expect(response).to render_template :update
       end
-
     end
 
     context 'with invalid attributes' do
-      before { patch :update, id: question, question: { title: 'new title', body: nil } }
+      before { patch :update, id: question, question: { title: 'new title', body: nil }, format: :js }
 
       it 'Does not change question attributes' do
         question.reload
         expect(question.title).to eq question.title
         expect(question.body).to eq question.body
       end
-      it 'Re-render edit template' do
-        expect(response).to render_template :edit
+
+      it 'render update template' do
+        expect(response).to render_template :update
       end
     end
   end
 
 
-  #дописать
-  describe 'DELETE #destroy'
+  describe 'DELETE #destroy' do
+    context 'user try delete his question' do
+      before do
+        sign_in_user(user1)
+        question
+      end
+
+      it 'delete the question from the database' do
+        expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+      end
+
+      it 'redirect to questions' do
+        delete :destroy, id: question
+        expect(response).to redirect_to questions_path
+      end
+    end
+
+    context 'user try delete not his question' do
+      before do
+        sign_in_user(user2)
+        question
+      end
+
+      it 'delete the question from the database' do
+        expect { delete :destroy, id: question }.to_not change(Question, :count)
+      end
+
+      it 'redirect to questions' do
+        delete :destroy, id: question
+        expect(response).to redirect_to question_path(question)
+      end
+    end
+  end
 
 end

@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :set_question
-  before_action :load_answer, only: [ :edit, :update, :destroy ]
+  before_action :load_answer, only: [ :edit, :update, :destroy, :best ]
 
   def new
     @answer = Answer.new
@@ -16,19 +16,22 @@ class AnswersController < ApplicationController
 
 
   def update
-    if @answer.update(answer_params)
-      redirect_to @question
-    else
-      render :edit
-    end
+    @answer = Answer.find(params[:id])
+    @answer.update(answer_params)
   end
 
 
   def destroy
     if current_user.id == @answer.user_id
-      if @answer.destroy
-        redirect_to question_path(@question), notice: 'Your answer was successfully destroyed.'
-      end
+      @answer.destroy
+    else
+      redirect_to question_path(@question)
+    end
+  end
+
+  def best
+    if current_user.id == @question.user_id
+      @answer.best!
     end
   end
 

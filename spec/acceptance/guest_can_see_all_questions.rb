@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature "Guest can see all questions", type: :feature do
   given!(:questions) { create_list(:question, 5) }
