@@ -15,15 +15,8 @@ RSpec.describe Answer, type: :model do
   describe 'Best answer' do
     before { answer.best! }
 
-    it 'answer was mark the best' do
-      expect(answer.best).to be_truthy
-    end
-
-    it 'others answers wasn\'t mark the best' do
-      answers.each do |answer|
-        answer.reload
-        expect(answer.best).to be_falsey
-      end
+    it 'only one answer has mark the best' do
+      expect(question.answers.where(best: true).count).to eq 1
     end
 
     it 'best anwer must be show first in list' do
