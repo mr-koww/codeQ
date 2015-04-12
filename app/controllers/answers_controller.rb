@@ -16,7 +16,6 @@ class AnswersController < ApplicationController
 
 
   def update
-    @answer = Answer.find(params[:id])
     @answer.update(answer_params)
   end
 
@@ -43,7 +42,7 @@ class AnswersController < ApplicationController
   end
 
   def load_answer
-    @answer = @question.answers.find(params[:id])
+    @answer = Answer.find(params[:id])
   end
 
   def answer_params
