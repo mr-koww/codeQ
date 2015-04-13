@@ -4,12 +4,12 @@ div id="answer-#{ answer.id }" class="answer"
   - if user_signed_in? && (current_user.id == answer.user_id)
     p= link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
 
-    p= form_for [question, answer], remote: true, html: { id: "edit-answer-form", data: { answer_id: answer.id } } do |f|
+    p= form_for [@question, answer], remote: true, html: { id: "edit-answer-form", data: { answer_id: answer.id } } do |f|
        = f.label :body, 'Answer'
        = f.text_area :body
        = f.submit 'Save'
 
-    p= link_to 'Delete answer', question_answer_path(question, answer), method: :delete, remote: true
+    p= link_to 'Delete answer', question_answer_path(@question, answer), method: :delete, remote: true
 
-    - if user_signed_in? && (!answer.best) && (current_user.id == @question.user_id) && (answer.user_id =! question.user_id)
+    - if user_signed_in? && (!answer.best) && (current_user.id == @question.user_id) && (answer.user_id =! @question.user_id)
       p= link_to 'Best', best_question_answer_path(@question, answer), method: :put, remote: true
