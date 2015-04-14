@@ -3,4 +3,11 @@
   p= f.text_field :title
   p= f.label :body
   p= f.text_area :body
+  p Attachments:
+  p
+    = f.fields_for :attachments do |a|
+      = a.label :file
+      = a.file_field :file
+
+
   p= f.submit 'Create'
