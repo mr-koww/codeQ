@@ -1,0 +1,6 @@
+ru:
+  questions:
+    new:
+      gist: "Вопрос"
+      describe: "Описание вопроса"
+      create: "Опубликовать"
