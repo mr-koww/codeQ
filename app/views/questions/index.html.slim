@@ -1,4 +1,4 @@
 h1 Questions page
 .questions
-  = render @questions
+  = render @questions, show_attachments: false
 p= link_to 'Ask question', new_question_path
