@@ -3,5 +3,5 @@
     $('.question_error').prepend('<%= j message %>');
     <% end %>
 <% else %>
-    $('.question[data="' + <%= @question.id %> + '"]').replaceWith('<%= j render @question %>');
+    $('.question[data="' + <%= @question.id %> + '"]').replaceWith('<%= j render @question, show_attachments: true %>');
 <% end %>

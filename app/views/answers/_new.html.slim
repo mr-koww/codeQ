@@ -1,5 +1,13 @@
-= form_for [@question, @answer], remote: true do |f|
+= nested_form_for [question, answer], remote: true do |f|
     .answer-errors
-    p= f.label :body, 'Your answer'
+    p= f.label t '.your_answer'
     p= f.text_area :body, rows: 7
-    p= f.submit 'Add answer'
+    p= f.link_to_add "Add a attachment", :attachments
+
+    p= f.fields_for :attachments do |attachment_form|
+        p= attachment_form.label :file
+        p= attachment_form.file_field :file
+        p= attachment_form.link_to_remove "Remove this task"
+
+
+    p= f.submit t '.create'

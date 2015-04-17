@@ -1,7 +1,8 @@
 = render @question, show_attachments: true
 |------------------------
 .answers
-  = render 'answers/answers'
+  - if @answers.present?
+    = render @question.answers
 |------------------------
 - if user_signed_in?
   = render 'answers/new', question: @question, answer: @answer
