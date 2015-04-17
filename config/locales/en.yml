@@ -20,4 +20,12 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  questions:
+    new:
+      gist: "Question"
+      describe: "Describe"
+      create: "Publish"
+  answers:
+      new:
+        your_answer: "Your answer"
+        create: "Add answer"

@@ -4,3 +4,7 @@ ru:
       gist: "Вопрос"
       describe: "Описание вопроса"
       create: "Опубликовать"
+  answers:
+    new:
+      your_answer: "Ваш ответ"
+      create: "Ответить"
