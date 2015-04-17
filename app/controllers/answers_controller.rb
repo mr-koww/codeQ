@@ -3,10 +3,6 @@ class AnswersController < ApplicationController
   before_action :set_question
   before_action :load_answer, only: [ :edit, :update, :destroy, :best ]
 
-  def new
-    @answer = Answer.new
-  end
-
 
   def create
     @answer = @question.answers.new(answer_params)
@@ -46,6 +42,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, :question_id)
+    params.require(:answer).permit(:body, :question_id, attachments_attributes: [:file])
   end
 end
