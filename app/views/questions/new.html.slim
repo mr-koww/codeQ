@@ -4,10 +4,11 @@
   p= f.label t '.describe'
   p= f.text_area :body
   p Attachments:
+  p= f.link_to_add "Add a attachment", :attachments
+
   p= f.fields_for :attachments do |attachment_form|
       p= attachment_form.label :file
       p= attachment_form.file_field :file
       p= attachment_form.link_to_remove "Remove this task"
-  p= f.link_to_add "Add a attachment", :attachments
 
   p= f.submit t '.create'
