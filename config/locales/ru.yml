@@ -1,16 +1,20 @@
 ru:
-  questions:
-    new:
-      title: "Вопрос"
-      describe: "Описание вопроса"
-      create: "Опубликовать"
-    question:
-      title: "Вопрос"
-      describe: "Описание вопроса"
-      edit: "Редактировать"
-      save: "Сохранить"
-      delete: "Удалить"
-      attachments: "Приложения:"
+  question:
+    title: "Вопрос"
+    describe: "Описание вопроса"
+    create: "Опубликовать вопрос"
+    edit: "Редактировать вопрос"
+    save: "Сохранить вопрос"
+    delete: "Удалить вопрос"
+    deleteConfirm: "Удалить вопрос?"
+    attachments:
+      title: "Приложения:"
+      add: "Прикрепить файл"
+      delete: "Удалить файл"
+      deleteConfirm: "Удалить файл?"
+      fileTitle: "Файл:"
+      cancel: "Отменить"
+
   answers:
     new:
       your_answer: "Ваш ответ"
