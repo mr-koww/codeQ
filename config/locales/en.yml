@@ -22,10 +22,17 @@
 en:
   questions:
     new:
-      gist: "Question"
+      title: "Question"
       describe: "Describe"
       create: "Publish"
+    question:
+      title: "Question"
+      describe: "Describe"
+      edit: "Edit"
+      save: "Save"
+      delete: "Delete"
+      attachments: "Attachments:"
   answers:
-      new:
-        your_answer: "Your answer"
-        create: "Add answer"
+    new:
+      your_answer: "Your answer"
+      create: "Add answer"

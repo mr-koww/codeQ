@@ -1,9 +1,16 @@
 ru:
   questions:
     new:
-      gist: "Вопрос"
+      title: "Вопрос"
       describe: "Описание вопроса"
       create: "Опубликовать"
+    question:
+      title: "Вопрос"
+      describe: "Описание вопроса"
+      edit: "Редактировать"
+      save: "Сохранить"
+      delete: "Удалить"
+      attachments: "Приложения:"
   answers:
     new:
       your_answer: "Ваш ответ"
