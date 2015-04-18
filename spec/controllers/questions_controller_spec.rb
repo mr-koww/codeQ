@@ -85,7 +85,7 @@ let(:question) { create :question, user: user1 }
     before { sign_in_user(user1) }
 
     context 'with valid attributes' do
-      it 'aaves the new question in the database' do
+      it 'saves the new question in the database' do
         expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
       end
 
