@@ -1,6 +1,5 @@
 FactoryGirl.define do
   factory :attachment do
-    file "MyString"
+    file { File.new( "#{Rails.root}/public/404.html" ) }
   end
-
 end
