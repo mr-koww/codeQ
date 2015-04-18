@@ -11,17 +11,6 @@ let(:user2) { create :user }
 let!(:question) { create :question, user: user1 }
 let!(:answer)   { create :answer, question: question, user: user2, best: false }
 
-  describe 'GET #new' do
-    before do
-      sign_in_user(user2)
-      get :new, question_id: question
-    end
-
-    it { expect(assigns(:answer)).to be_a_new(Answer) }
-    it { expect(response).to render_template :new }
-  end
-
-
 	describe 'POST #create' do
     before do
       sign_in_user(user2)
