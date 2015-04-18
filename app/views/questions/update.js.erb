@@ -1,4 +1,4 @@
-<% if @question.errors.present? %>
+<% if @question.errors.any? %>
     <% @question.errors.full_messages.each do |message| %>
     $('.question_error').prepend('<%= j message %>');
     <% end %>
