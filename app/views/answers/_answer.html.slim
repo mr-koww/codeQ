@@ -7,7 +7,7 @@ div id="answer-#{ answer.id }" class="answer"
       - answer.attachments.each do |a|
         li= link_to a.file.filename, a.file.url
 
-  - if user_signed_in? && (current_user.id == answer.user_id)
+  - if user_signed_in? && current_user.id == answer.user_id
     p= link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
 
     p= form_for [@question, answer], remote: true, html: { id: "edit-answer-form", data: { answer_id: answer.id } } do |f|
