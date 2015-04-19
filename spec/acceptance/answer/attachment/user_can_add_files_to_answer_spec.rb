@@ -12,7 +12,6 @@ feature 'User can add files to answer', %q{
 
   given(:file1) { "#{Rails.root}/public/404.html" }
   given(:file2) { "#{Rails.root}/public/422.html" }
-  #given!(:file_question) { create(:attachment, attachable: question) }
 
   background do
     sign_in(user_answer)

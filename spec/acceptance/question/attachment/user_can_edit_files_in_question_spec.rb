@@ -12,26 +12,33 @@ feature 'User can change/remove file in question', %q{
 
   given(:file1) { "#{Rails.root}/public/422.html" }
 
-  background do
-    sign_in(user)
-    visit question_path(question)
-  end
+  describe 'User which edits own question' do
+    background do
+      sign_in(user)
+      visit question_path(question)
+    end
 
-  scenario 'User try delete file from own question', js: true do
-  click_on I18n.t('question.attachments.delete')
+    scenario 'try delete file', js: true do
+      click_on I18n.t('question.edit')
+      click_on I18n.t('attachment.delete')
+      click_on I18n.t('question.save')
 
-  expect(page).to_not have_link file_question.file.filename, href: file_question.file.url
-  end
+      expect(page).to_not have_link file_question.file.filename, href: file_question.file.url
+    end
 
-  scenario 'User try change file when edit own question', js: true do
-    click_on I18n.t('question.attachments.delete')
-    click_on I18n.t('question.edit')
+    scenario 'try change file', js: true do
+      within '.question' do
+        click_on I18n.t('question.edit')
+        click_on I18n.t('attachment.delete')
 
-    field = page.all('input[type="file"]').first
-    field.set file1
+        click_on I18n.t('attachment.add')
+        field = page.all('input[type="file"]').first
+        field.set file1
 
-    click_on I18n.t('question.save')
+        click_on I18n.t('question.save')
 
-    expect(page).to have_link '422.html', href: '/uploads/attachment/file/2/422.html'
+        expect(page).to have_link '422.html', href: '/uploads/attachment/file/2/422.html'
+      end
+    end
   end
 end
