@@ -7,15 +7,18 @@ en:
     save: "Save question"
     delete: "Delete question"
     deleteConfirm: "Delete question?"
-    attachments:
-      title: "Attachments:"
-      add: "Add attachment"
-      delete: "Delete"
-      deleteConfirm: "Delete file?"
-      fileTitle: "File:"
-      cancel: "Cancel"
+  answer:
+    yourAnswer: "Your answer"
+    create: "Add answer"
+    edit: "Edit answer"
+    save: "Save answer"
+    delete: "Delete answer"
+    deleteConfirm: "Delete answer?"
+  attachment:
+    title: "Attachments:"
+    add: "Add file"
+    delete: "Delete"
+    deleteConfirm: "Delete file?"
+    labelFile: "File:"
+    cancel: "Cancel"
 
-  answers:
-    new:
-      your_answer: "Your answer"
-      create: "Add answer"
