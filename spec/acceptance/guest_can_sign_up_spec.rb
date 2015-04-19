@@ -6,7 +6,6 @@ feature 'Guest can sign up', type: :feature do
 
   scenario 'with valid registered data' do
     visit root_path
-    save_and_open_page
     click_on 'Sign up'
 
     fill_in 'Email', with: new_user.email
@@ -28,7 +27,7 @@ feature 'Guest can sign up', type: :feature do
 
   scenario 'with existing user' do
     visit root_path
-    save_and_open_page
+
     click_on 'Sign up'
 
     fill_in 'Email', with: user.email
