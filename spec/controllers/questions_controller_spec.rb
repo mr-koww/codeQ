@@ -10,6 +10,8 @@ let(:user2) { create :user }
 
 let(:question) { create :question, user: user1 }
 
+let(:file) { create(:attachment) }
+
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2, user: user1) }
     before { get :index }
@@ -79,6 +81,10 @@ let(:question) { create :question, user: user1 }
     context 'with valid attributes' do
       it 'saves the new question in the database' do
         expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
+      end
+
+      it 'saves the attachment in the database' do
+        expect { post :create, question: attributes_for(:question), attachment: file }.to change(Attachment, :count).by(1)
       end
 
       it 'redirects to show view' do

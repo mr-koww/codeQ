@@ -10,6 +10,7 @@ let(:user2) { create :user }
 
 let!(:question) { create :question, user: user1 }
 let!(:answer)   { create :answer, question: question, user: user2, best: false }
+let(:file) { create(:attachment) }
 
 	describe 'POST #create' do
     before do
@@ -20,6 +21,16 @@ let!(:answer)   { create :answer, question: question, user: user2, best: false }
 			it 'saves answer to db' do
 		  	expect { post :create, answer: attributes_for(:answer), question_id: question, format: :js }.
             to change(question.answers, :count).by(1)
+      end
+
+      it 'saves the attachment in the database' do
+        expect { post :create, answer: attributes_for(:answer), question_id: question, attachment: file, format: :js }.
+            to change(Attachment, :count).by(1)
+      end
+
+      it 'saves the attachment in the database' do
+        expect { post :create, answer: attributes_for(:answer), question_id: question, attachment: file, format: :js }.
+            to change(answer.attachments, :count).by(1)
       end
 
       it 'should have a user' do
