@@ -26,6 +26,7 @@ feature 'User can add file/files to question', %q{
         file_field.set file1
 
         click_on I18n.t('question.create')
+        sleep(1)
       }.to change(Attachment, :count).by(1)
 
       expect(page).to have_link '404.html', href: '/uploads/attachment/file/1/404.html'
@@ -45,6 +46,7 @@ feature 'User can add file/files to question', %q{
         file_field2.set file2
 
         click_on I18n.t('question.create')
+        sleep(1)
       }.to change(Attachment, :count).by(2)
 
       expect(page).to have_link '404.html', href: '/uploads/attachment/file/1/404.html'
@@ -52,15 +54,15 @@ feature 'User can add file/files to question', %q{
     end
 
     scenario 'try ask question with empty attachment', js: true do
-      #expect{
+      expect{
         fill_in 'question[title]', with: 'My question'
         fill_in 'question[body]', with: 'My body text'
 
         click_on I18n.t('attachment.add')
 
         click_on I18n.t('question.create')
-      #}.to change(Question, :count).by(1)
-      # Эта конструкция проходит на selenium, но НЕ проходит на webkit !!!
+        sleep(1)
+      }.to change(Question, :count).by(1)
 
       expect(page).to have_content 'My question'
       expect(page).to have_content 'My body text'
