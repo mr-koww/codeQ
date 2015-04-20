@@ -5,15 +5,14 @@
   / detail view for question
   - if detail
 
-    / attachments
+    / attachment files
     - if question.attachments.present?
-      p= t('question.attachments.title')
+      p= t('attachment.title')
       ul
         - question.attachments.each do |attachment|
           div id="attachment-#{ attachment.id }"
             li
               p= link_to attachment.file.filename, attachment.file.url
-              p= link_to t('question.attachments.delete'), attachment, remote: true, method: :delete
 
     / link to delete & edit question
     - if current_user && current_user.id == question.user_id
@@ -21,14 +20,22 @@
       p= link_to t('question.edit'), '', class: 'edit-question-link', data: { question_id: question.id }
 
     / hidden form for edit question
+    .question-errors
     p= nested_form_for question, remote: true, html: { id: "edit-question-form", data: { question_id: question.id } } do |f|
       p= f.label t('question.title')
       p= f.text_area :title
       p= f.label t('question.describe')
       p= f.text_area :body
-      p= f.link_to_add t('question.attachment.add'), :attachments
-      p= f.fields_for :attachments do |attachment_form|
-        p= attachment_form.label t('question.attachments.fileTitle')
-        p= attachment_form.file_field :file
-        p= attachment_form.link_to_remove t('question.attachment.cancel')
+      p= f.link_to_add t('attachment.add'), :attachments
+
+      / form for attachment files
+      p= f.fields_for :attachments do |attach_form|
+        - if attach_form.object.new_record?
+          p= attach_form.label t('attachment.labelFile')
+          p= attach_form.file_field :file
+          p= attach_form.link_to_remove t('attachment.cancel')
+        - else
+          p= attach_form.object.file.identifier
+          p= attach_form.link_to_remove t('attachment.delete')
+
       p= f.submit t('question.save')

@@ -69,7 +69,7 @@ let(:file) { create(:attachment) }
       expect(assigns(:question)).to eq question
     end
 
-    it 'renders edit template' do
+    it 'redirects to edit view' do
       expect(response).to render_template :edit
     end
   end
