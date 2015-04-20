@@ -3,7 +3,7 @@ div class="answer" id="answer-#{ answer.id }" data= answer.id
 
   / attachments
   - if answer.attachments.any?
-    p= t('attachment.title')
+    p= t('attachment.label.title')
     ul
       - answer.attachments.each do |attachment|
         div id="attachment-#{ attachment.id }"
@@ -12,26 +12,26 @@ div class="answer" id="answer-#{ answer.id }" data= answer.id
 
   / link to edit & delete question
   - if user_signed_in? && current_user.id == answer.user_id
-    p= link_to t('answer.edit'), '', class: 'edit-answer-link', data: { answer_id: answer.id }
-    p= link_to t('answer.delete'), question_answer_path(@question, answer), method: :delete, remote: true, data: { :confirm => I18n.t('question.deleteConfirm') }
+    p= link_to t('answer.button.edit'), '', class: 'edit-answer-link', data: { answer_id: answer.id }
+    p= link_to t('answer.button.delete'), question_answer_path(@question, answer), method: :delete, remote: true, data: { :confirm => I18n.t('answer.confirm.delete') }
 
     / hidden form for edit answer
     p= nested_form_for [@question, answer], remote: true, html: { id: "edit-answer-form", data: { answer_id: answer.id } } do |f|
-      p= f.label :body, t('answer.yourAnswer')
+      p= f.label :body, t('answer.label.title')
       p= f.text_area :body
       p= f.link_to_add t('attachment.add'), :attachments
 
       / attachments
       p= f.fields_for :attachments do |attach_form|
         - if attach_form.object.new_record?
-          p= attach_form.label t('attachment.labelFile')
+          p= attach_form.label t('attachment.label.file')
           p= attach_form.file_field :file
-          p= attach_form.link_to_remove t('attachment.cancel')
+          p= attach_form.link_to_remove t('attachment.button.cancel')
         - else
           p= attach_form.object.file.identifier
-          p= attach_form.link_to_remove t('attachment.delete')
+          p= attach_form.link_to_remove t('attachment.button.delete')
 
-      p= f.submit t('answer.save')
+      p= f.submit t('answer.button.save')
 
     - if user_signed_in? && !answer.best && current_user.id == @question.user_id && answer.user_id =! @question.user_id
       p= link_to 'Best', best_question_answer_path(@question, answer), method: :put, remote: true
