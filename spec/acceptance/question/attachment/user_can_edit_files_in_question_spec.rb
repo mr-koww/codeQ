@@ -17,28 +17,26 @@ feature 'User can change/remove file in question', %q{
     background do
       sign_in(user)
       visit question_path(question)
-      click_on I18n.t('question.edit')
+      click_on I18n.t('question.button.edit')
     end
 
     scenario 'try delete file', js: true do
-      click_on I18n.t('attachment.delete')
-      click_on I18n.t('question.save')
+      click_on I18n.t('attachment.button.delete')
+      click_on I18n.t('question.button.save')
 
-      sleep(1)
       expect(page).to_not have_link file_question.file.filename, href: file_question.file.url
     end
 
     scenario 'try change file', js: true do
       within '.question' do
-        click_on I18n.t('attachment.delete')
-        click_on I18n.t('attachment.add')
+        click_on I18n.t('attachment.button.delete')
+        click_on I18n.t('attachment.button.add')
 
         field = page.all('input[type="file"]').first
         field.set file1
 
-        click_on I18n.t('question.save')
+        click_on I18n.t('question.button.save')
 
-        sleep(1)
         expect(page).to have_link '422.html', href: '/uploads/attachment/file/2/422.html'
       end
     end

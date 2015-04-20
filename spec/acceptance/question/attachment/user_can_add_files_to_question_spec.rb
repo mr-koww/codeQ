@@ -17,52 +17,43 @@ feature 'User can add file/files to question', %q{
     end
 
     scenario 'try add one file when ask question', js: true do
-      expect {
-        fill_in 'question[title]', with: 'My question'
-        fill_in 'question[body]', with: 'My body text'
+      fill_in 'question[title]', with: 'My question'
+      fill_in 'question[body]', with: 'My body text'
 
-        click_on I18n.t('attachment.add')
-        file_field = page.find('input[type="file"]')
-        file_field.set file1
+      click_on I18n.t('attachment.button.add')
+      file_field = page.find('input[type="file"]')
+      file_field.set file1
 
-        click_on I18n.t('question.create')
-        sleep(1)
-      }.to change(Attachment, :count).by(1)
+      click_on I18n.t('question.button.create')
 
       expect(page).to have_link '404.html', href: '/uploads/attachment/file/1/404.html'
     end
 
     scenario 'try add a few files when ask question', js: true do
-      expect {
-        fill_in 'question[title]', with: 'My question'
-        fill_in 'question[body]', with: 'My body text'
+      fill_in 'question[title]', with: 'My question'
+      fill_in 'question[body]', with: 'My body text'
 
-        click_on I18n.t('attachment.add')
-        file_field1 = page.find('input[type="file"]')
-        file_field1.set file1
+      click_on I18n.t('attachment.button.add')
+      file_field1 = page.find('input[type="file"]')
+      file_field1.set file1
 
-        click_on I18n.t('attachment.add')
-        file_field2 = page.all('input[type="file"]').last
-        file_field2.set file2
+      click_on I18n.t('attachment.button.add')
+      file_field2 = page.all('input[type="file"]').last
+      file_field2.set file2
 
-        click_on I18n.t('question.create')
-        sleep(1)
-      }.to change(Attachment, :count).by(2)
+      click_on I18n.t('question.button.create')
 
       expect(page).to have_link '404.html', href: '/uploads/attachment/file/1/404.html'
       expect(page).to have_link '422.html', href: '/uploads/attachment/file/2/422.html'
     end
 
     scenario 'try ask question with empty attachment', js: true do
-      expect{
-        fill_in 'question[title]', with: 'My question'
-        fill_in 'question[body]', with: 'My body text'
+      fill_in 'question[title]', with: 'My question'
+      fill_in 'question[body]', with: 'My body text'
 
-        click_on I18n.t('attachment.add')
+      click_on I18n.t('attachment.button.add')
 
-        click_on I18n.t('question.create')
-        sleep(1)
-      }.to change(Question, :count).by(1)
+      click_on I18n.t('question.button.create')
 
       expect(page).to have_content 'My question'
       expect(page).to have_content 'My body text'
