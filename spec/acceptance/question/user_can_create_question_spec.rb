@@ -1,42 +1,43 @@
 require_relative '../acceptance_helper'
 
-feature 'User can create question', type: :feature do
+feature 'User can create question!', type: :feature do
   given(:user) { create(:user) }
 
-  scenario 'Auth user create question with valid data' do
-    sign_in(user)
-    visit new_question_path
+  describe 'Auth user try' do
+    background do
+      sign_in(user)
+      visit new_question_path
+    end
 
-    fill_in 'Title', with: 'Question title with valid data'
-    fill_in 'Body', with: 'Question body with valid data'
+    scenario 'create question with valid data', js: true do
+      expect{
+        fill_in 'question[title]', with: 'My question'
+        fill_in 'question[body]', with: 'My body text'
 
-    click_on 'Create'
+        click_on I18n.t('question.create.button')
+        sleep(1)
+      }.to change(Question, :count).by(1)
 
-    expect(page).to have_content 'Your question successfully created.'
-    expect(page).to have_content 'Question title with valid data'
-    expect(page).to have_content 'Question body with valid data'
-    expect(current_path).to eq question_path(user.questions.last)
+      expect(page).to have_content I18n.t('question.create.successNotice')
+      expect(page).to have_content 'My question'
+      expect(page).to have_content 'My body text'
+      expect(current_path).to eq question_path(user.questions.last)
+    end
+
+    scenario 'create question with invalid data', js: true do
+      click_on I18n.t('question.create.button')
+
+      expect(page).to have_content I18n.t('question.create.failNotice')
+      #когда метод render, то пишет что путь /questions
+      #expect(current_path).to eq new_question_path
+    end
   end
 
-  scenario 'Auth user try create question with invalid data' do
-    sign_in(user)
-    visit new_question_path
+  describe 'Not auth user try' do
+    scenario 'create question' do
+      visit questions_path
 
-    click_on 'Create'
-
-    expect(page).to have_content 'Please, check question data'
-    #когда метод render, то пишет что путь /questions
-    #expect(current_path).to eq new_question_path
+      expect(page).to_not have_content I18n.t('question.new')
+    end
   end
-
-  scenario 'Not auth user cannot create question' do
-    visit questions_path
-
-    click_on 'Ask question'
-
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
-    expect(page).to have_content 'Email'
-    expect(page).to have_content 'Password'
-  end
-
 end
