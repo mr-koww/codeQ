@@ -23,12 +23,26 @@ en:
       delete: "Delete question?"
 
   answer:
-    yourAnswer: "Your answer"
-    create: "Add answer"
-    edit: "Edit answer"
-    save: "Save answer"
-    delete: "Delete answer"
-    deleteConfirm: "Delete answer?"
+    label:
+      title: "Your answer"
+    button:
+      create: "Add answer"
+      edit: "Edit answer"
+      save: "Save answer"
+      delete: "Delete answer"
+    notice:
+      create:
+        success: "Your answer succesfully published!"
+        fail: "Your answer is not published! Please, check question data!"
+      update:
+        success: "Your answer was successfully updated!"
+        fail: ""
+      delete:
+        success: "Your answer was successfully destroyed!"
+        fail: ""
+    confirm:
+      delete: "Delete answer?"
+
   attachment:
     label:
       title: "Attachments:"

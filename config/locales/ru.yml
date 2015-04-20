@@ -23,12 +23,26 @@ ru:
       delete: "Удалить вопрос?"
 
   answer:
-    yourAnswer: "Ваш ответ"
-    create: "Ответить"
-    edit: "Редактировать ответ"
-    save: "Сохранить ответ"
-    delete: "Удалить ответ"
-    deleteConfirm: "Удалить ответ?"
+    label:
+      title: "Ваш ответ"
+    button:
+      create: "Ответить"
+      edit: "Редактировать ответ"
+      save: "Сохранить ответ"
+      delete: "Удалить ответ"
+    notice:
+      create:
+        success: "Ваш ответ опубликован!"
+        fail: "Ваш ответ не опубликован! Проверьте введенные данные!"
+      update:
+        success: "Ответ успешно обновлен!"
+        fail: ""
+      delete:
+        success: "Ответ успешно удален!"
+        fail: ""
+    confirm:
+      delete: "Удалить ответ?"
+
   attachment:
     label:
       title: "Приложения:"
