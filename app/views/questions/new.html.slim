@@ -1,14 +1,14 @@
 = nested_form_for @question do |f|
-  p= f.label t('question.title')
+  p= f.label t('question.label.title')
   p= f.text_field :title
-  p= f.label t('question.describe')
+  p= f.label t('question.label.describe')
   p= f.text_area :body
-  p= t('attachment.title')
-  p= f.link_to_add t('attachment.add'), :attachments
+  p= t('attachment.label.title')
+  p= f.link_to_add t('attachment.button.add'), :attachments
 
   p= f.fields_for :attachments do |attachment_form|
-    p= attachment_form.label t('attachment.labelFile')
+    p= attachment_form.label t('attachment.label.file')
     p= attachment_form.file_field :file
-    p= attachment_form.link_to_remove t('attachment.cancel')
+    p= attachment_form.link_to_remove t('attachment.button.cancel')
 
-  p= f.submit t('question.create.button')
+  p= f.submit t('question.button.create')

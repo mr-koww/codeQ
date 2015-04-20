@@ -22,9 +22,9 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
     @question.user = current_user
     if @question.save
-      redirect_to @question, notice: t('question.create.successNotice')
+      redirect_to @question, notice: t('question.notice.create.success')
     else
-      flash[:notice] = t('question.create.failNotice')
+      flash[:notice] = t('question.notice.create.fail')
       render :new
     end
   end
@@ -38,7 +38,7 @@ class QuestionsController < ApplicationController
   def destroy
     if current_user.id == @question.user_id
       @question.destroy!
-      redirect_to questions_path, notice: 'Your question was successfully destroyed.'
+      redirect_to questions_path, notice: t('question.notice.delete.success')
     else
       redirect_to @question
     end
