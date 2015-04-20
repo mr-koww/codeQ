@@ -2,7 +2,11 @@ en:
   question:
     title: "Question title"
     describe: "Describe question"
-    create: "Publish question"
+    new: "Ask question"
+    create:
+      button: "Publish question"
+      successNotice: "Your question succesfully published!"
+      failNotice: "Your question is not published! Please, check question data!"
     edit: "Edit question"
     save: "Save question"
     delete: "Delete question"
