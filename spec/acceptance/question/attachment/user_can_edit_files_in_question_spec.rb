@@ -7,6 +7,7 @@ feature 'User can change/remove file in question', %q{
 } do
 
   given(:user) { create(:user) }
+
   given(:question) { create(:question, user: user) }
   given!(:file_question) { create(:attachment, attachable: question) }
 
@@ -16,27 +17,28 @@ feature 'User can change/remove file in question', %q{
     background do
       sign_in(user)
       visit question_path(question)
+      click_on I18n.t('question.edit')
     end
 
     scenario 'try delete file', js: true do
-      click_on I18n.t('question.edit')
       click_on I18n.t('attachment.delete')
       click_on I18n.t('question.save')
 
+      sleep(1)
       expect(page).to_not have_link file_question.file.filename, href: file_question.file.url
     end
 
     scenario 'try change file', js: true do
       within '.question' do
-        click_on I18n.t('question.edit')
         click_on I18n.t('attachment.delete')
-
         click_on I18n.t('attachment.add')
+
         field = page.all('input[type="file"]').first
         field.set file1
 
         click_on I18n.t('question.save')
 
+        sleep(1)
         expect(page).to have_link '422.html', href: '/uploads/attachment/file/2/422.html'
       end
     end
