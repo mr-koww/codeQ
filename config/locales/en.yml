@@ -1,16 +1,27 @@
 en:
   question:
-    title: "Question title"
-    describe: "Describe question"
-    new: "Ask question"
-    create:
-      button: "Publish question"
-      successNotice: "Your question succesfully published!"
-      failNotice: "Your question is not published! Please, check question data!"
-    edit: "Edit question"
-    save: "Save question"
-    delete: "Delete question"
-    deleteConfirm: "Delete question?"
+    label:
+      title: "Title"
+      describe: "Describe"
+    button:
+      new: "Ask question"
+      create: "Publish question"
+      edit: "Edit question"
+      save: "Save question"
+      delete: "Delete question"
+    notice:
+      create:
+        success: "Your question succesfully published!"
+        fail: "Your question is not published! Please, check question data!"
+      update:
+        success: "Your question was successfully updated!"
+        fail: ""
+      delete:
+        success: "Your question was successfully destroyed!"
+        fail: ""
+    confirm:
+      delete: "Delete question?"
+
   answer:
     yourAnswer: "Your answer"
     create: "Add answer"
@@ -19,10 +30,11 @@ en:
     delete: "Delete answer"
     deleteConfirm: "Delete answer?"
   attachment:
-    title: "Attachments:"
-    add: "Add file"
-    delete: "Delete"
-    deleteConfirm: "Delete file?"
-    labelFile: "File:"
-    cancel: "Cancel"
-
+    label:
+      title: "Attachments:"
+      file: "File:"
+    button:
+      add: "Add file"
+      delete: "Delete file"
+      cancel: "Cancel"
+    confirm: "Delete file?"

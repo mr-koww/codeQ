@@ -1,16 +1,27 @@
 ru:
   question:
-    title: "Вопрос"
-    describe: "Описание вопроса"
-    new: "Задать вопрос"
-    create:
-      button: "Опубликовать вопрос"
-      successNotice: "Ваш вопрос опубликован!"
-      failNotice: "Ваш вопрос не опубликован! Проверьте введенные данные!"
-    edit: "Редактировать вопрос"
-    save: "Сохранить вопрос"
-    delete: "Удалить вопрос"
-    deleteConfirm: "Удалить вопрос?"
+    label:
+      title: "Вопрос"
+      describe: "Описание вопроса"
+    button:
+      new: "Задать вопрос"
+      create: "Опубликовать вопрос"
+      edit: "Редактировать вопрос"
+      save: "Сохранить вопрос"
+      delete: "Удалить вопрос"
+    notice:
+      create:
+        success: "Ваш вопрос опубликован!"
+        fail: "Ваш вопрос не опубликован! Проверьте введенные данные!"
+      update:
+        success: "Вопрос успешно обновлен!"
+        fail: ""
+      delete:
+        success: 'Вопрос успешно удален!'
+        fail: ""
+    confirm:
+      delete: "Удалить вопрос?"
+
   answer:
     yourAnswer: "Ваш ответ"
     create: "Ответить"
@@ -19,9 +30,12 @@ ru:
     delete: "Удалить ответ"
     deleteConfirm: "Удалить ответ?"
   attachment:
-    title: "Приложения:"
-    add: "Прикрепить файл"
-    delete: "Удалить файл"
-    deleteConfirm: "Удалить файл?"
-    labelFile: "Файл:"
-    cancel: "Отменить"
+    label:
+      title: "Приложения:"
+      file: "Файл:"
+    button:
+      add: "Прикрепить файл"
+      delete: "Удалить файл"
+      cancel: "Отменить"
+    confirm: "Удалить файл?"
+
