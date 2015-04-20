@@ -22,9 +22,9 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
     @question.user = current_user
     if @question.save
-      redirect_to @question, notice: 'Your question successfully created.'
+      redirect_to @question, notice: t('question.create.successNotice')
     else
-      flash[:notice] = 'Please, check question data'
+      flash[:notice] = t('question.create.failNotice')
       render :new
     end
   end
