@@ -15,7 +15,7 @@ en:
         fail: "Your question is not published! Please, check question data!"
       update:
         success: "Your question was successfully updated!"
-        fail: ""
+        fail: "Your question is not updated! Please, check question data!"
       delete:
         success: "Your question was successfully destroyed!"
         fail: ""
@@ -25,18 +25,20 @@ en:
   answer:
     label:
       title: "Your answer"
+      best: "Best answer!"
     button:
       create: "Add answer"
       edit: "Edit answer"
       save: "Save answer"
       delete: "Delete answer"
+      best: "Best answer"
     notice:
       create:
         success: "Your answer succesfully published!"
-        fail: "Your answer is not published! Please, check question data!"
+        fail: "Your answer is not published! Please, check answer data!"
       update:
         success: "Your answer was successfully updated!"
-        fail: ""
+        fail: "Your answer is not updated! Please, check answer data!"
       delete:
         success: "Your answer was successfully destroyed!"
         fail: ""
