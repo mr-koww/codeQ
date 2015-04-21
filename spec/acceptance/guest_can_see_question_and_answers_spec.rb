@@ -1,11 +1,15 @@
 require_relative 'acceptance_helper'
 
-feature 'Guest can see question and answers', type: :feature do
+feature 'Guest can see question and answers', %q{
+  In order to find answer for my question
+  As an guest
+  I want to be able see all answers for found questions
+} do
   given!(:user) { create(:user) }
   given!(:question) { create(:question, user: user) }
-  given!(:answers) { create_list(:answer, 5, question: question) }
+  given!(:answers) { create_list(:answer, 5, question: question, user: user) }
 
-  scenario 'question and 5 answers thereto' do
+  scenario 'Guest can see question and answers thereto' do
     visit question_path(question)
 
     expect(page).to have_content question.title

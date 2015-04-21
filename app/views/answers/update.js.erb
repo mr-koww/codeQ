@@ -1,8 +1,6 @@
 <% if @answer.errors.present? %>
-    <% @answer.errors.full_messages.each do |message| %>
-        //$('.answer-errors').html('<%= j message %>');
-        $('.answer[data="' + <%= @answer.id %>+'"]').prepend('<%= j message %>');
-    <% end %>
+    $('.notice').html('<%= j I18n.t('answer.notice.update.fail') %>')
 <% else %>
+    $('.notice').html('<%= j I18n.t('answer.notice.update.success') %>')
     $('.answer[data="' + <%= @answer.id %> + '"]').replaceWith('<%= j render @answer %>');
 <% end %>

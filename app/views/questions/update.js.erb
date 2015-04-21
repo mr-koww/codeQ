@@ -1,7 +1,6 @@
-<% if @question.errors.present? %>
-    <% @question.errors.full_messages.each do |message| %>
-    $('.question_error').prepend('<%= j message %>');
-    <% end %>
+<% if @question.errors.any? %>
+    $('.notice').html('<%= j I18n.t('question.notice.update.fail') %>')
 <% else %>
-    $('.question[data="' + <%= @question.id %> + '"]').replaceWith('<%= j render @question %>');
+    $('.notice').html('<%= j I18n.t('question.notice.update.success') %>')
+    $('.question[data="' + <%= @question.id %> + '"]').replaceWith('<%= j render @question, detail: true %>');
 <% end %>

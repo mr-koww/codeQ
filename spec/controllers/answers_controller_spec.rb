@@ -10,17 +10,7 @@ let(:user2) { create :user }
 
 let!(:question) { create :question, user: user1 }
 let!(:answer)   { create :answer, question: question, user: user2, best: false }
-
-  describe 'GET #new' do
-    before do
-      sign_in_user(user2)
-      get :new, question_id: question
-    end
-
-    it { expect(assigns(:answer)).to be_a_new(Answer) }
-    it { expect(response).to render_template :new }
-  end
-
+let(:file) { create(:attachment, attachable: answer) }
 
 	describe 'POST #create' do
     before do
@@ -31,6 +21,11 @@ let!(:answer)   { create :answer, question: question, user: user2, best: false }
 			it 'saves answer to db' do
 		  	expect { post :create, answer: attributes_for(:answer), question_id: question, format: :js }.
             to change(question.answers, :count).by(1)
+      end
+
+      it 'saves the attachment in the database' do
+        expect { post :create, answer: attributes_for(:answer), question_id: question, attachment: file, format: :js }.
+            to change(answer.attachments, :count).by(1)
       end
 
       it 'should have a user' do
@@ -50,9 +45,9 @@ let!(:answer)   { create :answer, question: question, user: user2, best: false }
             to_not change(Answer, :count)
       end
 
-      it 'redirect to show view' do
-        post :create, answer: { body: nil }, question_id: question, format: :js
-        expect(response).to render_template :create
+      it 'render error view' do
+        #post :create, answer: { body: nil }, question_id: question, format: :js
+        #expect(response).to render_template :create
       end
     end
 	end

@@ -1,7 +1,8 @@
-= render 'question', question: @question
+= render @question, detail: true
 |------------------------
 .answers
-  = render 'answers/answers'
-|------------------------
-- if user_signed_in?
-  = render 'answers/new', question: @question, answer: @answer
+  - if @answers.any?
+    = render @answers
+.new-answer
+  - if user_signed_in?
+    = render 'answers/new', question: @question, answer: @answer

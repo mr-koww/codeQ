@@ -1,0 +1,17 @@
+ru:
+  activerecord:
+    models:
+      user:
+
+    errors:
+      models:
+        user:
+          attributes:
+            email:
+              blank: " не может быть пустым"
+              invalid: " введен некорректно"
+            password:
+              blank: " не может быть пустым"
+              too_short: " слишком короткий"
+            password_confirmation:
+              confirmation: " не совпадает"

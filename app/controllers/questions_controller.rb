@@ -8,6 +8,7 @@ class QuestionsController < ApplicationController
 
 
   def show
+    @answers = @question.answers
     @answer = Answer.new
   end
 
@@ -17,18 +18,13 @@ class QuestionsController < ApplicationController
   end
 
 
-  def edit
-
-  end
-
-
   def create
     @question = Question.new(question_params)
     @question.user = current_user
     if @question.save
-      redirect_to @question, notice: 'Your question successfully created.'
+      redirect_to @question, notice: t('question.notice.create.success')
     else
-      flash[:notice] = 'Please, check question data'
+      flash[:notice] = t('question.notice.create.fail')
       render :new
     end
   end
@@ -42,7 +38,7 @@ class QuestionsController < ApplicationController
   def destroy
     if current_user.id == @question.user_id
       @question.destroy!
-      redirect_to questions_path, notice: 'Your question was successfully destroyed.'
+      redirect_to questions_path, notice: t('question.notice.delete.success')
     else
       redirect_to @question
     end
@@ -55,7 +51,7 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body)
+    params.require(:question).permit(:title, :body, attachments_attributes: [:id, :file, :_destroy])
   end
 
 end

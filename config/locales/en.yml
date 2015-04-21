@@ -1,23 +1,56 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
-
 en:
-  hello: "Hello world"
+  question:
+    label:
+      title: "Title"
+      describe: "Describe"
+    button:
+      new: "Ask question"
+      create: "Publish question"
+      edit: "Edit question"
+      save: "Save question"
+      delete: "Delete question"
+    notice:
+      create:
+        success: "Your question succesfully published!"
+        fail: "Your question is not published! Please, check question data!"
+      update:
+        success: "Your question was successfully updated!"
+        fail: "Your question is not updated! Please, check question data!"
+      delete:
+        success: "Your question was successfully destroyed!"
+        fail: ""
+    confirm:
+      delete: "Delete question?"
+
+  answer:
+    label:
+      title: "Your answer"
+      best: "Best answer!"
+    button:
+      create: "Add answer"
+      edit: "Edit answer"
+      save: "Save answer"
+      delete: "Delete answer"
+      best: "Best answer"
+    notice:
+      create:
+        success: "Your answer succesfully published!"
+        fail: "Your answer is not published! Please, check answer data!"
+      update:
+        success: "Your answer was successfully updated!"
+        fail: "Your answer is not updated! Please, check answer data!"
+      delete:
+        success: "Your answer was successfully destroyed!"
+        fail: ""
+    confirm:
+      delete: "Delete answer?"
+
+  attachment:
+    label:
+      title: "Attachments:"
+      file: "File:"
+    button:
+      add: "Add file"
+      delete: "Delete file"
+      cancel: "Cancel"
+    confirm: "Delete file?"

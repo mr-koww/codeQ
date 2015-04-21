@@ -5,7 +5,11 @@ RSpec.describe Answer, type: :model do
   it { should validate_presence_of :body }
   it { should validate_presence_of :user }
   it { should validate_length_of(:body).is_at_least(5).is_at_most(250) }
+
   it { should belong_to :question }
+  it { should have_many(:attachments).dependent(:destroy) }
+
+  it { should accept_nested_attributes_for :attachments }
 
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
