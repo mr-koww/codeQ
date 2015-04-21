@@ -19,30 +19,28 @@ feature 'User can change/remove file in answer', %q{
     background do
       sign_in(user_answer)
       visit question_path(question)
-      click_on I18n.t('answer.edit')
+      click_on I18n.t('answer.button.edit')
     end
 
-    scenario 'try delete file', js: true do
+    scenario 'tries delete file', js: true do
       within '.answers' do
-        click_on I18n.t('attachment.delete')
-        click_on I18n.t('answer.save')
+        click_on I18n.t('attachment.button.delete')
+        click_on I18n.t('answer.button.save')
 
-        sleep(1)
         expect(page).to_not have_link file_answer.file.filename, href: file_answer.file.url
       end
     end
 
-    scenario 'try change file', js: true do
+    scenario 'tries change file', js: true do
       within '.answers' do
-        click_on I18n.t('attachment.delete')
-        click_on I18n.t('attachment.add')
+        click_on I18n.t('attachment.button.delete')
+        click_on I18n.t('attachment.button.add')
 
         field = page.all('input[type="file"]').first
         field.set file1
 
-        click_on I18n.t('answer.save')
+        click_on I18n.t('answer.button.save')
 
-        sleep(1)
         expect(page).to have_link '422.html', href: '/uploads/attachment/file/2/422.html'
       end
     end

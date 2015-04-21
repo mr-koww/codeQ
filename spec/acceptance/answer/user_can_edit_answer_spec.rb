@@ -5,56 +5,58 @@ feature 'User can edit answer', %q{
   As an author of answer
   I'd like to be able edit my answer
 } do
-  #User who asked Question
-  given(:user) { create(:user) }
+  given(:user_question) { create(:user) }
+  given(:user_answer) { create(:user) }
+  given(:user_another) { create(:user) }
 
-  #User who wrote first Answer
-  given(:user1) { create(:user) }
+  given!(:question) { create(:question, user: user_question) }
+  given!(:answer) { create(:answer, question: question, user: user_answer) }
 
-  #User who nothing wrote
-  given(:user2) { create(:user) }
-
-  given!(:question) { create(:question, user: user) }
-  given!(:answer1) { create(:answer, question: question, user: user1) }
-
-  describe 'Auth user try edit his answer' do
+  describe 'Auth user can' do
     before do
-      sign_in user1
+      sign_in user_answer
       visit question_path(question)
     end
 
-    scenario 'see edit link' do
+    scenario 'edit own answer with valid data', js: true do
       within '.answers' do
-        expect(page).to have_link 'Edit'
-      end
-    end
+        click_on I18n.t('answer.button.edit')
 
-    scenario 'try to edit his answer', js: true do
-      click_on 'Edit'
+        fill_in 'answer[body]', with: 'Another body text'
+        click_on I18n.t('answer.button.save')
 
-      fill_in 'Answer', with: 'Edited answer', :match => :first
-      click_on 'Save'
-
-      within '.answers' do
-        expect(page).to have_content 'Edited answer'
+        expect(page).to have_content 'Another body text'
         expect(page).to_not have_selector 'textarea'
       end
+      expect(page).to have_content I18n.t('answer.notice.update.success')
+    end
+
+    scenario 'edit own answer with invalid data', js: true do
+      within '.answers' do
+        click_on I18n.t('answer.button.edit')
+
+        fill_in 'answer[body]', with: nil
+        click_on I18n.t('answer.button.save')
+      end
+
+      expect(page).to have_content I18n.t('answer.notice.update.fail')
     end
   end
 
 
   scenario "Auth user doesn't see edit link for not his answer" do
-    sign_in user2
+    sign_in user_question
     visit question_path(question)
     within '.answers' do
-      expect(page).to_not have_link 'Edit'
+      expect(page).to_not have_link I18n.t('answer.button.save')
     end
+
   end
 
 
   scenario "Not-auth user doesn't see edit link for all answers" do
     visit question_path(question)
 
-    expect(page).to_not have_link 'Edit'
+    expect(page).to_not have_link I18n.t('answer.button.save')
   end
 end

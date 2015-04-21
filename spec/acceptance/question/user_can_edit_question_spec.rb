@@ -16,17 +16,27 @@ feature 'User can edit question', %q{
       visit question_path(question)
     end
 
-    scenario 'edit own question', js: true do
+    scenario 'edit own question with valid data', js: true do
       click_on I18n.t('question.button.edit')
 
       fill_in 'question[body]', with: 'Another body text'
 
       click_on I18n.t('question.button.save')
 
-      expect(page).to have_content 'Another body text'
-      within '.question' do
-        expect(page).to_not have_selector 'textarea'
-      end
+    within '.question' do
+      expect(page).to_not have_selector 'textarea'
+    end
+    expect(page).to have_content 'Another body text'
+    end
+
+    scenario 'edit own question with invalid data', js: true do
+      click_on I18n.t('question.button.edit')
+
+      fill_in 'question[body]', with: nil
+
+      click_on I18n.t('question.button.save')
+
+      expect(page).to have_content I18n.t('question.notice.update.fail')
     end
   end
 

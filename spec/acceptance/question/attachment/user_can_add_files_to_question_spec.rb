@@ -57,6 +57,7 @@ feature 'User can add file/files to question', %q{
 
       expect(page).to have_content 'My question'
       expect(page).to have_content 'My body text'
+      expect(page).to have_content I18n.t('question.notice.create.success')
     end
   end
 end

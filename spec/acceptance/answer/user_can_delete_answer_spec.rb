@@ -1,48 +1,50 @@
 require_relative '../acceptance_helper'
 
 feature 'User can delete answer', %q{
+  In order to remove previously published answer
   As an author of answer
   I'd like to be able delete my answer
 } do
-  given(:user1) { create(:user) }
-  given(:user2) { create(:user) }
-  given(:question1) { create(:question, user: user1) }
-  given!(:answer) { create(:answer, question: question1, user: user1) }
-  given(:question2) { create(:question, user: user1) }
-  given!(:answers) { create_list(:answer, 5, question: question2, user: user2) }
+  given(:user_question) { create(:user) }
+  given(:user_answer) { create(:user) }
+  given(:user_another) { create(:user) }
 
-  describe 'Auth user try delete his answer' do
+  given(:question1) { create(:question, user: user_question) }
+  given(:question2) { create(:question, user: user_question) }
+
+  given!(:answer) { create(:answer, question: question1, user: user_answer) }
+  given!(:answers) { create_list(:answer, 5, question: question2, user: user_another) }
+
+  describe 'Auth user can', js: true do
     before do
-      sign_in(user1)
+      sign_in(user_answer)
       visit question_path(question1)
     end
 
-    scenario 'see delete link' do
-      expect(page).to have_link 'Delete answer'
-    end
-
-    scenario 'delete his answer', js: true do
-      click_on 'Delete answer'
+    scenario 'delete own answer', js: true do
+      accept_confirm do
+        click_on I18n.t('answer.button.delete')
+      end
 
       expect(current_path).to eq question_path(question1)
       expect(page).to_not have_content answer.body
-      expect(page).to have_content 'Your answer was successfully destroyed.'
+      expect(page).to have_content I18n.t('answer.notice.delete.success')
     end
   end
 
 
-  scenario 'Auth user cannot delete not his answer' do
-    sign_in(user2)
+  scenario 'Auth user cannot delete not own answer' do
+    sign_in(user_answer)
 
-    visit question_path(question1)
+    visit question_path(question2)
 
-    expect(page).to_not have_content 'Delete answer'
+    expect(page).to_not have_content I18n.t('answer.button.delete')
   end
 
   scenario 'Guest cannot delete any answer' do
     visit question_path(question1)
 
-    expect(page).to_not have_content 'Delete answer'
+    expect(page).to_not have_content I18n.t('answer.button.delete')
   end
 
 end
