@@ -2,7 +2,7 @@
     .answer-errors
     p= f.label t('answer.label.title')
     p= f.text_area :body, rows: 7
-    p= f.link_to_add t('attachment.add'), :attachments
+    p= f.link_to_add t('attachment.button.add'), :attachments
 
     / form for new attachment
     p= f.fields_for :attachments do |attachment_form|
