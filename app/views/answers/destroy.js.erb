@@ -1,2 +1,2 @@
-$('.answer[data="' + <%= @answer.id %>+'"]').remove();
+$('#<%= dom_id(@answer) %>').remove();
 $('.notice').html('<%= j I18n.t('answer.notice.delete.success') %>')

@@ -1,4 +1,4 @@
-div class="answer" id="answer-#{ answer.id }" data= answer.id
+div class="answer" id="#{ dom_id(answer) }"
 
   / best answer mark
   - if answer.best
@@ -21,7 +21,7 @@ div class="answer" id="answer-#{ answer.id }" data= answer.id
     p= link_to t('answer.button.delete'), question_answer_path(@question, answer), method: :delete, remote: true, data: { :confirm => I18n.t('answer.confirm.delete') }
 
     / hidden form for edit answer
-    p= nested_form_for [@question, answer], remote: true, html: { id: "edit-answer-form", data: { answer_id: answer.id } } do |f|
+    p= nested_form_for [@question, answer], remote: true, html: { class: "edit-answer-form", data: {  answer_id: answer.id } } do |f|
       p= f.label :body, t('answer.label.title')
       p= f.text_area :body
       p= f.link_to_add t('attachment.button.add'), :attachments
