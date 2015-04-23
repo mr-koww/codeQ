@@ -26,7 +26,7 @@ feature 'User can create answer', %q{
       expect(current_path).to eq question_path(question)
     end
 
-    scenario 'with invalid data', js: true do
+    scenario 'with invalid data', js: true, data: { type: :json } do
       visit question_path(question)
 
       click_on I18n.t('answer.button.create')

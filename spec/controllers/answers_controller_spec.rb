@@ -19,35 +19,35 @@ let(:file) { create(:attachment, attachable: answer) }
 
 		context 'with valid attributes' do
 			it 'saves answer to db' do
-		  	expect { post :create, answer: attributes_for(:answer), question_id: question, format: :js }.
+		  	expect { post :create, answer: attributes_for(:answer), question_id: question, format: :json }.
             to change(question.answers, :count).by(1)
       end
 
       it 'saves the attachment in the database' do
-        expect { post :create, answer: attributes_for(:answer), question_id: question, attachment: file, format: :js }.
+        expect { post :create, answer: attributes_for(:answer), question_id: question, attachment: file, format: :json }.
             to change(answer.attachments, :count).by(1)
       end
 
       it 'should have a user' do
-        post :create, answer: attributes_for(:answer), question_id: question, format: :js
+        post :create, answer: attributes_for(:answer), question_id: question, format: :json
         expect(assigns(:answer).user).to eq subject.current_user
       end
 
-			it 'render create template' do
-        post :create, answer: attributes_for(:answer), question_id: question, format: :js
-				expect(response).to render_template :create
+			it 'render 200 response status' do
+        post :create, answer: attributes_for(:answer), question_id: question, format: :json
+				expect(response).to have_http_status(200)
   		end
 		end
 
 		context 'with invalid attributes' do
 			it 'doesn`t save the answer' do
-				expect { post :create, answer: { body: nil }, question_id: question, format: :js}.
+				expect { post :create, answer: { body: nil }, question_id: question, format: :json}.
             to_not change(Answer, :count)
       end
 
-      it 'render error view' do
-        #post :create, answer: { body: nil }, question_id: question, format: :js
-        #expect(response).to render_template :create
+      it 'render 422 response status' do
+        post :create, answer: { body: nil }, question_id: question, format: :json
+        expect(response).to have_http_status(422)
       end
     end
 	end
@@ -60,32 +60,37 @@ let(:file) { create(:attachment, attachable: answer) }
 
     context 'with valid params' do
       it 'assigns the requested answer to @answer' do
-        patch :update, id: answer, answer: attributes_for(:answer), question_id: question, format: :js
+        patch :update, id: answer, answer: attributes_for(:answer), question_id: question, format: :json
         expect(assigns(:answer)).to eq answer
       end
 
       it 'change answer attributes' do
-        patch :update, id: answer, answer: { body: 'New Answer Body' }, question_id: question, format: :js
+        patch :update, id: answer, answer: { body: 'New Answer Body' }, question_id: question, format: :json
         answer.reload
         expect(answer.body).to eq 'New Answer Body'
       end
 
       it 'assigns the question' do
-        patch :update, id: answer, answer: attributes_for(:answer), question_id: question, format: :js
+        patch :update, id: answer, answer: attributes_for(:answer), question_id: question, format: :json
         expect(assigns(:question)).to eq question
       end
 
-      it 'render update template' do
-        patch :update, id: answer, answer: attributes_for(:answer), question_id: question, format: :js
-        expect(response).to render_template :update
+      it 'render 200 response status' do
+        patch :update, id: answer, answer: attributes_for(:answer), question_id: question, format: :json
+        expect(response).to have_http_status(200)
       end
     end
 
     context 'with invalid params' do
+      before { patch :update, id: answer, answer: { body: nil }, question_id: question, format: :json }
+
       it 'not change answer attributes' do
-        patch :update, id: answer, answer: { body: nil }, question_id: question, format: :js
         answer.reload
         expect(answer.body).to eq answer.body
+      end
+
+      it 'render 422 response status' do
+        expect(response).to have_http_status(422)
       end
    end
   end
@@ -154,6 +159,4 @@ let(:file) { create(:attachment, attachable: answer) }
     end
   end
 
-  #дописать
-  describe 'GET #edit' #проверить форму редактирования
 end
