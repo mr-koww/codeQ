@@ -7,12 +7,27 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
-    @answer.save
+
+    respond_to do |format|
+      if @answer.save
+        format.json { render json: set_json_success_response(t('answer.notice.create.success'), @answer) }
+      else
+        format.json { render json: set_json_fail_response(t('answer.notice.create.fail'), @answer.errors.full_messages[0]),
+            status: :unprocessable_entity }
+      end
+    end
   end
 
 
   def update
-    @answer.update(answer_params)
+    respond_to do |format|
+      if @answer.update(answer_params)
+        format.json { render json: set_json_success_response(t('answer.notice.update.success'), @answer) }
+      else
+        format.json { render json: set_json_fail_response(t('answer.notice.update.fail'), @answer.errors.full_messages[0]),
+            status: :unprocessable_entity }
+      end
+    end
   end
 
 
@@ -43,5 +58,13 @@ class AnswersController < ApplicationController
 
   def answer_params
     params.require(:answer).permit(:body, :question_id, attachments_attributes: [:id, :file, :_destroy])
+  end
+
+  def set_json_success_response(notice, answer)
+    { :notice => notice, :answer => answer }
+  end
+
+  def set_json_fail_response(notice, notice_error)
+    { :notice => notice, :notice_error => notice_error }
   end
 end
