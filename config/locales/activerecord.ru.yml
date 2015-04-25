@@ -1,7 +1,6 @@
 ru:
   activerecord:
     models:
-      user:
 
     errors:
       models:
@@ -15,3 +14,8 @@ ru:
               too_short: " слишком короткий"
             password_confirmation:
               confirmation: " не совпадает"
+        answer:
+          attributes:
+            body:
+              blank: " не может быть пустым"
+              too_short: " слишком короткий"
