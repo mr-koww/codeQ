@@ -1,6 +1,7 @@
-= nested_form_for [@question, @answer], remote: true do |f|
-    .answer-errors
+= nested_form_for [@question, @answer], remote: true, data: { type: :json } do |f|
+
     p= f.label t('answer.label.title')
+    .answer-errors
     p= f.text_area :body, rows: 7
     p= f.link_to_add t('attachment.button.add'), :attachments
 

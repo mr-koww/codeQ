@@ -11,17 +11,22 @@ div class="answer" id="#{ dom_id(answer) }"
     p= t('attachment.label.title')
     ul
       - answer.attachments.each do |attachment|
-        div id="attachment-#{ attachment.id }"
+        div id="attachment_#{ attachment.id }"
         li
           p= link_to attachment.file.filename, attachment.file.url
 
-  / link to edit & delete answer
-  - if user_signed_in? && current_user.id == answer.user_id
-    p= link_to t('answer.button.edit'), '', class: 'edit-answer-link', data: { answer_id: answer.id }
-    p= link_to t('answer.button.delete'), question_answer_path(@question, answer), method: :delete, remote: true, data: { :confirm => I18n.t('answer.confirm.delete') }
+  - if user_signed_in?
+    / link to select best answer
+    - if current_user.id == @question.user_id && current_user.id != answer.user_id
+      p= link_to t('answer.button.best'), best_question_answer_path(@question, answer), method: :put, remote: true, data: { :confirm => I18n.t('answer.confirm.best') }
+
+    / link to edit & delete answer
+    - if current_user.id == answer.user_id
+      p= link_to t('answer.button.edit'), '', class: 'edit-answer-link', data: { answer_id: answer.id }
+      p= link_to t('answer.button.delete'), question_answer_path(@question, answer), method: :delete, remote: true, data: { :confirm => I18n.t('answer.confirm.delete') }
 
     / hidden form for edit answer
-    p= nested_form_for [@question, answer], remote: true, html: { class: "edit-answer-form", data: {  answer_id: answer.id } } do |f|
+    p= nested_form_for [@question, answer], remote: true, data: { type: :json, answer_id: answer.id } do |f|
       p= f.label :body, t('answer.label.title')
       p= f.text_area :body
       p= f.link_to_add t('attachment.button.add'), :attachments
@@ -37,7 +42,3 @@ div class="answer" id="#{ dom_id(answer) }"
           p= attach_form.link_to_remove t('attachment.button.delete')
 
       p= f.submit t('answer.button.save')
-
-  / link to select best answer
-  - if user_signed_in? && !answer.best && current_user.id == @question.user_id && answer.user_id != @question.user_id
-    p= link_to t('answer.button.best'), best_question_answer_path(@question, answer), method: :put, remote: true
