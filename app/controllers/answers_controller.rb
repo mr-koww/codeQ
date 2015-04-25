@@ -8,25 +8,21 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
 
-    respond_to do |format|
-      if @answer.save
-        format.json { render json: set_json_success_response(t('answer.notice.create.success'), @answer) }
-      else
-        format.json { render json: set_json_fail_response(t('answer.notice.create.fail'), @answer.errors.full_messages[0]),
-            status: :unprocessable_entity }
+    if @answer.save
+      render template: 'answers/create.json.jbuilder'
+    else
+      render json: set_json_fail_response(t('answer.notice.create.fail'), @answer.errors.full_messages[0]),
+          status: :unprocessable_entity
       end
-    end
   end
 
 
   def update
-    respond_to do |format|
-      if @answer.update(answer_params)
-        format.json { render json: set_json_success_response(t('answer.notice.update.success'), @answer) }
-      else
-        format.json { render json: set_json_fail_response(t('answer.notice.update.fail'), @answer.errors.full_messages[0]),
-            status: :unprocessable_entity }
-      end
+    if @answer.update(answer_params)
+      render template: 'answers/update.json.jbuilder'
+    else
+      render json: set_json_fail_response(t('answer.notice.update.fail'), @answer.errors.full_messages[0]),
+          status: :unprocessable_entity
     end
   end
 
@@ -38,6 +34,7 @@ class AnswersController < ApplicationController
       redirect_to question_path(@question)
     end
   end
+
 
   def best
     if current_user.id == @question.user_id
