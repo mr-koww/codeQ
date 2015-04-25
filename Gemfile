@@ -37,8 +37,7 @@ gem 'remotipart'
 
 gem 'nested_form'
 
-# Read more: https://github.com/leshill/handlebars_assets
-gem 'handlebars_assets'
+gem 'skim'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
