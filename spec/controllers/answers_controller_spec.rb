@@ -97,7 +97,7 @@ let(:file) { create(:attachment, attachable: answer) }
 
 
   describe 'DELETE #destroy' do
-    context 'user try delete his answer' do
+    context 'when user try delete own answer' do
       before do
         sign_in_user(user2)
         answer
@@ -113,7 +113,7 @@ let(:file) { create(:attachment, attachable: answer) }
       end
     end
 
-    context 'user try delete not his question' do
+    context 'when user try delete not own question' do
       before do
         sign_in_user(user1)
         question
@@ -133,7 +133,7 @@ let(:file) { create(:attachment, attachable: answer) }
 
 
   describe 'PATCH #best' do
-    context 'user, owner question, try mark to the best answer' do
+    context 'when user, owner question, try mark to the best answer' do
       before do
         sign_in_user(user1)
         patch :best, id: answer, question_id: question, format: :js
@@ -149,7 +149,7 @@ let(:file) { create(:attachment, attachable: answer) }
       end
     end
 
-    context 'user, not owner question, try to mark the best answer' do
+    context 'when user, not owner question, try to mark the best answer' do
       it 'not mark answer to the best' do
         sign_in_user(user2)
         patch :best, id: answer, question_id: question, format: :js
