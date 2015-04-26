@@ -15,5 +15,6 @@
 //= require jquery.remotipart
 //= require jquery_nested_form
 //= require skim
+//= require twitter/bootstrap
 //= require_tree ./templates
 //= require_tree .
