@@ -18,3 +18,6 @@
 //= require twitter/bootstrap
 //= require_tree ./templates
 //= require_tree .
+
+
+// window.setTimeout(function() { $(".alert").alert('close'); }, 3500);
