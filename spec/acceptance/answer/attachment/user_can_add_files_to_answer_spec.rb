@@ -30,6 +30,7 @@ feature 'User can add files to answer', %q{
       within '.answers' do
         expect(page).to have_link '404.html', href: '/uploads/attachment/file/1/404.html'
       end
+      expect(page).to have_content I18n.t('answer.notice.create.success')
     end
 
     scenario 'tries add a few files', js: true do
@@ -50,6 +51,7 @@ feature 'User can add files to answer', %q{
         expect(page).to have_link '404.html', href: '/uploads/attachment/file/1/404.html'
         expect(page).to have_link '422.html', href: '/uploads/attachment/file/2/422.html'
       end
+      expect(page).to have_content I18n.t('answer.notice.create.success')
     end
 
     scenario 'tries save answer with empty attachment', js: true do

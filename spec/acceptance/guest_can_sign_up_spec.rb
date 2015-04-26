@@ -11,7 +11,7 @@ feature 'Guest can sign up', %q{
   describe 'Guest try' do
     scenario 'with valid registered data' do
       visit root_path
-      click_on 'Sign up'
+      click_on 'Sign Up'
 
       fill_in 'Email', with: new_user.email
       fill_in 'Password', with: new_user.password
@@ -23,7 +23,7 @@ feature 'Guest can sign up', %q{
 
     scenario 'with invalid registered data' do
       visit root_path
-      click_on 'Sign up'
+      click_on 'Sign Up'
 
       click_button 'Sign up'
 
@@ -33,7 +33,7 @@ feature 'Guest can sign up', %q{
     scenario 'with existing user' do
       visit root_path
 
-      click_on 'Sign up'
+      click_on 'Sign Up'
 
       fill_in 'Email', with: user.email
       fill_in 'Password', with: user.password
