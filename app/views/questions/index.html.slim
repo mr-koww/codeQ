@@ -1,4 +1,6 @@
-h1 Questions page
-.questions
-  = render @questions, detail: false
-p= link_to 'Ask question', new_question_path
+.heading
+  h1 Top Questions
+
+.row
+  .col-md-9
+    = render @questions, detail: false
