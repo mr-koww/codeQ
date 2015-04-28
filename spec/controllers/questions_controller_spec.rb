@@ -182,4 +182,151 @@ let(:file) { create(:attachment) }
     end
   end
 
+
+  describe 'PATCH #like' do
+    context 'when auth user tries vote as like for not own question' do
+      before do
+        sign_in_user(user2)
+      end
+
+      it 'saves the new vote in the database' do
+        expect { patch :like, id: question, format: :json }.to change(Vote, :count).by(1)
+      end
+
+      it 'increases the question value' do
+        patch :like, id: question, format: :json
+        question.reload
+        expect(question.total_votes).to eq 1
+      end
+
+      it 'renders OK status' do
+        patch :like, id: question, format: :json
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'when auth user tries vote as like for own question' do
+      before do
+        sign_in_user(user1)
+        patch :like, id: question, format: :json
+      end
+
+      it 'isn\'t increases the question value' do
+        question.reload
+        expect(question.total_votes).to eq 0
+      end
+
+      it 'renders Forbidden status' do
+        expect(response).to have_http_status(403)
+      end
+    end
+
+
+    context 'when not auth user tries vote as like for anything question' do
+      before { patch :like, id: question, format: :json }
+
+      it 'renders Unauthorized status' do
+        expect(response).to have_http_status(401)
+      end
+    end
+  end
+
+  describe 'PATCH #dislike' do
+    context 'when auth user tries vote as dislike for not own question' do
+      before do
+        sign_in_user(user2)
+      end
+
+      it 'saves the new vote in the database' do
+        expect { patch :dislike, id: question, format: :json }.to change(Vote, :count).by(1)
+      end
+
+      it 'increases the question value' do
+        patch :dislike, id: question, format: :json
+        question.reload
+        expect(question.total_votes).to eq -1
+      end
+
+      it 'renders OK status' do
+        patch :dislike, id: question, format: :json
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'when auth user tries vote as dislike for own question' do
+      before do
+        sign_in_user(user1)
+        patch :dislike, id: question, format: :json
+      end
+
+      it 'isn\'t increases the question value' do
+        question.reload
+        expect(question.total_votes).to eq 0
+      end
+
+      it 'renders Forbidden status' do
+        expect(response).to have_http_status(403)
+      end
+    end
+
+
+    context 'when not auth user tries vote as dislike for anything question' do
+      before { patch :dislike, id: question, format: :json }
+
+      it 'renders Unauthorized status' do
+        expect(response).to have_http_status(401)
+      end
+    end
+  end
+
+  describe 'PATCH #unvote' do
+    let!(:vote) { create(:vote, votable_id: question.id, votable_type: question.class, user: user2, value: 1) }
+
+    context 'when auth user tries unvote for not own question' do
+      before do
+        sign_in_user(user2)
+      end
+
+      it 'saves the new vote in the database' do
+        expect { patch :unvote, id: question, format: :json }.to change(Vote, :count).by(-1)
+      end
+
+      it 'increases the question value' do
+        patch :unvote, id: question, format: :json
+        question.reload
+        expect(question.total_votes).to eq 0
+      end
+
+      it 'renders OK status' do
+        patch :unvote, id: question, format: :json
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'when auth user tries vote as dislike for own question' do
+      before do
+        sign_in_user(user1)
+        patch :unvote, id: question, format: :json
+      end
+
+      it 'isn\'t increases the question value' do
+        question.reload
+        expect(question.total_votes).to eq 1
+      end
+
+      it 'renders Forbidden status' do
+        expect(response).to have_http_status(403)
+      end
+    end
+
+
+    context 'when not auth user tries vote as dislike for anything question' do
+      before { patch :unvote, id: question, format: :json }
+
+      it 'renders Unauthorized status' do
+        expect(response).to have_http_status(401)
+      end
+    end
+  end
+
 end
