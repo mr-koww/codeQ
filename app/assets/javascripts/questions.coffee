@@ -9,3 +9,10 @@ $ ->
     $('form#edit-question-form[data-question-id="' + question_id + '"]').show();
 
   $(document).on 'click', '.edit-question-link', showEditQuestionForm;
+
+  # -----Update votes-----
+  $('.votes').bind 'ajax:success', (e, data, status, xhr) ->
+    response = $.parseJSON(xhr.responseText);
+    class_id = '#'+response.class + response.id
+    $(class_id).html(JST["templates/questions/votes"](response))
+
