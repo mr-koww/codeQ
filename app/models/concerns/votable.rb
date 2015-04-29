@@ -15,7 +15,12 @@ module Votable
     votes.where(user: user).delete_all
   end
 
+  def voted_by?(user)
+    votes.where(user: user).any?
+  end
+
   def total_votes
     votes.sum(:value)
   end
+
 end
