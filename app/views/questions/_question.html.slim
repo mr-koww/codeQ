@@ -1,12 +1,11 @@
 .question data= question.id
-  .col-xs-12.col-sm-8
-    h3 = question.title
-    hr
-    p= link_to question.title, question
-    p= question.body
-
-    / detail view for question
-    - if detail
+  / detail view for question
+  - if detail
+    / question body
+    .col-xs-12.col-sm-8
+      h3 = question.title
+      hr
+      p= question.body
 
       / attachment files
       - if question.attachments.present?
@@ -43,8 +42,8 @@
 
         p= f.submit t('question.button.save')
 
-      / votes
-      .col-xs-12.col-sm-4.votes id='question#{question.id}'
-        = render 'questions/votes', votable: @question
+    / question votes
+    .col-xs-12.col-sm-4.votes id='question#{question.id}'
+      = render 'questions/votes', votable: @question
 
 
