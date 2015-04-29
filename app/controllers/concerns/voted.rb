@@ -9,17 +9,17 @@ module Voted
 
   def like
     @resource.vote(current_user, 1)
-    render_success_json_response('Like OK')
+    render_success_json_response('vote','Like OK')
   end
 
   def dislike
     @resource.vote(current_user, -1)
-    render_success_json_response('Disike OK')
+    render_success_json_response('vote','Dislike OK')
   end
 
   def unvote
     @resource.unvote(current_user)
-    render_success_json_response('Unvote OK')
+    render_success_json_response('unvote','Unvote OK')
   end
 
   private
@@ -43,8 +43,8 @@ module Voted
     end
   end
 
-  def render_success_json_response(notice)
-    render json: Hash[@resource.class.name.underscore, @resource, :notice, notice]
+  def render_success_json_response(type, notice)
+    render json: Hash[:class, @resource.class.name.underscore, :id, @resource.id, :type, type, :value, @resource.total_votes, :notice, notice]
   end
 
 end
