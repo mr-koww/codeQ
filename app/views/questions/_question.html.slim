@@ -1,41 +1,50 @@
 .question data= question.id
-  p= link_to question.title, question
-  p= question.body
+  .col-xs-12.col-sm-8
+    h3 = question.title
+    hr
+    p= link_to question.title, question
+    p= question.body
 
-  / detail view for question
-  - if detail
+    / detail view for question
+    - if detail
 
-    / attachment files
-    - if question.attachments.present?
-      p= t('attachment.label.title')
-      ul
-        - question.attachments.each do |attachment|
-          div id="attachment-#{ attachment.id }"
-            li
-              p= link_to attachment.file.filename, attachment.file.url
+      / attachment files
+      - if question.attachments.present?
+        p= t('attachment.label.title')
+        ul
+          - question.attachments.each do |attachment|
+            div id="attachment-#{ attachment.id }"
+              li
+                p= link_to attachment.file.filename, attachment.file.url
 
-    / link to delete & edit question
-    - if current_user && current_user.id == question.user_id
-      p= link_to t('question.button.delete'), question_path(question), method: :delete, data: { :confirm => I18n.t('question.confirm.delete') }
-      p= link_to t('question.button.edit'), '', class: 'edit-question-link', data: { question_id: question.id }
+      / link to delete & edit question
+      - if current_user && current_user.id == question.user_id
+        p= link_to t('question.button.delete'), question_path(question), method: :delete, data: { :confirm => I18n.t('question.confirm.delete') }
+        p= link_to t('question.button.edit'), '', class: 'edit-question-link', data: { question_id: question.id }
 
-    / hidden form for edit question
-    .question-errors
-    p= nested_form_for question, remote: true, html: { id: "edit-question-form", data: { question_id: question.id } } do |f|
-      p= f.label t('question.label.title')
-      p= f.text_area :title
-      p= f.label t('question.label.describe')
-      p= f.text_area :body
-      p= f.link_to_add t('attachment.button.add'), :attachments
+      / hidden form for edit question
+      .question-errors
+      p= nested_form_for question, remote: true, html: { id: "edit-question-form", data: { question_id: question.id } } do |f|
+        p= f.label t('question.label.title')
+        p= f.text_area :title
+        p= f.label t('question.label.describe')
+        p= f.text_area :body
+        p= f.link_to_add t('attachment.button.add'), :attachments
 
-      / form for attachment files
-      p= f.fields_for :attachments do |attach_form|
-        - if attach_form.object.new_record?
-          p= attach_form.label t('attachment.label.file')
-          p= attach_form.file_field :file
-          p= attach_form.link_to_remove t('attachment.button.cancel')
-        - else
-          p= attach_form.object.file.identifier
-          p= attach_form.link_to_remove t('attachment.button.delete')
+        / form for attachment files
+        p= f.fields_for :attachments do |attach_form|
+          - if attach_form.object.new_record?
+            p= attach_form.label t('attachment.label.file')
+            p= attach_form.file_field :file
+            p= attach_form.link_to_remove t('attachment.button.cancel')
+          - else
+            p= attach_form.object.file.identifier
+            p= attach_form.link_to_remove t('attachment.button.delete')
 
-      p= f.submit t('question.button.save')
+        p= f.submit t('question.button.save')
+
+      / votes
+      .col-xs-12.col-sm-4.votes id='question#{question.id}'
+        = render 'questions/votes', votable: @question
+
+
