@@ -3,18 +3,18 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
 
 # User who wrote Question (but not wrote Answer)
-let(:user1) { create :user }
+let(:user_question) { create :user }
 
 # User who wrote Answer
-let(:user2) { create :user }
+let(:user_answer) { create :user }
 
-let!(:question) { create :question, user: user1 }
-let!(:answer)   { create :answer, question: question, user: user2, best: false }
+let!(:question) { create :question, user: user_question }
+let!(:answer)   { create :answer, question: question, user: user_answer, best: false }
 let(:file) { create(:attachment, attachable: answer) }
 
 	describe 'POST #create' do
     before do
-      sign_in_user(user2)
+      sign_in_user(user_answer)
     end
 
 		context 'with valid attributes' do
@@ -55,7 +55,7 @@ let(:file) { create(:attachment, attachable: answer) }
 
   describe 'PATCH #update' do
     before do
-      sign_in_user(user2)
+      sign_in_user(user_answer)
     end
 
     context 'with valid params' do
@@ -99,7 +99,7 @@ let(:file) { create(:attachment, attachable: answer) }
   describe 'DELETE #destroy' do
     context 'when user try delete own answer' do
       before do
-        sign_in_user(user2)
+        sign_in_user(user_answer)
         answer
       end
 
@@ -115,7 +115,7 @@ let(:file) { create(:attachment, attachable: answer) }
 
     context 'when user try delete not own question' do
       before do
-        sign_in_user(user1)
+        sign_in_user(user_question)
         question
         answer
       end
@@ -135,7 +135,7 @@ let(:file) { create(:attachment, attachable: answer) }
   describe 'PATCH #best' do
     context 'when user, owner question, try mark to the best answer' do
       before do
-        sign_in_user(user1)
+        sign_in_user(user_question)
         patch :best, id: answer, question_id: question, format: :js
       end
 
@@ -151,12 +151,177 @@ let(:file) { create(:attachment, attachable: answer) }
 
     context 'when user, not owner question, try to mark the best answer' do
       it 'not mark answer to the best' do
-        sign_in_user(user2)
+        sign_in_user(user_answer)
         patch :best, id: answer, question_id: question, format: :js
         answer.reload
         expect(answer.best).to eq false
       end
     end
   end
+
+
+  describe 'PATCH #like' do
+    context 'when auth user tries vote as like for not own answer' do
+      before do
+        sign_in_user(user_question)
+      end
+
+      it 'saves the new vote in the database' do
+        expect { patch :like, id: answer, question_id: question, format: :json }.to change(answer.votes, :count).by(1)
+      end
+
+      it 'increases the answer value' do
+        patch :like, id: answer, question_id: question, format: :json
+        answer.reload
+        expect(answer.total_votes).to eq 1
+      end
+
+      it 'renders OK status' do
+        patch :like, id: answer, question_id: question, format: :json
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'when auth user tries vote as like for own answer' do
+      before { sign_in_user(user_answer) }
+
+      it 'isn\t saves the new vote in the database' do
+        expect { patch :like, id: answer, question_id: question, format: :json }.to_not change(answer.votes, :count)
+      end
+
+      it 'isn\'t increases the answer value' do
+        patch :dislike, id: answer, question_id: question, format: :json
+
+        answer.reload
+        expect(answer.total_votes).to eq 0
+      end
+
+      it 'renders Forbidden status' do
+        patch :dislike, id: answer, question_id: question, format: :json
+
+        expect(response).to have_http_status(403)
+      end
+    end
+
+    context 'when not auth user tries vote as like for anything answer' do
+      before { patch :like, id: answer, question_id: question, format: :json }
+
+      it 'renders Unauthorized status' do
+        expect(response).to have_http_status(401)
+      end
+    end
+  end
+
+
+  describe 'PATCH #dislike' do
+    context 'when auth user tries vote as dislike for not own answer' do
+      before do
+        sign_in_user(user_question)
+      end
+
+      it 'saves the new vote in the database' do
+        expect { patch :dislike, id: answer, question_id: question, format: :json }.to change(answer.votes, :count).by(1)
+      end
+
+      it 'increases the answer value' do
+        patch :dislike, id: answer, question_id: question, format: :json
+        answer.reload
+        expect(answer.total_votes).to eq -1
+      end
+
+      it 'renders OK status' do
+        patch :dislike, id: answer, question_id: question, format: :json
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'when auth user tries vote as dislike for own answer' do
+      before do
+        sign_in_user(user_answer)
+      end
+
+      it 'isn\t saves the new vote in the database' do
+        expect { patch :dislike, id: answer, question_id: question, format: :json }.to_not change(answer.votes, :count)
+      end
+
+      it 'isn\'t increases the answer value' do
+        patch :dislike, id: answer, question_id: question, format: :json
+
+        answer.reload
+        expect(answer.total_votes).to eq 0
+      end
+
+      it 'renders Forbidden status' do
+        patch :dislike, id: answer, question_id: question, format: :json
+
+        expect(response).to have_http_status(403)
+      end
+    end
+
+    context 'when not auth user tries vote as dislike for anything answer' do
+      before { patch :dislike, id: answer, question_id: question, format: :json }
+
+      it 'renders Unauthorized status' do
+        expect(response).to have_http_status(401)
+      end
+    end
+  end
+
+
+  describe 'PATCH #unvote' do
+    let!(:vote) { create(:vote, votable: answer, user: user_question, value: 1) }
+
+    context 'when auth user tries unvote for not own answer' do
+      before do
+        sign_in_user(user_question)
+      end
+
+      it 'saves the new vote in the database' do
+        expect { patch :unvote, id: answer, question_id: question, format: :json }.to change(answer.votes, :count).by(-1)
+      end
+
+      it 'increases the answer value' do
+        patch :unvote, id: answer, question_id: question, format: :json
+
+        answer.reload
+        expect(answer.total_votes).to eq 0
+      end
+
+      it 'renders OK status' do
+        patch :unvote, id: answer, question_id: question, format: :json
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'when auth user tries vote as dislike for own answer' do
+      before { sign_in_user(user_answer) }
+
+      it 'isn\'t saves the new vote in the database' do
+        expect { patch :unvote, id: answer, question_id: question, format: :json }.to_not change(answer.votes, :count)
+      end
+
+      it 'isn\'t increases the answer value' do
+        patch :unvote, id: answer, question_id: question, format: :json
+
+        answer.reload
+        expect(answer.total_votes).to eq 1
+      end
+
+      it 'renders Forbidden status' do
+        patch :unvote, id: answer, question_id: question, format: :json
+
+        expect(response).to have_http_status(403)
+      end
+    end
+
+    context 'when not auth user tries vote as dislike for anything answer' do
+      before { patch :unvote, id: answer, question_id: question, format: :json }
+
+      it 'renders Unauthorized status' do
+        expect(response).to have_http_status(401)
+      end
+    end
+  end
+
 
 end
