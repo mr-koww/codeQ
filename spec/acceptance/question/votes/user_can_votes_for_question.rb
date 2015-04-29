@@ -68,7 +68,7 @@ feature 'User can votes for the question', %q{
       end
     end
   end
-  
+
   describe 'Guest' do
     scenario 'not see link to vote' do
       visit question_path(question)
