@@ -1,65 +1,56 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_answer, except: [ :create ]
-  before_action :set_question
-
+  before_action :answer_author?, only: [ :update, :destroy ]
+  before_action :load_question, only: [ :create ]
+  before_action :question_author?, only: [ :best ]
   include Voted
-
 
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
-
     unless @answer.save
-      render json: set_json_fail_response(t('answer.notice.create.fail'), @answer.errors.full_messages[0]),
-          status: :unprocessable_entity
+      json_error_response(:unprocessable_entity, t('answer.notice.create.fail'), @answer.errors.full_messages[0])
     end
   end
-
 
   def update
     unless @answer.update(answer_params)
-      render json: set_json_fail_response(t('answer.notice.update.fail'), @answer.errors.full_messages[0]),
-          status: :unprocessable_entity
+      json_error_response(:unprocessable_entity, t('answer.notice.create.fail'), @answer.errors.full_messages[0])
     end
   end
-
 
   def destroy
-    if current_user.id == @answer.user_id
-      @answer.destroy
-    else
-      redirect_to question_path(@question)
-    end
+    @answer.destroy
   end
-
 
   def best
-    if current_user.id == @question.user_id
-      @answer.best!
-    end
+    @answer.best!
   end
-
 
   private
 
   def load_answer
-    @answer = Answer.find(params[:id])
+    json_error_response(:not_found, 'Answer Not Found') unless @answer = Answer.find(params[:id])
   end
 
-  def set_question
-    if params.key? :question_id
-      @question = Question.find(params[:question_id])
-    else
-      @question = @answer.question
-    end
+  def answer_author?
+    json_error_response(:forbidden, 'Only author can update/delete answer') unless current_user == @answer.user
+  end
+
+  def load_question
+    json_error_response(:not_found, 'Question Not Found') unless @question = Question.find(params[:question_id])
+  end
+
+  def question_author?
+    json_error_response(:forbidden, 'Only author question can check the best answer') unless current_user == @answer.question.user
   end
 
   def answer_params
     params.require(:answer).permit(:body, :question_id, attachments_attributes: [:id, :file, :_destroy])
   end
 
-  def set_json_fail_response(notice, notice_error)
-    { notice: notice, notice_error: notice_error }
+  def json_error_response(status, message, error = "")
+    render json: { message: message, errors: error }, status: status
   end
 end
