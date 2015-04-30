@@ -1,9 +1,12 @@
 .row
   = render @question, detail: true
-|------------------------
-.answers
-  - if @answers.any?
+
+hr
+- if @answers.any?
+  .row.answers
     = render @answers
-.new-answer
+
+hr
+.row.new-answer
   - if user_signed_in?
     = render 'answers/new', question: @question, answer: @answer
