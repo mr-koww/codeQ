@@ -1,4 +1,5 @@
 .question data= question.id
+
   / detail view for question
   - if detail
     / question body
@@ -43,7 +44,7 @@
         p= f.submit t('question.button.save')
 
     / question votes
-    .col-xs-12.col-sm-4.votes id='question#{question.id}'
-      = render 'questions/votes', votable: @question
+    .col-xs-12.col-sm-4.question_votes id='votes_#{ dom_id(@question) }'
+      = render 'votes/votes', votable: @question
 
 
