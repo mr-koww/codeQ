@@ -52,3 +52,9 @@ $ ->
     notice = response.notice
 
     $('.notice').html(notice);
+
+  # -----Update votes-----
+  $('.answer_votes').bind 'ajax:success', (e, data, status, xhr) ->
+    response = $.parseJSON(xhr.responseText);
+    class_id = '#votes_'+response.class + '_' + response.id
+    $(class_id).html(JST["templates/answers/votes"](response))

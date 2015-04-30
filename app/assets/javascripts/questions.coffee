@@ -11,8 +11,8 @@ $ ->
   $(document).on 'click', '.edit-question-link', showEditQuestionForm;
 
   # -----Update votes-----
-  $('.votes').bind 'ajax:success', (e, data, status, xhr) ->
+  $('.question_votes').bind 'ajax:success', (e, data, status, xhr) ->
     response = $.parseJSON(xhr.responseText);
-    class_id = '#'+response.class + response.id
+    class_id = '#votes_'+response.class + '_' + response.id
     $(class_id).html(JST["templates/questions/votes"](response))
 
