@@ -19,7 +19,6 @@ feature 'User can votes for the question', %q{
       end
 
       scenario 'as like' do
-        #unvote_link = find(:xpath, "//a[contains(@href,'questions/1/unvote')]")
         click_on 'Like'
 
         within '.question' do
