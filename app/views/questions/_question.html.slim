@@ -47,4 +47,12 @@
     .col-xs-12.col-sm-4.question_votes id='votes_#{ dom_id(@question) }'
       = render 'votes/votes', votable: @question
 
+  / view for index page
+  - else
+    .col-xs-12.col-sm-12
+      h3= link_to question.title, question
+      hr
+      p= question.body
+
+
 
