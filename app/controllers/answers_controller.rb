@@ -35,7 +35,7 @@ class AnswersController < ApplicationController
   end
 
   def answer_author?
-    json_error_response(:forbidden, 'Only author can update/delete answer') unless current_user == @answer.user
+    json_error_response(:forbidden, 'Only author can update/delete answer') unless current_user.id == @answer.user_id
   end
 
   def load_question
@@ -43,7 +43,8 @@ class AnswersController < ApplicationController
   end
 
   def question_author?
-    json_error_response(:forbidden, 'Only author question can check the best answer') unless current_user == @answer.question.user
+    @question = @answer.question
+    json_error_response(:forbidden, 'Only author question can check the best answer') unless current_user == @question.user
   end
 
   def answer_params
