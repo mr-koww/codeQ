@@ -70,11 +70,6 @@ let(:file) { create(:attachment, attachable: answer) }
         expect(answer.body).to eq 'New Answer Body'
       end
 
-      it 'assigns the question' do
-        patch :update, id: answer, answer: attributes_for(:answer), question_id: question, format: :json
-        expect(assigns(:question)).to eq question
-      end
-
       it 'render 200 response status' do
         patch :update, id: answer, answer: attributes_for(:answer), question_id: question, format: :json
         expect(response).to have_http_status(200)
@@ -124,9 +119,9 @@ let(:file) { create(:attachment, attachable: answer) }
         expect { delete :destroy, id: answer.id, question_id: question, format: :js }.to_not change(Answer, :count)
       end
 
-      it 'redirect to questions' do
+      it 'renders Forbidden status' do
         delete :destroy, id: answer.id, question_id: question, format: :js
-        expect(response).to redirect_to question_path(question)
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end
