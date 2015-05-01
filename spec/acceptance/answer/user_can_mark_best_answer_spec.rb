@@ -21,7 +21,7 @@ feature 'User can mark best answer', %q{
     end
 
     scenario 'mark best one of the answer', js: true do
-      within "#answer-#{ answers[1].id }" do
+      within "#answer_#{ answers[1].id }" do
         click_on I18n.t('answer.button.best')
       end
 
@@ -31,18 +31,18 @@ feature 'User can mark best answer', %q{
     end
 
     scenario 'mark best another of the answer', js: true do
-      within "#answer-#{ answers[1].id }" do
+      within "#answer_#{ answers[1].id }" do
         click_on I18n.t('answer.button.best')
       end
-      within "#answer-#{ answers[2].id }" do
+      within "#answer_#{ answers[2].id }" do
         click_on I18n.t('answer.button.best')
       end
 
-      within "#answer-#{ answers[1].id }" do
+      within "#answer_#{ answers[1].id }" do
         expect(page).to_not have_content I18n.t('answer.label.best')
       end
 
-      within "#answer-#{ answers[2].id }" do
+      within "#answer_#{ answers[2].id }" do
         expect(page).to have_content I18n.t('answer.label.best')
       end
 

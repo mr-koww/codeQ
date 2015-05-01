@@ -1,0 +1,12 @@
+.row
+  .col-sm-4
+    span= @value
+  - if @type == 'vote'
+    .col-sm-4
+      a.edit-answer-link data-answer-id="#{@id}" data-remote="true" data-method="patch" rel="nofollow" href="/questions/#{@id}/unvote" Unvote
+    .col-sm-4
+  - else
+    .col-sm-4
+      a.edit-answer-link data-answer-id="#{@id}" data-remote="true" data-method="patch" rel="nofollow" href="/questions/#{@id}/like" Like
+    .col-sm-4
+      a.edit-answer-link data-answer-id="#{@id}" data-remote="true" data-method="patch" rel="nofollow" href="/questions/#{@id}/dislike" Dislike

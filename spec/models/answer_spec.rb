@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
 
+  it { should validate_presence_of :question }
   it { should validate_presence_of :body }
   it { should validate_presence_of :user }
   it { should validate_length_of(:body).is_at_least(5).is_at_most(250) }
@@ -26,6 +27,33 @@ RSpec.describe Answer, type: :model do
     it 'best anwer must be show first in list' do
       question.answers.reload
       expect(question.answers.first).to eq answer
+    end
+  end
+
+  describe 'Votable' do
+    let(:user) { create(:user) }
+    let(:question) { create(:question, user:user) }
+    let(:answer) { create(:answer, user: user, question: question ) }
+
+    it 'votes as like' do
+      answer.vote(user, 1)
+
+      expect(user.votes.find_by(votable: answer).value).to eq 1
+      expect(Vote.where(user_id: user, votable: answer).count).to eq 1
+    end
+
+    it 'votes as dislike' do
+      answer.vote(user, -1)
+
+      expect(user.votes.find_by(votable: answer).value).to eq -1
+      expect(Vote.where(user_id: user, votable: answer).count).to eq 1
+    end
+
+    it 'unvotes' do
+      answer.vote(user, 1)
+      answer.unvote(user)
+
+      expect(Vote.where(user_id: user, votable: answer).count).to eq 0
     end
   end
 end

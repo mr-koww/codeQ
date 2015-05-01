@@ -1,0 +1,14 @@
+.row
+  .col-sm-4
+    span= votable.total_votes
+
+  - if user_signed_in? && votable.user_id != current_user.id
+    - if votable.voted_by? current_user
+      .col-sm-4
+        = link_to 'Unvote', polymorphic_path([:unvote, votable]), method: :patch, remote: true
+      .col-sm-4
+    - else
+      .col-sm-4
+        = link_to 'Like', polymorphic_path([:like, votable]), method: :patch, remote: true
+      .col-sm-4
+        = link_to 'Dislike', polymorphic_path([:dislike, votable]), method: :patch, remote: true

@@ -1,0 +1,46 @@
+div class="answer" id="answer_#{ @id }"
+
+  / best answer mark
+  - if @best
+    = @i18n.best
+
+  p= @body
+
+  / attachments
+  - if @attachments.length >= 1
+    p= @i18n.attachment_label
+    ul
+      - for attachment in @attachments
+        li
+          a href= attachment.url
+            = attachment.filename
+  / link to select best answer isnt necessary
+
+  / link to edit & delete answer
+  p
+    a.edit-answer-link data-answer-id="#{@id}" data-remote="true" rel="nofollow" href="#" #{@i18n.edit}
+  p
+    a.delete-answer-link data-answer-id="#{@id}" data-remote="true" rel="nofollow" href="/questions/#{@question_id}/answers/#{@id}/" data-confirm="#{@i18n.delete_confirm}" data-method="delete" #{@i18n.delete}
+
+  / БРЕД !!!
+  p
+    form.edit_answer id="edit_answer_#{@id}" data-type="json" data-answer-id="#{@id}" enctype="multipart/form-data" action="/questions/#{@question_id}/answers/#{@id}" accept-charset="UTF-8" data-remote="true" method="post" style="display: none;"
+      input name="utf8" type="hidden" value="✓"
+      input type="hidden" name="_method" value="patch"
+      p
+        label for="answer_body" Ваш ответ
+      p
+        textarea name="answer[body]" id="answer_body" #{@body}
+      p
+        a.add_nested_fields data-association="attachments" data-blueprint-id="answer_attachments_fields_blueprint" href="javascript:void(0)" Прикрепить файл
+      - if @attachments.length >= 1
+        - for attachment in @attachments
+          div.fields
+            p= attachment.filename
+            p
+              input type="hidden" value="false" name="answer[attachments_attributes][0][_destroy]" id="answer_attachments_attributes_0__destroy"
+              a.remove_nested_fields data-association="attachments" href="javascript:void(0)" Удалить файл
+            input type="hidden" value="#{attachment.id}" name="answer[attachments_attributes][0][id]" id="answer_attachments_attributes_0_id"
+      p
+        input type="submit" name="commit" value="Сохранить ответ"
+        <div id="answer_attachments_fields_blueprint" style="display: none" data-blueprint="<div class=&quot;fields&quot;><p><label for=&quot;answer_attachments_attributes_new_attachments_Файл:&quot;>Файл:</label></p><p><input type=&quot;file&quot; name=&quot;answer[attachments_attributes][new_attachments][file]&quot; id=&quot;answer_attachments_attributes_new_attachments_file&quot; /></p><p><input type=&quot;hidden&quot; value=&quot;false&quot; name=&quot;answer[attachments_attributes][new_attachments][_destroy]&quot; id=&quot;answer_attachments_attributes_new_attachments__destroy&quot; /><a class=&quot;remove_nested_fields&quot; data-association=&quot;attachments&quot; href=&quot;javascript:void(0)&quot;>Отменить</a></p></div>"></div>

@@ -13,6 +13,11 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.remotipart
-//= require turbolinks
 //= require jquery_nested_form
+//= require skim
+//= require twitter/bootstrap
+//= require_tree ./templates
 //= require_tree .
+
+
+// window.setTimeout(function() { $(".alert").alert('close'); }, 3500);

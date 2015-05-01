@@ -11,10 +11,10 @@ RSpec.describe AttachmentsController, type: :controller do
   # User who not written anything
   let(:user_another) { create(:user) }
 
-  let(:question) { create(:question, user: user_question) }
+  let!(:question) { create(:question, user: user_question) }
   let(:file_question) { create(:attachment, attachable: question) }
 
-  let(:answer) { create(:answer, user: user_answer) }
+  let(:answer) { create(:answer, user: user_answer, question: question) }
   let(:file_answer) { create(:attachment, attachable: answer) }
 
   describe 'DELETE #destroy' do

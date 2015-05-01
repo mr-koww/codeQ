@@ -44,6 +44,7 @@ ru:
         fail: ""
     confirm:
       delete: "Удалить ответ?"
+      best: "Этот ответ Вы считаете правильным?"
 
   attachment:
     label:
@@ -55,3 +56,5 @@ ru:
       cancel: "Отменить"
     confirm: "Удалить файл?"
 
+  response:
+    forbidden: "Запрещено"

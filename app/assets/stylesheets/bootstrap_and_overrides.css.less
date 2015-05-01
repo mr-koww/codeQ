@@ -1,0 +1,50 @@
+@import "twitter/bootstrap/bootstrap";
+
+// Set the correct sprite paths
+@iconSpritePath: image-url("twitter/bootstrap/glyphicons-halflings.png");
+@iconWhiteSpritePath: image-url("twitter/bootstrap/glyphicons-halflings-white.png");
+
+// Set the Font Awesome (Font Awesome is default. You can disable by commenting below lines)
+@fontAwesomeEotPath: font-url("fontawesome-webfont.eot");
+@fontAwesomeEotPath_iefix: font-url("fontawesome-webfont.eot?#iefix");
+@fontAwesomeWoffPath: font-url("fontawesome-webfont.woff");
+@fontAwesomeTtfPath: font-url("fontawesome-webfont.ttf");
+@fontAwesomeSvgPath: font-url("fontawesome-webfont.svg#fontawesomeregular");
+
+// Font Awesome
+@import "fontawesome/font-awesome";
+
+/*серый фон страницы*/
+@body-bg: #f8f8f8;
+
+/*если ширина экрана больше 992px, то ширина контейнера 960px*/
+@container-md: 960px;
+
+/*если ширина экрана больше 1200px, то ширина контейнера так же 960px*/
+@container-lg: @container-md;
+
+/*убираем скругление у блоков*/
+@border-radius-base: 0;
+
+/*фон панелей*/
+@panel-bg: #f3f3f3;
+
+body {
+    .heading {
+      height: 40px;
+      margin: 10px 0;
+      padding-left: 10px;
+
+      h1 {
+        display: inline-block;
+        color: #7e7e7e;
+        font: normal 30px/40px sans-serif;
+        margin: 0;
+        padding: 0 0px;
+      }
+  }
+}
+
+.list-group-item {
+  background: #f8f8f8;
+}
