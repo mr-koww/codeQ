@@ -10,3 +10,5 @@
   hr
   .row.new_answer
     = render 'answers/new', question: @question, answer: @answer
+
+= subscribe_to "/questions/#{@question.id}/answers"
