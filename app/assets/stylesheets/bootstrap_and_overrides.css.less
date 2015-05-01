@@ -23,10 +23,13 @@
 /*если ширина экрана больше 1200px, то ширина контейнера так же 960px*/
 @container-lg: @container-md;
 
+/*убираем скругление у блоков*/
+@border-radius-base: 0;
+
+/*фон панелей*/
+@panel-bg: #f3f3f3;
+
 body {
-
-
-
     .heading {
       height: 40px;
       margin: 10px 0;
@@ -39,6 +42,9 @@ body {
         margin: 0;
         padding: 0 0px;
       }
-
   }
+}
+
+.list-group-item {
+  background: #f8f8f8;
 }
