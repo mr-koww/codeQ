@@ -44,6 +44,7 @@ en:
         fail: ""
     confirm:
       delete: "Delete answer?"
+      best: "This is the best answer?"
 
   attachment:
     label:
