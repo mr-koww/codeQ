@@ -1,0 +1,7 @@
+= form_for [commentable, Comment.new], remote: true, data: { type: :json } do |f|
+  .row
+    .col-md-8
+      .form-group
+        = f.label :comment
+        = f.text_area :body, class: "form-control", rows: 10
+      = f.submit 'Add', class: "btn btn-default"
