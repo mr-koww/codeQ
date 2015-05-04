@@ -11,4 +11,5 @@
   .row.new_answer
     = render 'answers/new', question: @question, answer: @answer
 
-= subscribe_to "/questions/#{@question.id}/answers"
+= subscribe_to "/questions/#{ @question.id }/comments"
+= subscribe_to "/questions/#{ @question.id }/answers"
