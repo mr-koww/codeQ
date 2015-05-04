@@ -56,5 +56,14 @@ ru:
       cancel: "Отменить"
     confirm: "Удалить файл?"
 
-  response:
-    forbidden: "Запрещено"
+  comment:
+    notice:
+      create:
+        success: 'Комментарий добавлен!'
+        fail: 'Комментарий не добавлен!'
+      update:
+        success: 'Комментарий изменен!'
+        fail: 'Комментарий не обновлен!'
+      destroy:
+        success: 'Комментарий удален!'
+        fail: 'Комментарий не удален!'
