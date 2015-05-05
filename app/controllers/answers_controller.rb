@@ -9,14 +9,18 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
+
     unless @answer.save
-      json_error_response(:unprocessable_entity, t('answer.notice.create.fail'), @answer.errors.full_messages[0])
+      render_json(:unprocessable_entity, 'error', t('answer.notice.create.fail'), @answer.errors.full_messages[0])
     end
+
+    PrivatePub.publish_to "/questions/#{ @question.id }/answers", answer: @answer.to_json
+    #render nothing: true
   end
 
   def update
     unless @answer.update(answer_params)
-      json_error_response(:unprocessable_entity, t('answer.notice.create.fail'), @answer.errors.full_messages[0])
+      render_json(:unprocessable_entity, 'error', t('answer.notice.update.fail'), @answer.errors.full_messages[0])
     end
   end
 
@@ -31,27 +35,23 @@ class AnswersController < ApplicationController
   private
 
   def load_answer
-    json_error_response(:not_found, 'Answer Not Found') unless @answer = Answer.find(params[:id])
+    render nothing: true, status: :not_found unless @answer = Answer.find(params[:id])
   end
 
   def answer_author?
-    json_error_response(:forbidden, 'Only author can update/delete answer') unless current_user.id == @answer.user_id
+    render nothing: true, status: :forbidden unless current_user.id == @answer.user_id
   end
 
   def load_question
-    json_error_response(:not_found, 'Question Not Found') unless @question = Question.find(params[:question_id])
+    render nothing: true, status: :not_found unless @question = Question.find(params[:question_id])
   end
 
   def question_author?
     @question = @answer.question
-    json_error_response(:forbidden, 'Only author question can check the best answer') unless current_user == @question.user
+    render nothing: true, status: :forbidden unless current_user == @question.user
   end
 
   def answer_params
     params.require(:answer).permit(:body, :question_id, attachments_attributes: [:id, :file, :_destroy])
-  end
-
-  def json_error_response(status, message, error = "")
-    render json: { message: message, errors: error }, status: status
   end
 end

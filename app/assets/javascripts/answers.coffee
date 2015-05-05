@@ -58,3 +58,21 @@ $ ->
     response = $.parseJSON(xhr.responseText);
     class_id = '#votes_'+response.class + '_' + response.id
     $(class_id).html(JST["templates/answers/votes"](response))
+
+  # -----VARIABLES-----
+  questionId = $('.question').data('questionId')
+
+  # -----ADD NEW ANSWER (for auhtor)-----
+  $('.new_answer').bind 'ajax:success', (e, data, status, xhr) ->
+    response = $.parseJSON(xhr.responseText);
+    answer = response.answer
+    answer_id = answer.id
+    if !($("#answer_" + answer_id).length)
+      $('.answers').append(JST["templates/answers/create"](answer))
+
+  # -----PUBLISH NEW ANSWER (for subcribers)-----
+  PrivatePub.subscribe '/questions/' + questionId + '/answers', (data, channel) ->
+    answer = $.parseJSON(data['answer'])
+    answer_id = answer.id
+    if !($("#answer_" + answer_id).length)
+      $('.answers').append(JST["templates/answers/create"](answer))

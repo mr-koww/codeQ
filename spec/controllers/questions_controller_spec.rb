@@ -341,5 +341,4 @@ let(:file) { create(:attachment) }
       end
     end
   end
-
 end

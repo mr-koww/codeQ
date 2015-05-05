@@ -1,12 +1,15 @@
-.row
+.row.question data= { question_id: "#{ @question.id }" }
   = render @question, detail: true
 
-- if @answers.any?
-  hr
-  .row.answers
+.row.answers
+  - if @answers.any?
+    hr
     = render @answers
 
 - if user_signed_in?
   hr
   .row.new_answer
     = render 'answers/new', question: @question, answer: @answer
+
+= subscribe_to "/questions/#{ @question.id }/comments"
+= subscribe_to "/questions/#{ @question.id }/answers"

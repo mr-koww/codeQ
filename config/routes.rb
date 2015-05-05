@@ -10,13 +10,16 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :questions, concerns: [:votable] do
-    resources :answers, only: [ :create, :update, :destroy ], concerns: [:votable], shallow: true do
+  resources :questions, concerns: [ :votable ] do
+    resources :answers, only: [ :create, :update, :destroy ], concerns: [ :votable ], shallow: true do
       put :best, on: :member
+      resources :comments, only: :create, defaults: { commentable: 'answer' }
     end
+    resources :comments, only: :create, defaults: { commentable: 'question' }
   end
 
-  resources :attachments, only: :destroy
+  resources :attachments, only: [ :destroy ]
+  resources :comments, only: [ :update, :destroy ]
 
   root to: "questions#index"
 
