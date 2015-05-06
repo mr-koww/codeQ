@@ -6,7 +6,7 @@ class QuestionsController < ApplicationController
   after_action  :publish_question, only: [ :create ]
   include Voted
 
-  respond_to :js
+  respond_to :html, :js, :json
 
   def index
     respond_with(@questions = Question.all)
