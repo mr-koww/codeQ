@@ -110,36 +110,48 @@ let(:file) { create(:attachment) }
 
 
   describe 'PATCH #update' do
-    before { sign_in_user(user_question) }
+    describe 'user try update own question' do
+      before { sign_in_user(user_question) }
 
-    context 'with valid attributes' do
-      it 'Assigns requested question to @question' do
-        patch :update, id: question, question: attributes_for(:question), format: :js
-        expect(assigns(:question)).to eq question
+      context 'with valid attributes' do
+        it 'assigns requested question to @question' do
+          patch :update, id: question, question: attributes_for(:question), format: :js
+          expect(assigns(:question)).to eq question
+        end
+
+        it 'changes question attributes' do
+          patch :update, id: question, question: { title: 'new default title', body: 'new default body' }, format: :js
+          question.reload
+          expect(question.title).to eq 'new default title'
+          expect(question.body).to eq 'new default body'
+        end
+
+        it 'render update template' do
+          patch :update, id: question, question: attributes_for(:question), format: :js
+          expect(response).to render_template :update
+        end
       end
-      it 'Changes question attributes' do
-        patch :update, id: question, question: { title: 'new default title', body: 'new default body' }, format: :js
-        question.reload
-        expect(question.title).to eq 'new default title'
-        expect(question.body).to eq 'new default body'
-      end
-      it 'render update template' do
-        patch :update, id: question, question: attributes_for(:question), format: :js
-        expect(response).to render_template :update
+
+
+      context 'with invalid attributes' do
+        before { patch :update, id: question, question: { title: 'new title', body: nil }, format: :js }
+        it 'does not change question attributes' do
+          question.reload
+          expect(question.title).to eq question.title
+          expect(question.body).to eq question.body
+        end
+
+        it 'render update template' do
+          expect(response).to render_template :update
+        end
       end
     end
 
-    context 'with invalid attributes' do
-      before { patch :update, id: question, question: { title: 'new title', body: nil }, format: :js }
-
-      it 'Does not change question attributes' do
-        question.reload
-        expect(question.title).to eq question.title
-        expect(question.body).to eq question.body
-      end
-
-      it 'render update template' do
-        expect(response).to render_template :update
+    describe 'user try update not own question' do
+      it 'has Forbidden response status' do
+        sign_in_user(another_user)
+        patch :update, id: question, question: { title: 'new default title', body: 'new default body' }, format: :js
+        expect(response).to have_http_status(403)
       end
     end
   end
@@ -156,9 +168,9 @@ let(:file) { create(:attachment) }
         expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
       end
 
-      it 'redirect to questions' do
+      it 'has OK response status' do
         delete :destroy, id: question
-        expect(response).to redirect_to questions_path
+        expect(response).to have_http_status(200)
       end
     end
 
@@ -172,9 +184,9 @@ let(:file) { create(:attachment) }
         expect { delete :destroy, id: question }.to_not change(Question, :count)
       end
 
-      it 'redirect to questions' do
+      it 'has Forbidden response status' do
         delete :destroy, id: question
-        expect(response).to redirect_to question_path(question)
+        expect(response).to have_http_status(403)
       end
     end
   end
