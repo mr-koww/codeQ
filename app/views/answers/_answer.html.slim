@@ -1,4 +1,4 @@
-.col-xs-12.col-sm-8.answer id="#{ dom_id(answer) }"
+.col-xs-12.col-sm-8.answer id="#{dom_id(answer)}"
   / best answer mark
   - if answer.best
     = I18n.t('answer.label.best')
@@ -25,13 +25,13 @@
       p= link_to t('answer.button.delete'), answer_path(answer), method: :delete, remote: true, data: { :confirm => I18n.t('answer.confirm.delete') }
 
     / hidden form for edit answer
-    p= nested_form_for [answer], remote: true, data: { type: :json, answer_id: answer.id } do |f|
+    p= nested_form_for answer, remote: true, data: { type: :json, answer_id: answer.id } do |f|
       p= f.label :body, t('answer.label.title')
       p= f.text_area :body
       p= f.link_to_add t('attachment.button.add'), :attachments
 
       / attachments
-      p= f.fields_for :attachments do |attach_form|
+      p= f.fields_for :attachments, answer.attachments.build do |attach_form|
         - if attach_form.object.new_record?
           p= attach_form.label t('attachment.label.file')
           p= attach_form.file_field :file

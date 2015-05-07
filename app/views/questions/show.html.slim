@@ -2,9 +2,9 @@
   = render @question, detail: true
 
 .row.answers
-  - if @answers.any?
-    hr
-    = render @answers
+  - @question.answers.each do |answer|
+    - if answer.persisted?
+      = render 'answers/answer', answer: answer
 
 - if user_signed_in?
   hr

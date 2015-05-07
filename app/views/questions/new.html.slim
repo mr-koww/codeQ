@@ -6,7 +6,7 @@
   p= t('attachment.label.title')
   p= f.link_to_add t('attachment.button.add'), :attachments
 
-  p= f.fields_for :attachments do |attachment_form|
+  p= f.fields_for :attachments, @question.attachments.build do |attachment_form|
     p= attachment_form.label t('attachment.label.file')
     p= attachment_form.file_field :file
     p= attachment_form.link_to_remove t('attachment.button.cancel')

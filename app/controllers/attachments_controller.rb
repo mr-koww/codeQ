@@ -1,8 +1,9 @@
 class AttachmentsController < ApplicationController
-
-  before_action :load_attachment
   before_action :authenticate_user!
-  before_action :check_access
+  before_action :load_attachment
+  before_action :author_attachment?
+
+  respond_to :js, :json
 
   def destroy
     @attachment.destroy
@@ -14,10 +15,7 @@ class AttachmentsController < ApplicationController
     @attachment = Attachment.find(params[:id])
   end
 
-  def check_access
-    if @attachment.attachable.user_id != current_user.id
-      render text: 'You don\'t have permission to view this page.', status: :forbidden
-    end
+  def author_attachment?
+    render nothing: true, status: :forbidden unless @attachment.attachable.user_id == current_user.id
   end
-
 end

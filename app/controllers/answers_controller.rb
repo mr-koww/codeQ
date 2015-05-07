@@ -4,38 +4,32 @@ class AnswersController < ApplicationController
   before_action :answer_author?, only: [ :update, :destroy ]
   before_action :load_question, only: [ :create ]
   before_action :question_author?, only: [ :best ]
+  after_action  :publish_answer, only: [ :create ]
   include Voted
 
+  respond_to :html, :js, :json
+
   def create
-    @answer = @question.answers.new(answer_params)
-    @answer.user = current_user
-
-    unless @answer.save
-      render_json(:unprocessable_entity, 'error', t('answer.notice.create.fail'), @answer.errors.full_messages[0])
-    end
-
-    PrivatePub.publish_to "/questions/#{ @question.id }/answers", answer: @answer.to_json
-    #render nothing: true
+    respond_with(@answer = @question.answers.create(answer_params))
   end
 
   def update
-    unless @answer.update(answer_params)
-      render_json(:unprocessable_entity, 'error', t('answer.notice.update.fail'), @answer.errors.full_messages[0])
-    end
+    @answer.update(answer_params)
+    respond_with @answer
   end
 
   def destroy
-    @answer.destroy
+    respond_with(@answer.destroy)
   end
 
   def best
-    @answer.best!
+    respond_with(@answer.best!)
   end
 
   private
 
   def load_answer
-    render nothing: true, status: :not_found unless @answer = Answer.find(params[:id])
+    @answer = Answer.find(params[:id])
   end
 
   def answer_author?
@@ -43,15 +37,20 @@ class AnswersController < ApplicationController
   end
 
   def load_question
-    render nothing: true, status: :not_found unless @question = Question.find(params[:question_id])
+    @question = Question.find(params[:question_id])
   end
 
   def question_author?
     @question = @answer.question
-    render nothing: true, status: :forbidden unless current_user == @question.user
+    render nothing: true, status: :forbidden unless current_user.id == @question.user_id
   end
 
   def answer_params
     params.require(:answer).permit(:body, :question_id, attachments_attributes: [:id, :file, :_destroy])
+      .merge(user_id: current_user.id)
+  end
+
+  def publish_answer
+    PrivatePub.publish_to "/questions/#{ @question.id }/answers", answer: @answer.to_json
   end
 end

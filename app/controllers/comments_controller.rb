@@ -3,44 +3,27 @@ class CommentsController < ApplicationController
   before_action :load_commentable, only: [ :create ]
   before_action :load_comment, only: [ :update, :destroy ]
   before_action :comment_author?, only: [ :update, :destroy ]
+  after_action  :publish_comment, only: [ :create ]
 
-  respond_to :json
+  respond_to :js, :json
 
   def create
-    @comment = @commentable.comments.new(comment_params)
-    @comment.user = current_user
-
-    if @comment.save
-      publish(@comment.to_json)
-      render_json(:ok, 'create', t('comment.notice.create.success'), @comment)
-    else
-      render_json(:unprocessable_entity, 'error', t('comment.notice.update.fail'), @comment.errors.full_messages)
-    end
+    respond_with(@comment = @commentable.comments.create(comment_params))
   end
-
 
   def update
-    if @comment.update(comment_params)
-      publish(@comment.to_json)
-      render_json(:ok, 'create', t('comment.notice.update.success'), @comment)
-    else
-      render_json(:unprocessable_entity, 'error', t('comment.notice.update.fail'), @comment.errors.full_messages)
-    end
+    @comment.update(comment_params)
+    respond_with @comment
   end
 
-
   def destroy
-    if @comment.destroy
-      render_json(:ok, 'destroy', t('comment.notice.destroy.success'))
-    else
-      render_json(:unprocessable_entity, 'error', t('comment.notice.destoy.fail'), @comment.errors.full_messages)
-    end
+    respond_with(@comment.destroy)
   end
 
   private
 
   def comment_params
-    params.require(:comment).permit(:body)
+    params.require(:comment).permit(:body).merge(user_id: current_user.id)
   end
 
   def load_commentable
@@ -57,10 +40,10 @@ class CommentsController < ApplicationController
     render nothing: true, status: :forbidden unless current_user.id == @comment.user_id
   end
 
-  def publish(data)
+  def publish_comment
     commentable_type = @comment.commentable_type.underscore.pluralize
     commentable_id = @comment.commentable_id
     channel = "/#{ commentable_type }/#{ commentable_id }/comments"
-    PrivatePub.publish_to channel, data: data
+    PrivatePub.publish_to channel, comment: @comment.to_json
   end
 end
