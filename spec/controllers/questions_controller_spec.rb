@@ -167,11 +167,6 @@ let(:file) { create(:attachment) }
       it 'delete the question from the database' do
         expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
       end
-
-      it 'has OK response status' do
-        delete :destroy, id: question
-        expect(response).to have_http_status(200)
-      end
     end
 
     context 'user try delete not his question' do

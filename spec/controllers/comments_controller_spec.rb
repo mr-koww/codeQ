@@ -22,11 +22,6 @@ describe CommentsController, type: :controller do
         it 'associates the new comment with the question' do
           expect { create_question_comment }.to change(question.comments, :count).by(1)
         end
-
-        it 'has OK response status' do
-          create_question_comment
-          expect(response).to have_http_status(200)
-        end
       end
 
       context 'with invalid attributes' do
@@ -68,11 +63,6 @@ describe CommentsController, type: :controller do
 
         it 'associates the new comment with the answer' do
           expect { create_answer_comment }.to change(answer.comments, :count).by(1)
-        end
-
-        it 'has OK response status' do
-          create_answer_comment
-          expect(response).to have_http_status(200)
         end
       end
 
@@ -120,11 +110,6 @@ describe CommentsController, type: :controller do
           comment.reload
           expect(comment.body).to eq 'New comment'
         end
-
-        it 'has OK response status' do
-          update_question_comment
-          expect(response).to have_http_status(200)
-        end
       end
 
       context 'with invalid attributes' do
@@ -171,11 +156,6 @@ describe CommentsController, type: :controller do
       it 'deletes comment from the database' do
         expect { destroy_question_comment }.to change(Comment, :count).by(-1)
       end
-
-      it 'has OK response status' do
-        destroy_question_comment
-        expect(response).to have_http_status(200)
-      end
     end
 
     context 'when auth user tries destroy not own comment' do
@@ -187,5 +167,4 @@ describe CommentsController, type: :controller do
       end
     end
   end
-
 end
