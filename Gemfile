@@ -53,6 +53,7 @@ gem 'responders'
 
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'omniauth-github'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -62,6 +63,8 @@ gem 'omniauth-facebook'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+
+gem "letter_opener", :group => :development
 
 group :development, :test do
   gem 'rspec-rails'
