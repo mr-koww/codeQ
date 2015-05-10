@@ -19,7 +19,3 @@
 /.idea/
 
 /public/uploads
-
-config/secrets.yml
-
-config/secrets.yml
