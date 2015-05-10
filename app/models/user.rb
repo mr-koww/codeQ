@@ -1,9 +1,9 @@
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+  EMAIL_REG = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, omniauth_providers: [:facebook]
+         :confirmable, :omniauthable, omniauth_providers: [:facebook, :github]
 
   has_many :questions
   has_many :answers
@@ -14,13 +14,20 @@ class User < ActiveRecord::Base
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
     return authorization.user if authorization
 
-    email = auth.info[:email]
+    if auth.info[:email] =~ EMAIL_REG
+      email = auth.info[:email]
+    else
+      email = "#{auth.uid.to_s}@#{auth.provider}.com"
+    end
+
     user = User.where(email: email).first
     if user
       user.create_authorization(auth)
     else
       password = Devise.friendly_token[0, 20]
-      user = User.create!(email: email, password: password, password_confirmation: password)
+      user = User.new(email: email, password: password, password_confirmation: password)
+      user.skip_confirmation!
+      user.save!
       user.create_authorization(auth)
     end
     user
