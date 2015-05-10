@@ -1,0 +1,4 @@
+p= form_for @user, remote: true do |f|
+  p= f.label 'Email'
+  p= f.email_field :email, value: ""
+  p= f.submit 'Send'
