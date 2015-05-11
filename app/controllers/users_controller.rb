@@ -34,7 +34,7 @@ class UsersController < ApplicationController
       flash[:alert] = t('users.email.notice.change.empty')
     elsif @user.email == user_params[:email]
       flash[:notice] = t('users.email.notice.change.same')
-    elsif
+    else
       existing_user = User.where(email: user_params[:email]).first
       if existing_user
         flash[:alert] = t('users.email.notice.change.busy')
