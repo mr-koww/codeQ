@@ -2,7 +2,9 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
 
-  resources :users, only: [ :show, :update ]
+  resources :users, only: [ :show, :update ] do
+    patch :change_email, on: :member
+  end
 
   concern :votable do
     member do
