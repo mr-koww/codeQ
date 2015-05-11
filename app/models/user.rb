@@ -1,6 +1,4 @@
 class User < ActiveRecord::Base
-  EMAIL_REG = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/
-
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :confirmable, :omniauthable, omniauth_providers: [:facebook, :github, :twitter]
@@ -14,7 +12,7 @@ class User < ActiveRecord::Base
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
     return authorization.user if authorization
 
-    if auth.info[:email] =~ EMAIL_REG
+    if auth.info[:email] =~ Devise.email_regexp
       email = auth.info[:email]
     else
       email = "#{auth.uid.to_s}@#{auth.provider}.com"
