@@ -7,6 +7,10 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     sign_in_oauth('Github')
   end
 
+  def twitter
+    sign_in_oauth('Twitter')
+  end
+
   private
 
   def sign_in_oauth(provider)
