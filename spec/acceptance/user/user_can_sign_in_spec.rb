@@ -1,4 +1,4 @@
-require_relative 'acceptance_helper'
+require_relative '../acceptance_helper'
 
 feature 'User can sign in', type: :feature do
   given!(:user) { create(:user) }
