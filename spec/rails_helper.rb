@@ -11,6 +11,7 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include Devise::TestHelpers, type: :controller
   config.include ControllerMacros, type: :controller
+  config.extend OmniauthMacros
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
@@ -18,3 +19,5 @@ RSpec.configure do |config|
 
   config.infer_spec_type_from_file_location!
 end
+
+OmniAuth.config.test_mode = true

@@ -44,12 +44,16 @@ gem 'skim'
 
 gem "twitter-bootstrap-rails"
 
-gem 'simple_form'
-
 gem 'private_pub'
 gem 'thin'
 
 gem 'responders'
+
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-github'
+gem 'omniauth-twitter'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -58,6 +62,8 @@ gem 'responders'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+
+gem "letter_opener", :group => :development
 
 group :development, :test do
   gem 'rspec-rails'

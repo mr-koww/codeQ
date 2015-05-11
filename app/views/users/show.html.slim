@@ -1,0 +1,4 @@
+p= form_for @user, url: { action: "change_email" }, method: :patch do |f|
+  p= f.label t('users.email.label.title')
+  p= f.email_field :email, value: ""
+  p= f.submit t('users.email.button.change')

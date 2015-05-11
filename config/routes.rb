@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
 
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
+
+  resources :users, only: [ :show, :update ] do
+    patch :change_email, on: :member
+  end
 
   concern :votable do
     member do
@@ -21,7 +25,7 @@ Rails.application.routes.draw do
   resources :attachments, only: [ :destroy ]
   resources :comments, only: [ :update, :destroy ]
 
-  root to: "questions#index"
+  root to: 'questions#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

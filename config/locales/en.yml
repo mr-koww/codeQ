@@ -1,4 +1,16 @@
 en:
+  users:
+    email:
+      label:
+        title: "Email"
+      button:
+        change: "Change email"
+      notice:
+        change:
+          empty: "Enter your Email!"
+          same: "Your entered your Email!"
+          busy: "Email is already use!"
+          fail: "Error! Check Email!"
   question:
     label:
       title: "Title"
