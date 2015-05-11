@@ -1,4 +1,12 @@
 ru:
+  users:
+    email:
+      notice:
+        change:
+          empty: "Укажите Email!"
+          same: "Вы указали свой Email!"
+          busy: "Этот Email уже зарегистрирован!"
+          fail: "Ошибка! Проверьте правильность Email!"
   question:
     label:
       title: "Вопрос"
