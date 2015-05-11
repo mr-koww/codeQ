@@ -14,8 +14,9 @@
 
 /config/private_pub.yml
 /config/database.yml
-/config/secrets.yml
 
 /.idea/
 
 /public/uploads
+
+config/secrets.yml
