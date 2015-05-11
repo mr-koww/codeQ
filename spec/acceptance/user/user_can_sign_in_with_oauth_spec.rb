@@ -22,5 +22,13 @@ feature 'User can authenticate through OAuth', %q{
 
       expect(page).to have_content I18n.t('devise.omniauth_callbacks.success', kind: 'Github')
     end
+
+    twitter_mock
+    scenario 'Twitter' do
+      visit new_user_session_path
+      click_on 'Sign in with Twitter'
+
+      expect(page).to have_content I18n.t('devise.omniauth_callbacks.success', kind: 'Twitter')
+    end
   end
 end
