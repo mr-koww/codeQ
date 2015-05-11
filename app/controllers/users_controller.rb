@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_user
   before_action :correct_user?
-  before_action :check_email?, only: [ :change_email ]
+  before_action :check_email, only: [ :change_email ]
   respond_to :html, :json
 
   def show
@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     render nothing: true, status: :forbidden unless current_user.id == @user.id
   end
 
-  def check_email?
+  def check_email
     if user_params[:email].empty?
       flash[:alert] = t('users.email.notice.change.empty')
     elsif @user.email == user_params[:email]
