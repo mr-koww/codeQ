@@ -11,4 +11,8 @@ class ApplicationController < ActionController::Base
   def render_json(status, type, notice = "", data = "")
     render json: { type: type, data: data, notice: notice }, status: status
   end
+
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_url, alert: exception.message
+  end
 end
