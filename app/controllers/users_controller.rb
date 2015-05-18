@@ -3,7 +3,10 @@ class UsersController < ApplicationController
   before_action :load_user
   before_action :correct_user?
   before_action :check_email, only: [ :change_email ]
+  
   respond_to :html, :json
+
+  authorize_resource
 
   def show
   end

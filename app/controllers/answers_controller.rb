@@ -9,6 +9,8 @@ class AnswersController < ApplicationController
 
   respond_to :html, :js, :json
 
+  authorize_resource
+
   def create
     respond_with(@answer = @question.answers.create(answer_params))
   end
