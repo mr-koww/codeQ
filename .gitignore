@@ -12,11 +12,13 @@
 !/log/.keep
 /tmp
 
-/config/private_pub.yml
+
 /config/database.yml
+/config/private_pub.yml
+/config/secrets.yml
 
 /.idea/
 
 /public/uploads
 
-config/secrets.yml
+
