@@ -1,14 +1,11 @@
-/ DETAIL VIEW FOR QUESTION
+/ DETAIL question view
 - if detail
   .row
     .col-xs-12.col-sm-8
-
-      / BODY
-      h3 = question.title
+      h3= question.title
       hr
       p= question.body
 
-      / ATACHMENTS
       - if question.attachments.present?
         p= t('attachment.label.title')
         ul
@@ -17,52 +14,46 @@
               li
                 p= link_to attachment.file.filename, attachment.file.url
 
-      / DELETE/EDIT link
-      - if current_user && current_user.id == question.user_id
-        p= link_to t('question.button.delete'), question_path(question), method: :delete, data: { :confirm => I18n.t('question.confirm.delete') }
+      - if can?(:edit, question)
         p= link_to t('question.button.edit'), '', class: 'edit-question-link', data: { question_id: question.id }
+        / hidden edit form
+        .question-errors
+        p= nested_form_for question, remote: true, html: { id: "edit-question-#{ question.id }" } do |f|
+          p= f.label t('question.label.title')
+          p= f.text_area :title
+          p= f.label t('question.label.describe')
+          p= f.text_area :body
+          p= f.link_to_add t('attachment.button.add'), :attachments
+          p= f.fields_for :attachments do |attach_form|
+            - if attach_form.object.new_record?
+              p= attach_form.label t('attachment.label.file')
+              p= attach_form.file_field :file
+              p= attach_form.link_to_remove t('attachment.button.cancel')
+            - else
+              p= attach_form.object.file.identifier
+              p= attach_form.link_to_remove t('attachment.button.delete')
+          p= f.submit t('question.button.save')
 
-      / hidden EDIT FORM
-      .question-errors
-      p= nested_form_for question, remote: true, html: { id: "edit-question-#{ question.id }" } do |f|
-        p= f.label t('question.label.title')
-        p= f.text_area :title
-        p= f.label t('question.label.describe')
-        p= f.text_area :body
-        p= f.link_to_add t('attachment.button.add'), :attachments
+      - if can?(:destroy, question)
+        p= link_to t('question.button.delete'), question_path(question), method: :delete, data: { confirm: I18n.t('question.confirm.delete') }
 
-        / FORM FOR ATTACHMENTS
-        p= f.fields_for :attachments do |attach_form|
-          - if attach_form.object.new_record?
-            p= attach_form.label t('attachment.label.file')
-            p= attach_form.file_field :file
-            p= attach_form.link_to_remove t('attachment.button.cancel')
-          - else
-            p= attach_form.object.file.identifier
-            p= attach_form.link_to_remove t('attachment.button.delete')
-
-        p= f.submit t('question.button.save')
-
-      / VOTES
+    / votes
     .col-xs-12.col-sm-4.question_votes id='votes_#{ dom_id(@question) }'
       = render 'votes/votes', votable: @question
 
-  / COMMENTS
+  / comments
   .row.question_comments
     .col-sm-12
       = render partial: 'comments/comments', object: question, as: 'commentable'
 
-  - if user_signed_in?
-    .row.new_comment
-      .col-sm-12
-        = render partial: 'comments/form', object: question, as: 'commentable'
+    - if can?(:create, Comment)
+      .row.new_comment
+        .col-sm-12
+          = render partial: 'comments/form', object: question, as: 'commentable'
 
-/ VIEW FOR QUESTION for the INDEX PAGE
+/ question view for INDEX page
 - else
   .col-xs-12.col-sm-12
     h3= link_to question.title, question
     hr
     p= question.body
-
-
-
