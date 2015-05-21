@@ -22,14 +22,14 @@ describe Ability, type: :model do
   describe 'for auth user' do
     let(:user) { create(:user) }
     let(:other) { create(:user) }
-    let(:myQuestion) { create(:question, user: user) }
-    let(:otherQuestion) { create(:question, user: other) }
+    let(:my_question) { create(:question, user: user) }
+    let(:other_question) { create(:question, user: other) }
 
-    let(:myAnswer) { create(:answer, question: myQuestion, user: user) }
-    let(:otherAnswer) { create(:answer, question: myQuestion, user: other) }
+    let(:my_answer) { create(:answer, question: my_question, user: user) }
+    let(:other_answer) { create(:answer, question: my_question, user: other) }
 
-    let(:myComment) { create(:comment, commentable: myQuestion, user: user) }
-    let(:otherComment) { create(:comment, commentable: myQuestion, user: other) }
+    let(:my_comment) { create(:comment, commentable: my_question, user: user) }
+    let(:other_comment) { create(:comment, commentable: my_question, user: other) }
 
     it { should_not be_able_to :manage, :all }
     it { should be_able_to :read, :all }
@@ -40,45 +40,45 @@ describe Ability, type: :model do
     it { should be_able_to :create, Comment }
 
     # update
-    it { should be_able_to :update, myQuestion, user: user }
-    it { should_not be_able_to :update, otherQuestion, user: user }
+    it { should be_able_to :update, my_question, user: user }
+    it { should_not be_able_to :update, other_question, user: user }
 
-    it { should be_able_to :update, myAnswer, user: user }
-    it { should_not be_able_to :update, otherAnswer, user: user }
+    it { should be_able_to :update, my_answer, user: user }
+    it { should_not be_able_to :update, other_answer, user: user }
 
-    it { should be_able_to :update, myComment, user: user }
-    it { should_not be_able_to :update, otherComment, user: user }
+    it { should be_able_to :update, my_comment, user: user }
+    it { should_not be_able_to :update, other_comment, user: user }
 
     # destroy
-    it { should be_able_to :destroy, myQuestion, user: user }
-    it { should_not be_able_to :destroy, otherQuestion, user: user }
+    it { should be_able_to :destroy, my_question, user: user }
+    it { should_not be_able_to :destroy, other_question, user: user }
 
-    it { should be_able_to :destroy, myAnswer, user: user }
-    it { should_not be_able_to :destroy, otherAnswer, user: user }
+    it { should be_able_to :destroy, my_answer, user: user }
+    it { should_not be_able_to :destroy, other_answer, user: user }
 
-    it { should be_able_to :destroy, myComment, user: user }
-    it { should_not be_able_to :destroy, otherComment, user: user }
+    it { should be_able_to :destroy, my_comment, user: user }
+    it { should_not be_able_to :destroy, other_comment, user: user }
 
     # like/dislike (Question)
-    it { should_not be_able_to :like, myQuestion, user: user }
-    it { should be_able_to :like, otherQuestion, user: user }
+    it { should_not be_able_to :like, my_question, user: user }
+    it { should be_able_to :like, other_question, user: user }
 
-    it { should_not be_able_to :dislike, myQuestion, user: user }
-    it { should be_able_to :dislike, otherQuestion, user: user }
+    it { should_not be_able_to :dislike, my_question, user: user }
+    it { should be_able_to :dislike, other_question, user: user }
 
-    it { should_not be_able_to :unvote, myQuestion, user: user }
+    it { should_not be_able_to :unvote, my_question, user: user }
 
     # like/dislike (Answer)
-    it { should_not be_able_to :like, myAnswer, user: user }
-    it { should be_able_to :like, otherAnswer, user: user }
+    it { should_not be_able_to :like, my_answer, user: user }
+    it { should be_able_to :like, other_answer, user: user }
 
-    it { should_not be_able_to :dislike, myAnswer, user: user }
-    it { should be_able_to :dislike, otherAnswer, user: user }
+    it { should_not be_able_to :dislike, my_answer, user: user }
+    it { should be_able_to :dislike, other_answer, user: user }
 
-    it { should_not be_able_to :unvote, myAnswer, user: user }
+    it { should_not be_able_to :unvote, my_answer, user: user }
 
     # best (Answer)
-    it { should_not be_able_to :best, myAnswer, user: user }
-    it { should be_able_to :best, otherAnswer, user: user }
+    it { should_not be_able_to :best, my_answer, user: user }
+    it { should be_able_to :best, other_answer, user: user }
   end
 end
