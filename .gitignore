@@ -15,10 +15,11 @@
 
 /config/database.yml
 /config/private_pub.yml
-/config/secrets.yml
 
 /.idea/
 
 /public/uploads
 
 
+
+config/secrets.yml
