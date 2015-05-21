@@ -1,4 +1,4 @@
-.col-xs-12.col-sm-8.answer id="#{dom_id(answer)}"
+.col-xs-12.col-sm-8.answer id="#{ dom_id(answer) }"
   / best answer mark
   - if answer.best
     = I18n.t('answer.label.best')
@@ -14,22 +14,16 @@
         li
           p= link_to attachment.file.filename, attachment.file.url
 
-  - if user_signed_in?
-    / link to select best answer
-    - if current_user.id == @question.user_id && current_user.id != answer.user_id
-      p= link_to t('answer.button.best'), best_answer_path(answer), method: :put, remote: true, data: { :confirm => I18n.t('answer.confirm.best') }
+  - if can?(:best, answer)
+    p= link_to t('answer.button.best'), best_answer_path(answer), method: :put, remote: true, data: { confirm: I18n.t('answer.confirm.best') }
 
-    / link to edit & delete answer
-    - if current_user.id == answer.user_id
-      p= link_to t('answer.button.edit'), '', class: 'edit-answer-link', data: { answer_id: answer.id }
-      p= link_to t('answer.button.delete'), answer_path(answer), method: :delete, remote: true, data: { :confirm => I18n.t('answer.confirm.delete') }
-
+  - if can?(:edit, answer)
+    p= link_to t('answer.button.edit'), '', class: 'edit-answer-link', data: { answer_id: answer.id }
     / hidden form for edit answer
     p= nested_form_for answer, remote: true, data: { type: :json, answer_id: answer.id } do |f|
       p= f.label :body, t('answer.label.title')
       p= f.text_area :body
       p= f.link_to_add t('attachment.button.add'), :attachments
-
       / attachments
       p= f.fields_for :attachments, answer.attachments.build do |attach_form|
         - if attach_form.object.new_record?
@@ -39,8 +33,10 @@
         - else
           p= attach_form.object.file.identifier
           p= attach_form.link_to_remove t('attachment.button.delete')
-
       p= f.submit t('answer.button.save')
+
+  - if can?(:destroy, answer)
+    p= link_to t('answer.button.delete'), answer_path(answer), method: :delete, remote: true, data: { confirm: I18n.t('answer.confirm.delete') }
 
 / answer votes
 .col-xs-12.col-sm-4.answer_votes id='votes_#{ dom_id(answer) }'
