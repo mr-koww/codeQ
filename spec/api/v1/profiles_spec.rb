@@ -57,6 +57,14 @@ describe 'Profile API' do
       end
     end
 
+    %w(password encrypted_password).each do |attr|
+      it "contains #{attr}" do
+        users.each_with_index do |user, i|
+          expect(response.body).to_not have_json_path("#{i}/#{attr}")
+        end
+      end
+    end
+
     it 'does not return current user' do
       expect(response.body).to_not include_json(me.to_json)
     end
