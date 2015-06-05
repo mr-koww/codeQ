@@ -38,12 +38,12 @@ describe 'Profile API' do
     end
   end
 
-  describe 'GET /users' do
+  describe 'GET /profiles' do
     let(:me) { create(:user) }
     let!(:users) { create_list(:user, 2) }
     let(:access_token) { create(:access_token, resource_owner_id: me.id) }
 
-    before { get '/api/v1/profiles/users', format: :json, access_token: access_token.token }
+    before { get '/api/v1/profiles', format: :json, access_token: access_token.token }
 
     it 'returns 200' do
       expect(response.status).to eq 200
