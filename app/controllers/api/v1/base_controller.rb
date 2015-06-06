@@ -3,6 +3,10 @@ class Api::V1::BaseController < ApplicationController
 
   respond_to :json
 
+  rescue_from CanCan::AccessDenied do |exception|
+    render json: exception.message, status: :unauthorized
+  end
+
   protected
 
   def current_resource_owner
