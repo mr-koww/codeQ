@@ -25,6 +25,9 @@ class Ability
     can :create, [ Question, Answer, Comment ]
     can :update, [ Question, Answer, Comment ], user: user
     can :destroy, [ Question, Answer, Comment ], user: user
+    can :destroy, Attachment do |attachment|
+      attachment.attachable.user_id == user.id
+    end
 
     can :best, Answer do |answer|
       answer.question.user_id == user.id && answer.user_id != user.id
