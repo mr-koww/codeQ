@@ -1,17 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe AttachmentsController, type: :controller do
-
-  # User who asked Question
   let(:user_question) { create(:user) }
-
-  # User who written Answer
   let(:user_answer) { create(:user) }
-
   # User who not written anything
   let(:user_another) { create(:user) }
 
-  let!(:question) { create(:question, user: user_question) }
+  let(:question) { create(:question, user: user_question) }
   let(:file_question) { create(:attachment, attachable: question) }
 
   let(:answer) { create(:answer, user: user_answer, question: question) }
