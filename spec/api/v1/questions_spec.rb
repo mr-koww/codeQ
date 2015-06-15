@@ -42,7 +42,7 @@ describe 'Questions API' do
       end
     end
   end
-  
+
   describe 'GET /show' do
     let!(:question)    { create(:question, user: user) }
     let!(:comment)    { create(:comment, commentable: question, user: user) }
@@ -64,27 +64,9 @@ describe 'Questions API' do
         end
       end
 
-      context 'comments' do
-        it 'included in object' do
-          expect(response.body).to have_json_size(1).at_path("question/comments")
-        end
-
-        %w(id body created_at updated_at).each do |attr|
-          it "contains #{attr}" do
-            expect(response.body).to be_json_eql(comment.send(attr.to_sym).to_json).at_path("question/comments/0/#{attr}")
-          end
-        end
-      end
-
-      context 'attachment' do
-        it 'included in object' do
-          expect(response.body).to have_json_size(1).at_path("question/attachments")
-        end
-
-        it 'contains attachment url' do
-          expect(response.body).to be_json_eql(attachment.file.url.to_json). at_path("question/attachments/0/url")
-        end
-      end
+      let(:resource) { 'question' }
+      it_behaves_like 'API attachable'
+      it_behaves_like 'API commentable'
     end
   end
 
