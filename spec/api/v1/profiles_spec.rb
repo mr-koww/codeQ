@@ -62,7 +62,7 @@ describe 'Profile API' do
       end
 
       it 'does not return current user' do
-        expect(response.body).to_not include_json(me.to_json)
+        expect(response.body).to_not include_json(me.to_json).at_path("profiles/")
       end
     end
   end
