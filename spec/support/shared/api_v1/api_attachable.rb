@@ -4,7 +4,7 @@ shared_examples_for "API attachable" do
       expect(response.body).to have_json_size(1).at_path("#{resource}/attachments")
     end
 
-    it 'contains url' do
+    it 'contains attachment url' do
       expect(response.body).to be_json_eql(attachment.file.url.to_json). at_path("#{resource}/attachments/0/url")
     end
   end
