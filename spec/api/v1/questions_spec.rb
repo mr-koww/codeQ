@@ -1,6 +1,7 @@
 require_relative '../../rails_helper'
 
 describe 'Questions API' do
+  let(:root) { 'question' }
   let(:user) { create(:user) }
   let(:access_token) { create(:access_token) }
 
@@ -64,7 +65,6 @@ describe 'Questions API' do
         end
       end
 
-      let(:resource) { 'question' }
       it_behaves_like 'API attachable'
       it_behaves_like 'API commentable'
     end
@@ -79,20 +79,35 @@ describe 'Questions API' do
     it_behaves_like 'API should be authorization'
 
     context 'authorized' do
-      let(:create_question) { request(question: attributes_for(:question), access_token: access_token.token) }
+      context 'with valid attributes' do
+        let(:create_question) { request(question: attributes_for(:question), access_token: access_token.token) }
 
-      it 'returns 201 status code' do
-        create_question
-        expect(response.status).to eq 201
+        it 'returns 201 status code' do
+          create_question
+          expect(response.status).to eq 201
+        end
+
+        it 'saves the new object to database' do
+          expect { create_question }.to change(Question, :count).by(1)
+        end
+
+        it 'assign new object to current user' do
+          create_question
+          expect(assigns(:question).user).to eq(owner_user)
+        end
       end
 
-      it 'saves the new object to database' do
-        expect { create_question }.to change(Question, :count).by(1)
-      end
+      context 'with invalid attributes' do
+        let(:create_question) { request(question: { body: nil }, access_token: access_token.token) }
 
-      it 'assign new object to current user' do
-        create_question
-        expect(assigns(:question).user).to eq(owner_user)
+        it 'returns 422 status code' do
+          create_question
+          expect(response.status).to eq 422
+        end
+
+        it 'not saves the new object to database' do
+          expect { create_question }.to_not change(Question, :count)
+        end
       end
     end
   end
