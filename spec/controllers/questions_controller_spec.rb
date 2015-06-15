@@ -74,10 +74,11 @@ let(:file) { create(:attachment) }
 
   describe 'POST #create' do
     before { sign_in_user(user_question) }
+    let(:create_question) { post :create, question: attributes_for(:question) }
 
     context 'with valid attributes' do
       it 'saves the new question in the database' do
-        expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
+        expect { create_question }.to change(Question, :count).by(1)
       end
 
       it 'saves the attachment in the database' do
@@ -85,15 +86,14 @@ let(:file) { create(:attachment) }
       end
 
       it 'redirects to show view' do
-        post :create, question: attributes_for(:question)
+        create_question
         expect(response).to redirect_to question_path(assigns(:question))
       end
 
       it 'should have a user' do
-        post :create, question: attributes_for(:question)
+        create_question
         expect(assigns(:question).user).to eq subject.current_user
       end
-
     end
 
     context 'with invalid attributes' do
