@@ -173,5 +173,5 @@ RSpec.describe AnswersController, type: :controller do
 
   let(:resource) { answer }
   let(:resource_user) { user_answer }
-  it_behaves_like 'votable'
+  it_behaves_like 'voted'
 end

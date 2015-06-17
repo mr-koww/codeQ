@@ -1,4 +1,5 @@
-shared_examples_for 'votable' do
+shared_examples_for 'voted' do
+
   describe 'PATCH /like' do
     def request(attributes = {})
       patch :like, { id: resource, format: :js }.merge(attributes)

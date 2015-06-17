@@ -209,5 +209,5 @@ describe QuestionsController, type: :controller do
 
   let(:resource) { question }
   let(:resource_user) { user_question }
-  it_behaves_like 'votable'
+  it_behaves_like 'voted'
 end
