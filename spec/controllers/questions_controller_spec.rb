@@ -6,7 +6,7 @@ describe QuestionsController, type: :controller do
   let(:another_user) { create :user }
 
   describe 'GET /index' do
-    let(:questions) { create_list(:question, 2, user: user_question) }
+    let!(:questions) { create_list(:question, 2, user: user_question) }
     before { get :index }
 
     it 'contains an array of all questions' do
@@ -199,124 +199,8 @@ describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'PATCH /like' do
-    def request(attributes = {})
-      patch :like, { id: question, format: :js }.merge(attributes)
-    end
+  let(:resource) { question }
+  let(:resource_user) { user_question }
+  it_behaves_like 'votable'
 
-    it_behaves_like 'unauthorized response for not auth user'
-
-    context 'auth user' do
-      context 'for own question' do
-        before { sign_in_user(user_question) }
-
-        it_behaves_like 'forbidden response'
-
-        it 'isnt increases the question value' do
-          request
-          question.reload
-          expect(question.total_votes).to eq 0
-        end
-
-        it 'isnt saves the new vote in the database' do
-          expect { request }.to_not change(Vote, :count)
-        end
-      end
-
-      context 'for not own question' do
-        before { sign_in_user(another_user) }
-
-        it 'increases the question value' do
-          request
-          question.reload
-          expect(question.total_votes).to eq 1
-        end
-
-        it 'saves the new vote in the database' do
-          expect { request }.to change(question.votes, :count).by(1)
-        end
-      end
-    end
-  end
-
-  describe 'PATCH /dislike' do
-    def request(attributes = {})
-      patch :dislike, { id: question, format: :js }.merge(attributes)
-    end
-
-    it_behaves_like 'unauthorized response for not auth user'
-
-    context 'auth user' do
-      context 'for own question' do
-        before { sign_in_user(user_question) }
-
-        it_behaves_like 'forbidden response'
-
-        it 'isnt saves the new vote in the database' do
-          expect { request }.to_not change(question.votes, :count)
-        end
-
-        it 'isnt increases the question value' do
-          request
-          question.reload
-          expect(question.total_votes).to eq 0
-        end
-      end
-
-      context 'for not own question' do
-        before { sign_in_user(another_user) }
-
-        it 'saves the new vote in the database' do
-          expect { request }.to change(question.votes, :count).by(1)
-        end
-
-        it 'increases the question value' do
-          request
-          question.reload
-          expect(question.total_votes).to eq -1
-        end
-      end
-    end
-  end
-
-  describe 'PATCH /unvote' do
-    def request(attributes = {})
-      patch :unvote, { id: question, format: :js }.merge(attributes)
-    end
-
-    it_behaves_like 'unauthorized response for not auth user'
-
-    context 'auth user' do
-      let!(:vote) { create(:vote, votable: question, user: another_user, value: 1) }
-
-      context 'for own question' do
-        before { sign_in_user(user_question) }
-
-        it_behaves_like 'forbidden response'
-
-        it 'isnt deletes the vote from the database' do
-          expect { request }.to_not change(question.votes, :count)
-        end
-
-        it 'isnt decreases the question value' do
-          question.reload
-          expect(question.total_votes).to eq 1
-        end
-      end
-
-      context 'for not own question' do
-        before { sign_in_user(another_user) }
-
-        it 'deletes the vote from database' do
-          expect { request }.to change(question.votes, :count).by(-1)
-        end
-
-        it 'decreases the question value' do
-          request
-          question.reload
-          expect(question.total_votes).to eq 0
-        end
-      end
-    end
-  end
 end
