@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :load_commentable, only: [ :create ]
   before_action :load_comment, only: [ :update, :destroy ]
-  before_action :comment_author?, only: [ :update, :destroy ]
+  # before_action :comment_author?, only: [ :update, :destroy ]
   after_action  :publish_comment, only: [ :create ]
 
   respond_to :js, :json
@@ -38,9 +38,9 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
   end
 
-  def comment_author?
-    render nothing: true, status: :forbidden unless current_user.id == @comment.user_id
-  end
+  # def comment_author?
+  #   render nothing: true, status: :forbidden unless current_user.id == @comment.user_id
+  # end
 
   def publish_comment
     commentable_type = @comment.commentable_type.underscore.pluralize

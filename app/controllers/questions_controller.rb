@@ -1,8 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :load_question, except: [ :index, :new, :create ]
-  before_action :question_author?, only: [ :update, :destroy ]
-  before_action :build_answer, only: [ :show ]
   after_action  :publish_question, only: [ :create ]
   include Voted
 
@@ -15,6 +13,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    @answer = @question.answers.build
     respond_with @question
   end
 
@@ -38,14 +37,6 @@ class QuestionsController < ApplicationController
   private
   def load_question
     @question = Question.find(params[:id])
-  end
-
-  def question_author?
-    render nothing: true, status: :forbidden unless current_user.id == @question.user_id
-  end
-
-  def build_answer
-    @answer = @question.answers.build
   end
 
   def question_params

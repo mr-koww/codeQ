@@ -5,22 +5,21 @@ module Votable
     has_many :votes, as: :votable, dependent: :destroy
   end
 
-  def vote(user, value)
-    vote = votes.find_or_initialize_by(user: user)
+  def vote(voter, value)
+    vote = votes.find_or_initialize_by(user: voter)
     vote.value = value
     vote.save!
   end
 
-  def unvote(user)
-    votes.where(user: user).delete_all
+  def unvote(voter)
+    votes.where(user: voter).delete_all
   end
 
-  def voted_by?(user)
-    votes.where(user: user).any?
+  def voted?(voter)
+    votes.where(user: voter).any?
   end
 
   def total_votes
     votes.sum(:value)
   end
-
 end
