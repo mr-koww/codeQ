@@ -115,6 +115,8 @@ describe CommentsController, type: :controller do
       context 'not own comment' do
         before { sign_in_user(user) }
 
+        it_behaves_like 'forbidden response'
+
         it 'doesnt deletes comment from the database' do
           expect { request }.to_not change(Comment, :count)
         end
