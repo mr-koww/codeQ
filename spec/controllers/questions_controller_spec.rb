@@ -134,6 +134,13 @@ describe QuestionsController, type: :controller do
         before { sign_in_user(another_user) }
 
         it_behaves_like 'forbidden response'
+
+        it 'does not change question attributes' do
+          old_question = question
+          question.reload
+          expect(question.title).to eq old_question.title
+          expect(question.body).to eq old_question.body
+        end
       end
 
       context 'own question' do
@@ -156,9 +163,10 @@ describe QuestionsController, type: :controller do
           before { patch :update, id: question, question: { title: 'new title', body: nil }, format: :js }
 
           it 'does not change question attributes' do
+            old_question = question
             question.reload
-            expect(question.title).to eq question.title
-            expect(question.body).to eq question.body
+            expect(question.title).to eq old_question.title
+            expect(question.body).to eq old_question.body
           end
 
           it 'render update template' do
@@ -202,5 +210,4 @@ describe QuestionsController, type: :controller do
   let(:resource) { question }
   let(:resource_user) { user_question }
   it_behaves_like 'votable'
-
 end
