@@ -7,7 +7,7 @@ class Ability
     @user = user
     if user
       user.admin? ? admin_abilities : user_abilities
-    else # guest
+    else
       guest_abilities
     end
   end
@@ -33,12 +33,12 @@ class Ability
       answer.question.user_id == user.id && answer.user_id != user.id
     end
 
-    can [ :like, :dislike ], [ Question, Answer ] do |resource|
-      (resource.user_id != user.id) && !resource.voted_by?(user)
+    can [ :like, :dislike ], [ Question, Answer ] do |votable|
+      (votable.user_id != user.id) && !votable.voted?(user)
     end
 
-    can [ :unvote ], [ Question, Answer ] do |resource|
-      (resource.user_id != user.id) && resource.voted_by?(user)
+    can [ :unvote ], [ Question, Answer ] do |votable|
+      votable.voted?(user)
     end
   end
 end
