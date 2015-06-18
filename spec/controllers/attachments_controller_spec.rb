@@ -9,7 +9,7 @@ RSpec.describe AttachmentsController, type: :controller do
 
   describe 'DELETE /destroy' do
     def request(attributes = {})
-      delete :destroy, id: file_question, format: :js
+      delete :destroy, id: attachment, format: :js
     end
 
     it_behaves_like 'unauthorized response for not auth user'
@@ -34,7 +34,7 @@ RSpec.describe AttachmentsController, type: :controller do
         it_behaves_like 'forbidden response'
 
         it 'not deletes attachment from database' do
-          expect { delete :destroy, id: file_question, format: :js }.to change(Attachment, :count).by(0)
+          expect { delete :destroy, id: attachment, format: :js }.to change(Attachment, :count).by(0)
         end
       end
     end
