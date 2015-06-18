@@ -59,7 +59,7 @@ describe Ability, type: :model do
     it { should be_able_to :destroy, my_comment, user: user }
     it { should_not be_able_to :destroy, other_comment, user: user }
 
-    # like/dislike (Question)
+    # like/dislike/unvote (Question)
     it { should_not be_able_to :like, my_question, user: user }
     it { should be_able_to :like, other_question, user: user }
 
@@ -68,7 +68,7 @@ describe Ability, type: :model do
 
     it { should_not be_able_to :unvote, my_question, user: user }
 
-    # like/dislike (Answer)
+    # like/dislike/unvote (Answer)
     it { should_not be_able_to :like, my_answer, user: user }
     it { should be_able_to :like, other_answer, user: user }
 

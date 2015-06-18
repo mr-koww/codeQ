@@ -1,19 +1,15 @@
 require 'rails_helper'
 
-RSpec.describe QuestionsController, type: :controller do
+describe QuestionsController, type: :controller do
+  let(:user_question) { create :user }
+  let(:question) { create :question, user: user_question }
+  let(:another_user) { create :user }
 
-let(:user_question) { create :user }
-let(:another_user) { create :user }
-
-let(:question) { create :question, user: user_question }
-
-let(:file) { create(:attachment) }
-
-  describe 'GET #index' do
-    let(:questions) { create_list(:question, 2, user: user_question) }
+  describe 'GET /index' do
+    let!(:questions) { create_list(:question, 2, user: user_question) }
     before { get :index }
 
-    it 'population an array of all Question' do
+    it 'contains an array of all questions' do
       expect(assigns(:questions)).to match_array(questions)
     end
 
@@ -22,330 +18,204 @@ let(:file) { create(:attachment) }
     end
   end
 
-
-  describe 'GET #show' do
+  describe 'GET /show' do
     before { get :show, id: question }
 
     it 'assigns requested question to @question' do
       expect(assigns(:question)).to eq question
     end
 
-    it 'renders show view' do
-      expect(response).to render_template :show
-    end
-
     it 'assigns new answer for question' do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
-  end
 
-
-  describe 'GET #new' do
-    before do
-      sign_in_user(user_question)
-      get :new
-    end
-
-    it 'assigns a new Question to @question' do
-      expect(assigns(:question)).to be_a_new(Question)
-    end
-
-    it 'renders new template' do
-      expect(response).to render_template :new
+    it 'renders show view' do
+      expect(response).to render_template :show
     end
   end
 
+  describe 'GET /new' do
+    let(:request) { get :new }
 
-  describe 'GET #edit' do
-    before do
-      sign_in_user(user_question)
-      get :edit, id: question
-    end
+    it_behaves_like 'redirect not auth user to login form'
 
-    it 'assigns requested question to @questions' do
-      expect(assigns(:question)).to eq question
-    end
-
-    it 'redirects to edit view' do
-      expect(response).to render_template :edit
-    end
-  end
-
-
-  describe 'POST #create' do
-    before { sign_in_user(user_question) }
-    let(:create_question) { post :create, question: attributes_for(:question) }
-
-    context 'with valid attributes' do
-      it 'saves the new question in the database' do
-        expect { create_question }.to change(Question, :count).by(1)
+    context 'auth user' do
+      before do
+        sign_in_user(user_question)
+        request
       end
 
-      it 'saves the attachment in the database' do
-        expect { post :create, question: attributes_for(:question), attachment: file }.to change(Attachment, :count).by(1)
+      it 'assigns a new question to @question' do
+        expect(assigns(:question)).to be_a_new(Question)
       end
 
-      it 'redirects to show view' do
-        create_question
-        expect(response).to redirect_to question_path(assigns(:question))
-      end
-
-      it 'should have a user' do
-        create_question
-        expect(assigns(:question).user).to eq subject.current_user
-      end
-    end
-
-    context 'with invalid attributes' do
-      it 'does not save question' do
-        expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
-      end
-
-      it 'render new view' do
-        post :create, question: attributes_for(:invalid_question)
+      it 'renders new template' do
         expect(response).to render_template :new
       end
     end
   end
 
+  describe 'GET /edit' do
+    def request(attribute = {})
+      get :edit, id: question
+    end
 
-  describe 'PATCH #update' do
-    describe 'user try update own question' do
+    it_behaves_like 'redirect not auth user to login form'
+
+    context 'auth user' do
+      before do
+        sign_in_user(user_question)
+        request
+      end
+
+      it 'assigns requested question to @question' do
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'redirects to edit view' do
+        expect(response).to render_template :edit
+      end
+    end
+  end
+
+  describe 'POST /create' do
+    let(:channel) { '/questions' }
+    let(:file) { create(:attachment) }
+    def request(attributes = {})
+      post :create, { question: attributes_for(:question) }.merge(attributes)
+    end
+
+    it_behaves_like 'redirect not auth user to login form'
+
+    context 'auth user' do
       before { sign_in_user(user_question) }
 
       context 'with valid attributes' do
-        it 'assigns requested question to @question' do
-          patch :update, id: question, question: attributes_for(:question), format: :js
-          expect(assigns(:question)).to eq question
+        it 'saves the new question in database' do
+          expect { request }.to change(Question, :count).by(1)
         end
 
-        it 'changes question attributes' do
-          patch :update, id: question, question: { title: 'new default title', body: 'new default body' }, format: :js
-          question.reload
-          expect(question.title).to eq 'new default title'
-          expect(question.body).to eq 'new default body'
+        it 'saves the attachment in database' do
+          expect { request(attachment: file) }.to change(Attachment, :count).by(1)
         end
 
-        it 'render update template' do
-          patch :update, id: question, question: attributes_for(:question), format: :js
-          expect(response).to render_template :update
+        it 'should have the user' do
+          request
+          expect(assigns(:question).user).to eq subject.current_user
         end
+
+        it 'redirects to show view' do
+          request
+          expect(response).to redirect_to question_path(assigns(:question))
+        end
+
+        it_behaves_like 'publishable'
       end
-
 
       context 'with invalid attributes' do
-        before { patch :update, id: question, question: { title: 'new title', body: nil }, format: :js }
+        def bad_request(attributes = {})
+          post :create, question: attributes_for(:invalid_question)
+        end
+        it 'does not save question' do
+          expect { bad_request }.to_not change(Question, :count)
+        end
+
+        it 'render new view' do
+          bad_request
+          expect(response).to render_template :new
+        end
+
+        it_behaves_like 'not publishable'
+      end
+    end
+  end
+
+  describe 'PATCH /update' do
+    def request(attributes = {})
+      patch :update, { id: question, question: { title: 'new default title', body: 'new default body' }, format: :js }.merge(attributes)
+    end
+
+    it_behaves_like 'unauthorized response for not auth user'
+
+    context 'auth user' do
+      context 'not own question' do
+        before { sign_in_user(another_user) }
+
+        it_behaves_like 'forbidden response'
+
         it 'does not change question attributes' do
+          old_question = question
           question.reload
-          expect(question.title).to eq question.title
-          expect(question.body).to eq question.body
-        end
-
-        it 'render update template' do
-          expect(response).to render_template :update
+          expect(question.title).to eq old_question.title
+          expect(question.body).to eq old_question.body
         end
       end
-    end
 
-    describe 'user try update not own question' do
-      it 'has Forbidden response status' do
-        sign_in_user(another_user)
-        patch :update, id: question, question: { title: 'new default title', body: 'new default body' }, format: :js
-        expect(response).to have_http_status(403)
+      context 'own question' do
+        before { sign_in_user(user_question) }
+        before { request }
+
+        context 'with valid attributes' do
+          it 'assigns requested question to @question' do
+            expect(assigns(:question)).to eq question
+          end
+
+          it 'changes question attributes' do
+            question.reload
+            expect(question.title).to eq 'new default title'
+            expect(question.body).to eq 'new default body'
+          end
+        end
+
+        context 'with invalid attributes' do
+          before { patch :update, id: question, question: { title: 'new title', body: nil }, format: :js }
+
+          it 'does not change question attributes' do
+            old_question = question
+            question.reload
+            expect(question.title).to eq old_question.title
+            expect(question.body).to eq old_question.body
+          end
+
+          it 'render update template' do
+            expect(response).to render_template :update
+          end
+        end
       end
     end
   end
 
-
-  describe 'DELETE #destroy' do
-    context 'user try delete his question' do
-      before do
-        sign_in_user(user_question)
-        question
-      end
-
-      it 'delete the question from the database' do
-        expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
-      end
+  describe 'DELETE /destroy' do
+    def request(attributes = {})
+      delete :destroy, { id: question }.merge(attributes)
     end
 
-    context 'user try delete not his question' do
-      before do
-        sign_in_user(another_user)
-        question
+    it_behaves_like 'redirect not auth user to login form'
+
+    context 'auth user' do
+      before { question }
+
+      context 'for not own question' do
+        before { sign_in_user(another_user) }
+
+        it_behaves_like 'forbidden response'
+
+        it 'not deletes the question from the database' do
+          expect { delete :destroy, id: question }.to_not change(Question, :count)
+        end
       end
 
-      it 'delete the question from the database' do
-        expect { delete :destroy, id: question }.to_not change(Question, :count)
-      end
+      context 'for own question' do
+        before { sign_in_user(user_question) }
 
-      it 'has Forbidden response status' do
-        delete :destroy, id: question
-        expect(response).to have_http_status(403)
-      end
-    end
-  end
-
-
-  describe 'PATCH #like' do
-    context 'when auth user tries vote as like for not own question' do
-      before do
-        sign_in_user(another_user)
-      end
-
-      it 'saves the new vote in the database' do
-        expect { patch :like, id: question, format: :json }.to change(question.votes, :count).by(1)
-      end
-
-      it 'increases the question value' do
-        patch :like, id: question, format: :json
-        question.reload
-
-        expect(question.total_votes).to eq 1
-      end
-
-      it 'renders OK status' do
-        patch :like, id: question, format: :json
-
-        expect(response).to have_http_status(200)
-      end
-    end
-
-    context 'when auth user tries vote as like for own question' do
-      before do
-        sign_in_user(user_question)
-        patch :like, id: question, format: :json
-      end
-
-      it 'isn\'t saves the new vote in the database' do
-        expect { patch :like, id: question, format: :json }.to_not change(question.votes, :count)
-      end
-
-      it 'isn\'t increases the question value' do
-        question.reload
-
-        expect(question.total_votes).to eq 0
-      end
-
-      it 'renders Forbidden status' do
-        expect(response).to have_http_status(403)
-      end
-    end
-
-    context 'when not auth user tries vote as like for anything question' do
-      before { patch :like, id: question, format: :json }
-
-      it 'renders Unauthorized status' do
-        expect(response).to have_http_status(401)
+        it 'deletes the question from the database' do
+          expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+        end
       end
     end
   end
 
-
-  describe 'PATCH #dislike' do
-    context 'when auth user tries vote as dislike for not own question' do
-      before { sign_in_user(another_user) }
-
-      it 'saves the new vote in the database' do
-        expect { patch :dislike, id: question, format: :json }.to change(question.votes, :count).by(1)
-      end
-
-      it 'increases the question value' do
-        patch :dislike, id: question, format: :json
-        question.reload
-
-        expect(question.total_votes).to eq -1
-      end
-
-      it 'renders OK status' do
-        patch :dislike, id: question, format: :json
-
-        expect(response).to have_http_status(200)
-      end
-    end
-
-    context 'when auth user tries vote as dislike for own question' do
-      before do
-        sign_in_user(user_question)
-        patch :dislike, id: question, format: :json
-      end
-
-      it 'isn\'t saves the new vote in the database' do
-        expect { patch :dislike, id: question, format: :json }.to_not change(question.votes, :count)
-      end
-
-      it 'isn\'t increases the question value' do
-        question.reload
-
-        expect(question.total_votes).to eq 0
-      end
-
-      it 'renders Forbidden status' do
-        expect(response).to have_http_status(403)
-      end
-    end
-
-    context 'when not auth user tries vote as dislike for anything question' do
-      before { patch :dislike, id: question, format: :json }
-
-      it 'renders Unauthorized status' do
-        expect(response).to have_http_status(401)
-      end
-    end
-  end
-
-
-  describe 'PATCH #unvote' do
-    let!(:vote) { create(:vote, votable: question, user: another_user, value: 1) }
-
-    context 'when auth user tries unvote for not own question' do
-      before { sign_in_user(another_user) }
-
-      it 'saves the new vote in the database' do
-        expect { patch :unvote, id: question, format: :json }.to change(question.votes, :count).by(-1)
-      end
-
-      it 'increases the question value' do
-        patch :unvote, id: question, format: :json
-        question.reload
-
-        expect(question.total_votes).to eq 0
-      end
-
-      it 'renders OK status' do
-        patch :unvote, id: question, format: :json
-
-        expect(response).to have_http_status(200)
-      end
-    end
-
-    context 'when auth user tries vote as dislike for own question' do
-      before do
-        sign_in_user(user_question)
-        patch :unvote, id: question, format: :json
-      end
-
-      it 'isn\'t saves the new vote in the database' do
-        expect { patch :unvote, id: question, format: :json }.to_not change(question.votes, :count)
-      end
-
-      it 'isn\'t increases the question value' do
-        question.reload
-
-        expect(question.total_votes).to eq 1
-      end
-
-      it 'renders Forbidden status' do
-        expect(response).to have_http_status(403)
-      end
-    end
-
-    context 'when not auth user tries vote as dislike for anything question' do
-      before { patch :unvote, id: question, format: :json }
-
-      it 'renders Unauthorized status' do
-        expect(response).to have_http_status(401)
-      end
-    end
-  end
+  let(:resource) { question }
+  let(:resource_user) { user_question }
+  it_behaves_like 'voted'
 end

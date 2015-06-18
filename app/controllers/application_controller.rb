@@ -13,7 +13,8 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, alert: exception.message
+    render nothing: true, status: :forbidden
+    #redirect_to root_url, alert: exception.message
   end
 
   check_authorization unless: :devise_controller?
