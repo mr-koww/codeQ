@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
   # before_action :comment_author?, only: [ :update, :destroy ]
   after_action  :publish_comment, only: [ :create ]
 
-  respond_to :js, :json
+  respond_to :js
 
   authorize_resource
 
@@ -38,11 +38,8 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
   end
 
-  # def comment_author?
-  #   render nothing: true, status: :forbidden unless current_user.id == @comment.user_id
-  # end
-
   def publish_comment
+    return unless @comment.valid?
     commentable_type = @comment.commentable_type.underscore.pluralize
     commentable_id = @comment.commentable_id
     channel = "/#{ commentable_type }/#{ commentable_id }/comments"

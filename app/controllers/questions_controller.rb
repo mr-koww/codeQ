@@ -45,6 +45,7 @@ class QuestionsController < ApplicationController
   end
 
   def publish_question
+    return unless @question.valid?
     PrivatePub.publish_to "/questions", question: @question.to_json
   end
 end

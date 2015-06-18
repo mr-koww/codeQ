@@ -41,6 +41,7 @@ class AnswersController < ApplicationController
   end
 
   def publish_answer
+    return unless @answer.valid?
     PrivatePub.publish_to "/questions/#{ @question.id }/answers", answer: @answer.to_json
   end
 end
