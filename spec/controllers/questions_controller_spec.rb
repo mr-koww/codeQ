@@ -79,6 +79,7 @@ describe QuestionsController, type: :controller do
   end
 
   describe 'POST /create' do
+    let(:channel) { '/questions' }
     let(:file) { create(:attachment) }
     def request(attributes = {})
       post :create, { question: attributes_for(:question) }.merge(attributes)
@@ -107,17 +108,24 @@ describe QuestionsController, type: :controller do
           request
           expect(response).to redirect_to question_path(assigns(:question))
         end
+
+        it_behaves_like 'publishable'
       end
 
       context 'with invalid attributes' do
+        def bad_request(attributes = {})
+          post :create, question: attributes_for(:invalid_question)
+        end
         it 'does not save question' do
-          expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
+          expect { bad_request }.to_not change(Question, :count)
         end
 
         it 'render new view' do
-          post :create, question: attributes_for(:invalid_question)
+          bad_request
           expect(response).to render_template :new
         end
+
+        it_behaves_like 'not publishable'
       end
     end
   end

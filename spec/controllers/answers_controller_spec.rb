@@ -16,6 +16,7 @@ RSpec.describe AnswersController, type: :controller do
     it_behaves_like 'unauthorized response for not auth user'
 
     context 'auth user' do
+      let(:channel) { "/questions/#{question.id}/answers" }
       before { sign_in_user(user_answer) }
 
       context 'with valid attributes' do
@@ -38,17 +39,24 @@ RSpec.describe AnswersController, type: :controller do
           request
           expect(response).to render_template :create
         end
+
+        it_behaves_like 'publishable'
       end
 
       context 'with invalid attributes' do
+        def bad_request(attributes = {})
+          post :create, answer: { body: nil }, question_id: question, format: :js
+        end
         it 'doesn`t save the answer' do
-          expect { post :create, answer: { body: nil }, question_id: question, format: :js }.to_not change(Answer, :count)
+          expect { bad_request }.to_not change(Answer, :count)
         end
 
         it 'render create view' do
-          post :create, answer: { body: nil }, question_id: question, format: :js
+          bad_request
           expect(response).to render_template :create
         end
+
+        it_behaves_like 'not publishable'
       end
     end
   end

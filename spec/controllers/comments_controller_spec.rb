@@ -16,6 +16,8 @@ describe CommentsController, type: :controller do
     it_behaves_like 'unauthorized response for not auth user'
 
     context 'auth user' do
+      let(:channel) { "/questions/#{commentable.id}/comments" }
+
       before { sign_in_user(author) }
 
       context 'with valid attributes' do
@@ -31,17 +33,21 @@ describe CommentsController, type: :controller do
           request
           expect(assigns(:comment).user).to eq subject.current_user
         end
+
+        it_behaves_like 'publishable'
       end
 
       context 'with invalid attributes' do
         def bad_request
           post :create, commentable: commentable_type, question_id: commentable, comment: { body: nil }, format: :js
         end
-        before { sign_in_user(user) }
+        before { sign_in_user(author) }
 
         it 'does not save a new comment in the database' do
           expect { bad_request }.to_not change(Comment, :count)
         end
+
+        it_behaves_like 'not publishable'
       end
     end
   end
