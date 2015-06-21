@@ -1,5 +1,12 @@
 require 'rails_helper'
+
 describe User do
+  it { should have_many(:questions) }
+  it { should have_many(:subscribers).dependent(:destroy) }
+  it { should have_many(:answers) }
+  it { should have_many(:votes) }
+  it { should have_many(:authorizations) }
+
   it { should validate_presence_of :email }
   it { should validate_presence_of :password }
 
@@ -65,8 +72,16 @@ describe User do
           expect(authorization.provider).to eq auth.provider
           expect(authorization.uid).to eq auth.uid
         end
-
       end
+    end
+  end
+
+  describe '.send_daily_digest' do
+    let(:users) { create_list(:user, 3) }
+
+    it 'should send daily digest for all users' do
+      users.each { |user| expect(DailyMailer).to receive(:digest).with(user).and_call_original }
+      User.send_daily_digest
     end
   end
 end
