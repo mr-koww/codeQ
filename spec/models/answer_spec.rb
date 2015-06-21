@@ -17,7 +17,7 @@ RSpec.describe Answer, type: :model do
   let(:answer) { create(:answer, question: question, user: user, best: false) }
   let!(:answers) { create_list(:answer, 3, question: question, user: user, best: true) }
 
-  describe 'Best answer' do
+  describe '.best' do
     before { answer.best! }
 
     it 'only one answer has mark the best' do
@@ -30,7 +30,7 @@ RSpec.describe Answer, type: :model do
     end
   end
 
-  describe 'Votable' do
+  describe '.vote/.unvote' do
     let(:user) { create(:user) }
     let(:question) { create(:question, user:user) }
     let(:answer) { create(:answer, user: user, question: question ) }
@@ -54,6 +54,18 @@ RSpec.describe Answer, type: :model do
       answer.unvote(user)
 
       expect(Vote.where(user_id: user, votable: answer).count).to eq 0
+    end
+  end
+
+  describe '.notify_subscribers' do
+    let(:users) { create_list(:user, 2) }
+    let(:subscriber1) { create(:subscriber, user: users[0], question: question) }
+    let(:subscriber2) { create(:subscriber, user: users[1], question: question) }
+    let(:subscribers) { [ subscriber1, subscriber2 ] }
+
+    it 'should send email for all subscribers' do
+      subscribers.each { |subscriber| expect(NotifyMailer).to receive(:new_answer).twice.with(subscriber).and_call_original }
+      answer
     end
   end
 end
