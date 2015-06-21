@@ -11,8 +11,17 @@ class Answer < ActiveRecord::Base
 
   default_scope -> { order(best: :desc).order(created_at: :asc) }
 
+  after_create :notify_subscribers
+
   def best!
     question.answers.update_all(best: false)
     self.update(best: true)
+  end
+
+  private
+  def notify_subscribers
+    question.subscribers.find_each do |subscriber|
+       NotifyMailer.new_answer(subscriber).deliver_later
+    end
   end
 end
