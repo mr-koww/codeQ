@@ -16,6 +16,7 @@
 
       - if can?(:edit, question)
         p= link_to t('question.button.edit'), '', class: 'edit-question-link', data: { question_id: question.id }
+
         / hidden edit form
         .question-errors
         p= nested_form_for question, remote: true, html: { id: "edit-question-#{ question.id }" } do |f|
@@ -36,6 +37,12 @@
 
       - if can?(:destroy, question)
         p= link_to t('question.button.delete'), question_path(question), method: :delete, data: { confirm: I18n.t('question.confirm.delete') }
+
+      - if current_user
+        - if question.subscribed?(current_user)
+          p= link_to 'Unsubscribe', subscriber_path(current_user.subscription_to(question)), method: :delete
+        - else
+          p= link_to 'Subscribe', question_subscribers_path(question), method: :post
 
     / votes
     .col-xs-12.col-sm-4.question_votes id='votes_#{ dom_id(@question) }'
