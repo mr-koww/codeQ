@@ -11,7 +11,14 @@ class Question < ActiveRecord::Base
   validates :title, length: { in: 10..35 }
   validates :body, length:  { in: 10..250 }
 
+  after_create :subscribe_author
+
   def subscribed?(user)
     subscribers.where(user_id: user).present?
+  end
+
+  private
+  def subscribe_author
+    subscribers.create(user: user)
   end
 end
