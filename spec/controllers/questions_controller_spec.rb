@@ -95,6 +95,10 @@ describe QuestionsController, type: :controller do
           expect { request }.to change(Question, :count).by(1)
         end
 
+        it 'subscribe author question to the question' do
+          expect { request }.to change(subject.current_user.subscribers, :count).by(1)
+        end
+
         it 'saves the attachment in database' do
           expect { request(attachment: file) }.to change(Attachment, :count).by(1)
         end
