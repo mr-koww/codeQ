@@ -8,6 +8,8 @@ Bundler.require(*Rails.groups)
 
 module CodeQ
   class Application < Rails::Application
+    config.active_job.queue_adapter = :sidekiq
+
     # Use the responders controller from the responders gem
     config.app_generators.scaffold_controller :responders_controller
 

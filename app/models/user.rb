@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
          :confirmable, :omniauthable, omniauth_providers: [:facebook, :github, :twitter]
 
   has_many :questions
+  has_many :subscribers, dependent: :destroy
   has_many :answers
   has_many :votes
   has_many :authorizations
@@ -35,4 +36,14 @@ class User < ActiveRecord::Base
     self.authorizations.create(provider: auth.provider, uid: auth.uid.to_s)
   end
 
+  def subscription_to(question)
+    subscribers.find { |subscribe| subscribe.question_id == question.id }
+  end
+
+  # ActiveJobs
+  def self.send_daily_digest
+    find_each do |user|
+      DailyMailer.delay.digest(user)
+    end
+  end
 end

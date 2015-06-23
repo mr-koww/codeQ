@@ -11,8 +11,15 @@ class Answer < ActiveRecord::Base
 
   default_scope -> { order(best: :desc).order(created_at: :asc) }
 
+  after_create :notify_subscribers
+
   def best!
     question.answers.update_all(best: false)
     self.update(best: true)
+  end
+
+  private
+  def notify_subscribers
+    NotifyQuestionSubscribersJob.perform_later(question)
   end
 end

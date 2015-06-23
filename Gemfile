@@ -61,6 +61,11 @@ gem 'doorkeeper'
 gem 'active_model_serializers'
 gem 'oj'
 gem 'oj_mimic_json'
+
+gem 'sidekiq'
+
+gem 'whenever'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -70,7 +75,9 @@ gem 'oj_mimic_json'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem "letter_opener", :group => :development
+gem 'sinatra', '>= 1.3.0', require: nil
+
+gem "letter_opener", group: :development
 
 group :development, :test do
   gem 'rspec-rails'
