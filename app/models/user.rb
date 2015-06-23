@@ -36,14 +36,14 @@ class User < ActiveRecord::Base
     self.authorizations.create(provider: auth.provider, uid: auth.uid.to_s)
   end
 
-  def self.send_daily_digest
-    find_each.each do |user|
-      DailyMailer.delay.digest(user)
-    end
+  def subscription_to(question)
+    subscribers.find { |subscribe| subscribe.question_id == question.id }
   end
 
-  def subscription_to(question)
-    subscribers.find { |es| es.question_id == question.id }
-    # subscribers.where(question_id: question)
+  # ActiveJobs
+  def self.send_daily_digest
+    find_each do |user|
+      DailyMailer.delay.digest(user)
+    end
   end
 end
