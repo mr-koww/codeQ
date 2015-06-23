@@ -10,4 +10,8 @@ class Question < ActiveRecord::Base
   validates :title, :body, :user, presence: true
   validates :title, length: { in: 10..35 }
   validates :body, length:  { in: 10..250 }
+
+  def subscribed?(user)
+    subscribers.where(user_id: user).present?
+  end
 end
