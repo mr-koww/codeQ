@@ -3,8 +3,6 @@ class SubscribersController < ApplicationController
   before_action :load_question, only: [ :create ]
   before_action :load_subscriber, only: [ :destroy ]
 
-  #respond_to :js
-
   authorize_resource
 
   def create
