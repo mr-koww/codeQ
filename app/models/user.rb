@@ -41,4 +41,9 @@ class User < ActiveRecord::Base
       DailyMailer.delay.digest(user)
     end
   end
+
+  def subscription_to(question)
+    subscribers.find { |es| es.question_id == question.id }
+    # subscribers.where(question_id: question)
+  end
 end
