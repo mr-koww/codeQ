@@ -28,6 +28,12 @@ html lang="en"
             li
               = link_to 'Ask question', new_question_path
           ul.nav.navbar-nav.navbar-right
+            li
+              = form_tag search_path, class: 'navbar-form navbar-right', method: :get do
+                .form-group
+                  = text_field_tag 'q', nil, class: 'form-control', placeholder: 'Search'
+                = submit_tag 'Find', class: 'btn btn-default'
+
             - if user_signed_in?
               li
                 = link_to current_user.email, user_path(current_user), class: 'navbar-link'
