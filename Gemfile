@@ -31,40 +31,29 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'slim-rails'
-
 gem 'devise'
-
 gem 'carrierwave'
-
 gem 'remotipart'
-
 gem 'nested_form'
-
 gem 'skim'
-
 gem 'twitter-bootstrap-rails'
-
 gem 'private_pub'
 gem 'thin'
-
 gem 'responders'
-
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-github'
 gem 'omniauth-twitter'
-
 gem 'cancancan'
-
 gem 'doorkeeper'
-
 gem 'active_model_serializers'
 gem 'oj'
 gem 'oj_mimic_json'
-
 gem 'sidekiq'
-
 gem 'whenever'
+gem 'mysql2'
+gem 'thinking-sphinx'
+gem 'will_paginate'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
