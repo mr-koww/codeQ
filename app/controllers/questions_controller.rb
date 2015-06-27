@@ -9,7 +9,7 @@ class QuestionsController < ApplicationController
   authorize_resource
 
   def index
-    respond_with(@questions = Question.all)
+    respond_with(@questions = Question.paginate(page: params[:page], per_page: 10))
   end
 
   def show

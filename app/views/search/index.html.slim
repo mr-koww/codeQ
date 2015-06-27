@@ -1,0 +1,23 @@
+h2= "Результаты поиска по запросу \"#{ params[:q] }\""
+- if @results[:questions].any?
+  p= link_to "ВОПРОСЫ (#{ @results[:questions].count })", search_path_helper('questions')
+- if @results[:answers].any?
+  p= link_to "ОТВЕТЫ (#{ @results[:answers].count })", search_path_helper('answers')
+- if @results[:comments].any?
+  p= link_to "КОММЕНТАРИИ (#{ @results[:comments].count })", search_path_helper('comments')
+
+- if params[:scope] == 'questions'
+  = render_questions
+- elsif params[:scope] == 'answers'
+  = render_answers
+- elsif params[:scope] == 'comments'
+  = render_comments
+- else
+  - if @results[:questions].any?
+    = render_questions
+  - elsif @results[:answers].any?
+    = render_answers
+  - elsif @results[:comments].any?
+    = render_comments
+  - else
+    = render 'search/no_results'
