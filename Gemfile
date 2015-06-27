@@ -7,7 +7,7 @@ gem 'rails', '4.2.0'
 gem 'pg'
 
 # Use LESS for stylesheets
-gem "less-rails"
+gem 'less-rails'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
