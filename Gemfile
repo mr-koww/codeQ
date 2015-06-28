@@ -56,7 +56,7 @@ gem 'thinking-sphinx'
 gem 'will_paginate'
 gem 'dotenv'
 gem 'dotenv-deployment', require: 'dotenv/deployment'
-gem 'dotenv-rails', require: 'dotenv/rails-now'
+#gem 'dotenv-rails', require: 'dotenv/rails-now'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
