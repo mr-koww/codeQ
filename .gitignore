@@ -20,8 +20,6 @@
 
 /public/uploads
 
-config/secrets.yml
-
 dump.rdb
 
 config/*.sphinx.conf

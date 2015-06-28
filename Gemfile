@@ -54,6 +54,8 @@ gem 'whenever'
 gem 'mysql2'
 gem 'thinking-sphinx'
 gem 'will_paginate'
+gem 'dotenv'
+gem 'dotenv-deployment', require: 'dotenv/deployment'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -61,12 +63,15 @@ gem 'will_paginate'
 # Use Unicorn as the app server
 # gem 'unicorn'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
 gem 'sinatra', '>= 1.3.0', require: nil
 
-gem "letter_opener", group: :development
+group :development do
+  gem 'letter_opener'
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
+end
 
 group :development, :test do
   gem 'rspec-rails'
