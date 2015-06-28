@@ -56,7 +56,7 @@ gem 'thinking-sphinx'
 gem 'will_paginate'
 #gem 'dotenv'
 #gem 'dotenv-deployment', require: 'dotenv/deployment'
-#gem 'dotenv-rails', require: 'dotenv/rails-now'
+
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -75,6 +75,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'dotenv-rails', :require => 'dotenv/rails-now'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'selenium-webdriver'
