@@ -54,8 +54,8 @@ gem 'whenever'
 gem 'mysql2'
 gem 'thinking-sphinx'
 gem 'will_paginate'
-#gem 'dotenv'
-#gem 'dotenv-deployment', require: 'dotenv/deployment'
+gem 'dotenv'
+gem 'dotenv-deployment', require: 'dotenv/deployment'
 
 
 # Use ActiveModel has_secure_password
@@ -75,7 +75,6 @@ group :development do
 end
 
 group :development, :test do
-  gem 'dotenv-rails', :require => 'dotenv/rails-now'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'selenium-webdriver'
