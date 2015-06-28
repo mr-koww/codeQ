@@ -16,3 +16,7 @@ every 1.day, at: '9:30 am' do
   runner "DailyDigestJob.create"
 end
 
+every 60.minutes do
+  rake "ts:index"
+end
+
