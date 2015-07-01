@@ -56,6 +56,7 @@ gem 'thinking-sphinx'
 gem 'will_paginate'
 gem 'dotenv'
 gem 'dotenv-deployment', require: 'dotenv/deployment'
+gem 'unicorn'
 
 
 # Use ActiveModel has_secure_password
@@ -73,6 +74,7 @@ group :development do
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano-sidekiq', require: false
+  gem 'capistrano3-unicorn', require: false
 end
 
 group :development, :test do
