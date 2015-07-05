@@ -57,6 +57,7 @@ gem 'will_paginate'
 gem 'dotenv'
 gem 'dotenv-deployment', require: 'dotenv/deployment'
 gem 'unicorn'
+gem 'redis-rails'
 
 
 # Use ActiveModel has_secure_password
