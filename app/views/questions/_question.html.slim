@@ -2,17 +2,19 @@
 - if detail
   .row
     .col-xs-12.col-sm-8
-      h3= question.title
-      hr
-      p= question.body
+      - cache question do
+        h3= question.title
+        hr
+        p= question.body
 
       - if question.attachments.present?
         p= t('attachment.label.title')
         ul
-          - question.attachments.each do |attachment|
-            div id="attachment-#{ attachment.id }"
-              li
-                p= link_to attachment.file.filename, attachment.file.url
+          - cache question.attachments do
+            - question.attachments.each do |attachment|
+              div id="attachment-#{ attachment.id }"
+                li
+                  p= link_to attachment.file.filename, attachment.file.url
 
       - if can?(:edit, question)
         p= link_to t('question.button.edit'), '', class: 'edit-question-link', data: { question_id: question.id }

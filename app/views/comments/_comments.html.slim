@@ -1,8 +1,9 @@
-- commentable.comments.each do |comment|
-  - cache comment do
-    / BODY
-    = div_for comment
-      p= comment.body
+- cache commentable.comments do
+  - commentable.comments.each do |comment|
+    - cache comment do
+      / BODY
+      = div_for comment
+        p= comment.body
 
   / EDIT/DELETE link
   - if user_signed_in? && current_user.id == comment.user_id
