@@ -1,18 +1,19 @@
 .col-xs-12.col-sm-8.answer id="#{ dom_id(answer) }"
-  / best answer mark
-  - if answer.best
-    = I18n.t('answer.label.best')
+  - cache answer do
+    / best answer mark
+    - if answer.best
+      = I18n.t('answer.label.best')
 
-  p= answer.body
+    p= answer.body
 
-  / attachments
-  - if answer.attachments.any?
-    p= t('attachment.label.title')
-    ul
-      - answer.attachments.each do |attachment|
-        div id="attachment_#{ attachment.id }"
-        li
-          p= link_to attachment.file.filename, attachment.file.url
+    / attachments
+    - if answer.attachments.any?
+      p= t('attachment.label.title')
+      ul
+        - answer.attachments.each do |attachment|
+          div id="attachment_#{ attachment.id }"
+          li
+            p= link_to attachment.file.filename, attachment.file.url
 
   - if can?(:best, answer)
     p= link_to t('answer.button.best'), best_answer_path(answer), method: :put, remote: true, data: { confirm: I18n.t('answer.confirm.best') }
