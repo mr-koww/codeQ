@@ -1,15 +1,16 @@
 .row.question data= { question_id: "#{ @question.id }" }
   = render @question, detail: true
 
-.row.answers
-  - @question.answers.each do |answer|
-    - if answer.persisted?
-      = render 'answers/answer', answer: answer
+  .row.answers
+    - cache @question.answers
+      - @question.answers.each do |answer|
+        - if answer.persisted?
+          = render 'answers/answer', answer: answer
 
-- if user_signed_in?
-  hr
-  .row.new_answer
-    = render 'answers/new', question: @question, answer: @answer
+  - if user_signed_in?
+    hr
+    .row.new_answer
+      = render 'answers/new', question: @question, answer: @answer
 
 = subscribe_to "/questions/#{ @question.id }/comments"
 = subscribe_to "/questions/#{ @question.id }/answers"

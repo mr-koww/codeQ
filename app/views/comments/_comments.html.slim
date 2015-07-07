@@ -1,14 +1,15 @@
-- commentable.comments.each do |comment|
+- cache commentable.comments do
+  - commentable.comments.each do |comment|
+    - cache comment do
+      / BODY
+      = div_for comment
+        p= comment.body
 
-  / BODY
-  = div_for comment
-    p= comment.body
-
-    / EDIT/DELETE link
-    - if user_signed_in? && current_user.id == comment.user_id
-      p
-        = link_to 'Edit', '', class: 'edit-comment-link btn btn-link', data: { comment_id: comment.id }
-        = link_to 'Delete', comment, remote: true, method: :delete, data: { type: :json }, class: "btn btn-link"
+  / EDIT/DELETE link
+  - if user_signed_in? && current_user.id == comment.user_id
+    p
+      = link_to 'Edit', '', class: 'edit-comment-link btn btn-link', data: { comment_id: comment.id }
+      = link_to 'Delete', comment, remote: true, method: :delete, data: { type: :json }, class: "btn btn-link"
 
       / hidden EDIT FORM
       = form_for comment, html: { id: "edit-comment-#{ comment.id }" }, remote: true, data: { type: :json } do |f|
