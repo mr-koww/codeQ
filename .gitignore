@@ -12,17 +12,19 @@
 !/log/.keep
 /tmp
 
-
-/config/database.yml
-/config/private_pub.yml
-
+# Ignore IDE configuration.
 /.idea/
 
+# Ignore public folders
 /public/uploads
 
-dump.rdb
-
+# Ignore config
+/config/database.yml
+/config/private_pub.yml
+/config/thinking_sphinx.yml
+/config/secrets.yml
 config/*.sphinx.conf
+
 db/sphinx
 
-config/thinking_sphinx.yml
+dump.rdb
