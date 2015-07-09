@@ -48,9 +48,12 @@ html lang="en"
     main
       .container
         - flash.each do |type, msg|
-          div class="alert alert-dismissible #{bootstrap_alert_class(type)}"
-            button.close type="button" data-dismiss="alert" aria-hidden="true"×
-            strong
-              = msg
+          - unless msg.blank?
+            .row
+              .col-xs-12
+                div class="alert alert-dismissible #{bootstrap_alert_class(type)}"
+                  button.close type="button" data-dismiss="alert" aria-hidden="true"×
+                  strong
+                    = msg
 
         = yield
