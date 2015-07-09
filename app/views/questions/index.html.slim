@@ -1,7 +1,9 @@
-.heading
-  h1 Top Questions
+.row
+  .col-xs-12
+    h4 style='text-align: center'Latest questions
 
 .row
   .col-md-12
     = render @questions, detail: false
-    = will_paginate @questions
+  .col-md-12 style='text-align: center'
+    = will_paginate @questions, renderer: BootstrapPaginationHelper::LinkRenderer
