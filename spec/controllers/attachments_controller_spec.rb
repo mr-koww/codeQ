@@ -8,7 +8,7 @@ RSpec.describe AttachmentsController, type: :controller do
   let!(:attachment) { create(:attachment, attachable: question) }
 
   describe 'DELETE /destroy' do
-    def request(attributes = {})
+    def request(_attr = {})
       delete :destroy, id: attachment, format: :js
     end
 

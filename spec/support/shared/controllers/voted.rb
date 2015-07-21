@@ -88,7 +88,7 @@ shared_examples_for 'voted' do
     it_behaves_like 'unauthorized response for not auth user'
 
     context 'auth user' do
-      let(:user_who_vote) { create(:user)}
+      let(:user_who_vote) { create(:user) }
       let!(:vote) { create(:vote, votable: resource, user: user_who_vote, value: 1) }
 
       context 'for not own vote' do

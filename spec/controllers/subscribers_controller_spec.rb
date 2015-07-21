@@ -7,7 +7,7 @@ describe SubscribersController, type: :controller do
   let(:subscriber) { create(:subscriber, question: question, user: user) }
 
   describe 'POST /create' do
-    def request(attributes = {})
+    def request(_attr = {})
       post(:create, question_id: question, format: :js)
     end
 
@@ -37,7 +37,7 @@ describe SubscribersController, type: :controller do
   end
 
   describe 'DELETE /destroy' do
-    def request(attributes = {})
+    def request(_attr = {})
       patch(:destroy, id: subscriber, format: :js)
     end
 

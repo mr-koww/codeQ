@@ -9,7 +9,7 @@ describe CommentsController, type: :controller do
   let(:commentable_param) {  }
 
   describe 'POST /create' do
-    def request(attributes = {})
+    def request(_attr = {})
       post(:create, commentable: commentable_type, question_id: commentable, comment: attributes_for(:comment), format: :js)
     end
 
@@ -54,7 +54,7 @@ describe CommentsController, type: :controller do
 
   describe 'PATCH /update' do
     let!(:comment) { create(:comment, commentable: commentable, user: author) }
-    def request(attributes = {})
+    def request(_attr = {})
       patch(:update, commentable: commentable_type, id: comment, comment: { body: 'New comment' }, format: :js)
     end
 
@@ -73,7 +73,7 @@ describe CommentsController, type: :controller do
         end
 
         context 'with invalid attributes' do
-          def bad_request(attributes = {})
+          def bad_request(_attr = {})
             patch(:update, commentable: commentable_type, id: comment, comment: { body: nil }, format: :js)
           end
 
@@ -103,7 +103,7 @@ describe CommentsController, type: :controller do
 
   describe 'DELETE /destroy' do
     let!(:comment) { create(:comment, commentable: commentable, user: author) }
-    def request(attributes = {})
+    def request(_attr = {})
       patch(:destroy, commentable: commentable_type, id: comment, format: :js)
     end
 
