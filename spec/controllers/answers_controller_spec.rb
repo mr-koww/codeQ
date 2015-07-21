@@ -9,8 +9,8 @@ RSpec.describe AnswersController, type: :controller do
   let!(:answer)   { create :answer, question: question, user: user_answer, best: false }
   let(:file) { create(:attachment, attachable: answer) }
 
-	describe 'POST /create' do
-    def request(attributes = {})
+  describe 'POST /create' do
+    def request(_attr = {})
       post :create, answer: attributes_for(:answer), question_id: question, format: :js
     end
     it_behaves_like 'unauthorized response for not auth user'
@@ -44,7 +44,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       context 'with invalid attributes' do
-        def bad_request(attributes = {})
+        def bad_request(_attr = {})
           post :create, answer: { body: nil }, question_id: question, format: :js
         end
         it 'doesn`t save the answer' do
@@ -62,7 +62,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH /update' do
-    def request(attributes = {})
+    def request(_attr = {})
       patch :update, id: answer, answer: { body: 'New answer body' }, question_id: question, format: :js
     end
 
@@ -113,7 +113,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'DELETE /destroy' do
-    def request(attributes = {})
+    def request(_attr = {})
       delete :destroy, id: answer.id, format: :js
     end
 
@@ -146,7 +146,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH /best' do
-    def request(attributes = {})
+    def request(_attr = {})
       patch :best, id: answer, question_id: question, format: :js
     end
 
