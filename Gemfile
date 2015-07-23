@@ -70,6 +70,9 @@ gem 'unicorn'
 gem 'sinatra', '>= 1.3.0', require: nil
 
 group :development do
+  gem 'guard-foreman'
+  gem 'guard-bundler', require: false
+
   gem 'letter_opener'
   gem 'capistrano', require: false
   gem 'capistrano-bundler', require: false
