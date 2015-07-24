@@ -15,13 +15,14 @@ html lang="en"
 
     main
       .container-fluid
-        - flash.each do |type, msg|
-          - unless msg.blank?
-            .row
-              .col-xs-12
-                div class="alert alert-dismissible #{bootstrap_alert_class(type)}"
-                  button.close type="button" data-dismiss="alert" aria-hidden="true"×
-                  strong
-                    = msg
+        .col-xs-12.col-sm-3.col-md-2
+          .row
+            = render 'layouts/flash_message'
+          .row
+            .col-xs-12
+              | My profile
+              br
+              | My questions
 
-        = yield
+        .col-xs-12.col-sm-9.col-md-10
+          = yield

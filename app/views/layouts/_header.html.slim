@@ -1,4 +1,3 @@
-/ Navbar Header
 .navbar-header
   button.navbar-toggle type="button" data-toggle="collapse" data-target="#navbar-collapse-1"
     span.sr-only Toggle navigation
@@ -8,18 +7,18 @@
   a.navbar-brand href= "#{root_path}"
     | Auto Questions
 
-/ Navbar Links
 .collapse.navbar-collapse#navbar-collapse-1
   ul.nav.navbar-nav
     li
       = link_to 'Ask question', new_question_path
 
-
+  / serarch bar
   = form_tag search_path, class: 'navbar-form navbar-left', method: :get do
     .form-group
       = text_field_tag 'q', nil, class: 'form-control form-search', placeholder: 'Search'
     = submit_tag 'Find', class: 'btn btn-default search-button'
 
+  / log/reg form
   ul.nav.navbar-nav.navbar-right
     - if user_signed_in?
       li
