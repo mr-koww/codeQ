@@ -1,8 +1,8 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_answer, except: [ :create ]
-  before_action :load_question, only: [ :create ]
-  after_action  :publish_answer, only: [ :create ]
+  before_action :load_answer, except: [:create]
+  before_action :load_question, only: [:create]
+  after_action  :publish_answer, only: [:create]
   include Voted
 
   respond_to :js

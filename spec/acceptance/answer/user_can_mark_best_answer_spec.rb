@@ -50,14 +50,12 @@ feature 'User can mark best answer', %q{
     end
   end
 
-
   scenario "Not author question doesn't see link 'Best' for question answers" do
     sign_in user_another
     visit question_path(question)
 
     expect(page).to_not have_link I18n.t('answer.label.best')
   end
-
 
   scenario "Guest doesn't see link 'Best' for any answers" do
     visit question_path(question)

@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
     if auth.info[:email] =~ Devise.email_regexp
       email = auth.info[:email]
     else
-      email = "#{auth.uid.to_s}@#{auth.provider}.com"
+      email = "#{auth.uid}@#{auth.provider}.com"
     end
 
     user = User.where(email: email).first

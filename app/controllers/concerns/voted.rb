@@ -10,18 +10,15 @@ module Voted
     # render_success_json_response('vote', 'Like OK')
   end
 
-
   def dislike
     respond_with @resource.vote(current_user, -1)
     # render_success_json_response('vote', 'Dislike OK')
   end
 
-
   def unvote
     respond_with @resource.unvote(current_user)
     # render_success_json_response('unvote', 'Unvote OK')
   end
-
 
   private
   def set_resource

@@ -27,7 +27,6 @@ feature 'User can delete question', %q{
     end
   end
 
-
   scenario 'Auth user cannot delete not own question' do
     sign_in(user_another)
 
@@ -35,11 +34,9 @@ feature 'User can delete question', %q{
     expect(page).to_not have_content I18n.t('question.button.delete')
   end
 
-
   scenario 'Guest cannot delete any question' do
     visit question_path(question)
 
     expect(page).to_not have_content I18n.t('question.button.delete')
   end
-
 end

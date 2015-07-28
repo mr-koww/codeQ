@@ -43,7 +43,6 @@ feature 'User can edit answer', %q{
     end
   end
 
-
   scenario "Auth user doesn't see edit link for not his answer" do
     sign_in user_question
     visit question_path(question)
@@ -52,7 +51,6 @@ feature 'User can edit answer', %q{
     end
 
   end
-
 
   scenario "Not-auth user doesn't see edit link for all answers" do
     visit question_path(question)

@@ -3,8 +3,11 @@ require 'rails_helper'
 describe NotifyQuestionSubscribersJob, type: :job do
   let(:author) { create(:user) }
   let(:question) { create(:question, user: author) }
-  let(:subscribers) { [ create(:subscriber, question: question, user: create(:user)),
-                        create(:subscriber, question: question, user: create(:user)) ] }
+  let(:subscribers) do
+    [ create(:subscriber, question: question, user: create(:user)),
+      create(:subscriber, question: question, user: create(:user)) ]
+  end
+
 
   it 'sends email with digest for all subscribers' do
     question.subscribers.each do |subscriber|

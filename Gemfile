@@ -18,7 +18,8 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
 
-# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+# See https://github.com/sstephenson/execjs#readme for more supported
+# runtimes
 gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
@@ -33,8 +34,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'slim-rails'
 gem 'devise'
 gem 'carrierwave'
+gem 'jquery-fileupload-rails'
 gem 'remotipart'
-gem 'nested_form'
+gem 'cocoon'
 gem 'skim'
 gem 'twitter-bootstrap-rails'
 gem 'private_pub'
@@ -56,7 +58,6 @@ gem 'thinking-sphinx'
 gem 'will_paginate'
 gem 'dotenv'
 gem 'dotenv-deployment', require: 'dotenv/deployment'
-gem 'unicorn'
 gem 'redis-rails'
 
 
@@ -64,11 +65,14 @@ gem 'redis-rails'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn'
 
 gem 'sinatra', '>= 1.3.0', require: nil
 
 group :development do
+  gem 'guard-foreman'
+  gem 'guard-bundler', require: false
+
   gem 'letter_opener'
   gem 'capistrano', require: false
   gem 'capistrano-bundler', require: false
@@ -88,14 +92,20 @@ group :development, :test do
   # requires JavaScript runtime (nodejs, therubyracer)
   gem 'capybara-webkit'
 
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  # Call 'byebug' anywhere in the code to stop execution and get a debugger
+  # console
   gem 'byebug'
 
-  # Access an IRB console on exception pages or by using <%= console %> in views
+  # Access an IRB console on exception pages or by using <%= console %> in
+  # views
   gem 'web-console', '~> 2.0'
 
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  # Spring speeds up development by keeping your application running in the
+  # background. Read more: https://github.com/rails/spring
   gem 'spring'
+
+  # A Ruby static code analyzer, based on the community Ruby style guide
+  gem 'rubocop', require: false
 end
 
 group :test do
@@ -104,4 +114,3 @@ group :test do
   gem 'launchy'
   gem 'json_spec'
 end
-

@@ -1,0 +1,32 @@
+.navbar-header
+  button.navbar-toggle type="button" data-toggle="collapse" data-target="#navbar-collapse-1"
+    span.sr-only Toggle navigation
+    span.icon-bar
+    span.icon-bar
+    span.icon-bar
+  a.navbar-brand href= "#{root_path}"
+    | Auto Questions
+
+.collapse.navbar-collapse#navbar-collapse-1
+  ul.nav.navbar-nav
+    li
+      = link_to 'Ask question', new_question_path
+
+  / serarch bar
+  = form_tag search_path, class: 'navbar-form navbar-left', method: :get do
+    .form-group
+      = text_field_tag 'q', nil, class: 'form-control form-search', placeholder: 'Search'
+    = submit_tag 'Find', class: 'btn btn-default search-button'
+
+  / log/reg form
+  ul.nav.navbar-nav.navbar-right
+    - if user_signed_in?
+      li
+        = link_to current_user.email, user_path(current_user), class: 'navbar-link'
+      li
+        = link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'navbar-link'
+    - else
+      li
+        = link_to 'Log in', new_user_session_path, class: 'navbar-link'
+      li
+        = link_to 'Sign Up', new_user_registration_path, class: 'navbar-link'

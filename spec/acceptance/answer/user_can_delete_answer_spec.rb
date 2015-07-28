@@ -32,7 +32,6 @@ feature 'User can delete answer', %q{
     end
   end
 
-
   scenario 'Auth user cannot delete not own answer' do
     sign_in(user_answer)
 
@@ -46,5 +45,4 @@ feature 'User can delete answer', %q{
 
     expect(page).to_not have_content I18n.t('answer.button.delete')
   end
-
 end

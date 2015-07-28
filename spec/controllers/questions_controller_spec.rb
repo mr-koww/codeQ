@@ -56,7 +56,7 @@ describe QuestionsController, type: :controller do
   end
 
   describe 'GET /edit' do
-    def request(attribute = {})
+    def request(_attr = {})
       get :edit, id: question
     end
 
@@ -81,8 +81,8 @@ describe QuestionsController, type: :controller do
   describe 'POST /create' do
     let(:channel) { '/questions' }
     let(:file) { create(:attachment) }
-    def request(attributes = {})
-      post :create, { question: attributes_for(:question) }.merge(attributes)
+    def request(attr = {})
+      post :create, { question: attributes_for(:question) }.merge(attr)
     end
 
     it_behaves_like 'redirect not auth user to login form'
@@ -117,7 +117,7 @@ describe QuestionsController, type: :controller do
       end
 
       context 'with invalid attributes' do
-        def bad_request(attributes = {})
+        def bad_request(_attr = {})
           post :create, question: attributes_for(:invalid_question)
         end
         it 'does not save question' do
@@ -135,8 +135,8 @@ describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH /update' do
-    def request(attributes = {})
-      patch :update, { id: question, question: { title: 'new default title', body: 'new default body' }, format: :js }.merge(attributes)
+    def request(attr = {})
+      patch :update, { id: question, question: { title: 'new default title', body: 'new default body' }, format: :js }.merge(attr)
     end
 
     it_behaves_like 'unauthorized response for not auth user'
@@ -190,8 +190,8 @@ describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE /destroy' do
-    def request(attributes = {})
-      delete :destroy, { id: question }.merge(attributes)
+    def request(attr = {})
+      delete :destroy, { id: question }.merge(attr)
     end
 
     it_behaves_like 'redirect not auth user to login form'

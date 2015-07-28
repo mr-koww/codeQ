@@ -40,14 +40,12 @@ feature 'User can edit question', %q{
     end
   end
 
-
   scenario "Auth user doesn't see edit link for not his question" do
     sign_in user_another
     visit question_path(question)
 
     expect(page).to_not have_link I18n.t('question.button.edit')
   end
-
 
   scenario "Not-auth user doesn't see edit link for question" do
     visit question_path(question)
